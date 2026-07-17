@@ -1,0 +1,6 @@
+{
+  "name": "senpai-ask",
+  "description": "A lightweight skill collection that turns Claude Code / Codex CLI into a patient senior-colleague guide for total beginners — asks before it builds, brainstorms before building, works in an isolated workspace, breaks work into small reviewed steps, and remembers your project across sessions in plain language.",
+  "version": "0.1.0",
+  "author": { "name": "CalmTiger" }
+}

@@ -1,0 +1,7 @@
+.worktrees/
+worktrees/
+.senpai/
+node_modules/
+.DS_Store
+*.log
+.planning/
