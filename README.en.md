@@ -20,7 +20,11 @@
 
 ---
 
-A **brainstorming-first design skill** for Claude Code and Codex CLI, for people who have never coded, never used a terminal, and never vibe-coded before.
+When you tell an AI "build me this," a tsundere senpai shows up and asks: "Is this really what you want to build?"
+
+A **brainstorming-first design skill** for people who have never coded, never used a terminal, and never vibe-coded before.
+
+(Supports Claude Code / Codex CLI)
 
 > When you say "build me this," it doesn't start writing code right away.
 >
@@ -36,12 +40,12 @@ Claude Code and Codex are already powerful coding AIs, but there are things firs
 > When you say "add a login feature," it asks for you: email or social login? Do you need password reset? It **asks the questions you didn't know you had.**
 
 **2. Technical jargon is hard.**
-> Isolation (a separate copy so your real files aren't touched), commit (a saved checkpoint) — unfamiliar terms get **a one-time parenthetical explanation**, then never repeated.
+> Isolation (a separate copy so your real files aren't touched), commit (a saved checkpoint) — unfamiliar terms always get **a parenthetical explanation once**, then never repeated.
 
 **3. They don't know how to keep work records.**
-> Ask "where did we leave off?" and instead of a technical log, it tells you in plain language: **"We finalized the login page design; next is the signup flow."**
+> Ask "where did we leave off?" and instead of just showing a technical log, it tells you in plain language: **"We finalized the login page design; next is the signup flow."**
 
-Beyond these three, it doesn't replace Claude Code / Codex native features (permission prompts, rewind, sandboxing) — it uses them as-is.
+Beyond these, it leverages Claude Code / Codex native features (permission prompts, rewind, sandboxing) to help non-developers with vibe-coding.
 
 ## How does it work?
 
