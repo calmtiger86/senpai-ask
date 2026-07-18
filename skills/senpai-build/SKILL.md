@@ -64,9 +64,11 @@ After the last task: **one broad review of the whole branch** (below).
 Before Task 1, figure out how you'll run each builder and reviewer. Use the
 platform's native way; never reinvent one.
 
-- **Claude Code:** dispatch each builder and reviewer with the native `Task`
-  tool (a subagent). Give each one only what it needs for its task — never your
-  whole session history. This is the normal path.
+- **Claude Code:** dispatch each builder and reviewer with your session's
+  native subagent-dispatch tool (currently named `Agent`; tool names can
+  change between versions, so if that name isn't available, look for whatever
+  tool spawns an isolated subagent). Give each one only what it needs for its
+  task — never your whole session history. This is the normal path.
 
 - **Codex CLI:** subagents are supported by default — just ask to delegate a
   task to a parallel subagent (defaults are roughly `max_threads=6`,

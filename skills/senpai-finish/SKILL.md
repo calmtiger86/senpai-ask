@@ -181,7 +181,9 @@ MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-tople
 cd "$MAIN_ROOT"
 
 git checkout <base-branch>
-git pull
+# Only pull if there's actually an online home to pull from (HAS_REMOTE from
+# Step 3) -- running `git pull` with no remote configured is a plain error.
+if [ -n "$HAS_REMOTE" ]; then git pull; fi
 git merge <feature-branch>
 
 # Re-run the tests on the merged result before trusting it.

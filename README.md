@@ -25,7 +25,7 @@ Everything above is plain-language guidance the assistant follows — not code t
 
 This applies inside the isolated workspace too, and regardless of what's been approved — a secret must never leak even when the surrounding change was approved. If you see a tool call denied with a message like *"This looks like a secret file"*, that's this guard, working as intended — not a bug. See `scripts/protect-secrets.js` for the exact patterns and `hooks/scripts/guard.js` for the wiring.
 
-The rest of the safety model — never touching your real project until you say so — comes from `senpai-isolate` (isolated workspace) and `senpai-finish` (the one keep-or-discard decision), not from a file allowlist or approval-token system. See `.planning/DECISIONS.md` for the full reasoning.
+The rest of the safety model — never touching your real project until you say so — comes from `senpai-isolate` (isolated workspace) and `senpai-finish` (the one keep-or-discard decision), not from a file allowlist or approval-token system. See those two skills' own `SKILL.md` files for the full reasoning.
 
 ## Install
 
