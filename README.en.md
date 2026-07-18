@@ -16,19 +16,35 @@
 
 A lightweight skill collection for Claude Code and Codex CLI, for people who have never coded, never used a terminal, and never vibe-coded before.
 
-It doesn't replace Claude Code's or Codex's own safety features (permission prompts, checkpoints, sandboxing). It sits on top: brainstorms with you before building anything, works in an isolated copy so your real files stay untouched until you approve, breaks work into small reviewed steps, and remembers what you decided across sessions.
+When you say "build me this," it doesn't start writing code right away — it **asks first**. What do you actually want? What decisions are hiding under that request? What do you really need? Only after that's sorted does it start building.
 
-## Skills
+## Why this exists
 
-| Skill | What it does |
-|-------|-------------|
-| `senpai` | Always-on entry point — routes your request to the right skill |
-| `senpai-brainstorming` | One question at a time before building; surfaces hidden decisions |
-| `senpai-isolate` | Sets up an isolated workspace so your real project is never touched mid-work |
-| `senpai-plan` | Turns an agreed design into small (2–5 min), reviewable steps |
-| `senpai-build` | Executes the plan step by step, with a review after each step |
-| `senpai-finish` | Verifies everything works, then asks you to keep or discard |
-| `senpai-remember` | Plain-language memory of what happened, across sessions |
+Claude Code and Codex are already powerful, but three things are missing for first-timers:
+
+1. **Surfaces hidden decisions first** — When you say "add a login feature," it asks: email or social login? Do you need password reset? It asks the questions you didn't know you had.
+2. **Explains jargon once** — isolation (a separate copy so your real files aren't touched), commit (a saved checkpoint) — unfamiliar terms get a one-time parenthetical explanation, then never repeated.
+3. **Remembers across sessions in plain language** — Ask "where did we leave off?" and instead of a technical log, it tells you: "We finalized the login page design; next is the signup flow."
+
+Beyond these three, it doesn't replace Claude Code / Codex native features (permission prompts, rewind, sandboxing) — it **sits on top of them.**
+
+## How it works
+
+Just talk to it. It routes your request to the right step automatically:
+
+```
+Talk → Design together → Isolate → Plan small → Build step by step → Verify → Remember
+```
+
+| Step | Skill | What it does |
+|------|-------|-------------|
+| Entry | `senpai` | Always on — listens and routes to the right skill |
+| Design | `senpai-brainstorming` | One question at a time, surfaces hidden decisions. Writes zero code |
+| Isolate | `senpai-isolate` | Creates a copy of your project to work in. Originals never touched |
+| Plan | `senpai-plan` | Breaks the agreed design into small 2–5 min steps. Nothing built until approved |
+| Build | `senpai-build` | Executes the plan one step at a time. Reviews after each. Errors fixed here |
+| Verify | `senpai-finish` | Actually runs it to check, then asks: keep or discard? |
+| Remember | `senpai-remember` | Stores what happened in plain language so you can pick up next time |
 
 ## Safety
 
@@ -37,7 +53,7 @@ Skills are guidance, but one thing is **enforced by code** — a `PreToolUse` gu
 - **Secret files blocked** — `.env`, SSH keys, `.pem`/`.key`, anything with "secret" or "credential" in its name. Read, write, and shell references all blocked.
 - **Control files protected** — anything under `.claude/`, `.codex/`, or `.claude-plugin/` can't be rewritten mid-session.
 
-This applies inside the isolated workspace too. If you see *"This looks like a secret file"*, that's the guard working as intended — not a bug. See `scripts/protect-secrets.js` for patterns and `hooks/scripts/guard.js` for wiring.
+This applies inside the isolated workspace too. If you see *"This looks like a secret file"*, that's the guard working as intended — not a bug.
 
 The rest of the safety model — never touching your real project until you say so — comes from `senpai-isolate` (isolation) and `senpai-finish` (the keep-or-discard decision).
 
@@ -50,7 +66,7 @@ The rest of the safety model — never touching your real project until you say 
 /plugin install senpai-ask@senpai-ask
 ```
 
-**Codex CLI:** Install as a Codex plugin pointing at this repository (see Codex's plugin-install docs — this ships as a standard Claude Code / Codex-compatible skill plugin, no special setup required).
+**Codex CLI:** Install as a Codex plugin pointing at this repository (see Codex's plugin-install docs — standard Claude Code / Codex-compatible skill plugin, no special setup required).
 
 Then just talk to it — say what you want to build and `senpai` takes it from there.
 
