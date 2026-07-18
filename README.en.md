@@ -20,17 +20,26 @@
 
 ---
 
-When you tell an AI "build me this," a tsundere senpai shows up and asks: "Is this really what you want to build?"
+<p align="center">
+ <em>When you tell an AI "build me this," a tsundere senpai shows up and asks: "Is this really what you want to build?"</em>
+</p>
+
+---
+
+<br> 
 
 A **brainstorming-first design skill** for people who have never coded, never used a terminal, and never vibe-coded before.
 
-(Supports Claude Code / Codex CLI)
+<br> 
 
 > When you say "build me this," it doesn't start writing code right away.
 >
 > **"It asks first, and designs a plan from your answers."**
 >
 > What do you actually want? Are there intentions you haven't explained? What do you really need? Only after that's sorted does it start building.
+
+
+<br> 
 
 ## Why does this exist?
 
@@ -47,13 +56,19 @@ Claude Code and Codex are already powerful coding AIs, but there are things firs
 
 Beyond these, it leverages Claude Code / Codex native features (permission prompts, rewind, sandboxing) to help non-developers with vibe-coding.
 
+
+<br> 
+
 ## How does it work?
 
 Just talk to it. It routes your request to the right step automatically.
 
-<p align="center">
-  <code>Say what you want</code> → <code>Design together</code> → <code>Isolate</code> → <code>Small plan</code> → <code>Build step by step</code> → <code>Verify</code> → <code>Remember</code>
+
+<p align="left">
+<code>Say what you want</code> → <code>Design together</code> → <code>Isolate</code> → <code>Small plan</code> → <code>Build step by step</code> → <code>Verify</code> → <code>Remember</code>
 </p>
+
+<br> 
 
 | Step | Skill | What it does |
 |:----:|-------|-------------|
@@ -64,6 +79,31 @@ Just talk to it. It routes your request to the right step automatically.
 | **Build** | `senpai-build` | Executes the plan one step at a time. Reviews after each. Errors fixed here |
 | **Verify** | `senpai-finish` | Actually runs it to check, then asks: keep or discard the result? |
 | **Remember** | `senpai-remember` | Stores what happened in plain language so you can pick up next time |
+
+
+<br> 
+
+---
+
+<br> 
+
+## Install
+
+**Claude Code:**
+
+```
+/plugin marketplace add calmtiger86/senpai-ask
+/plugin install senpai-ask@senpai-ask
+```
+<p></p>
+
+**Codex CLI:** Install as a Codex plugin pointing at this repository (standard Claude Code / Codex-compatible skill plugin, no special setup required).
+
+<br> 
+
+Then just say what you want to build or work on. Say it, and `senpai` takes it from there.
+
+---
 
 <details>
 <summary><strong>Safety</strong></summary>
@@ -82,21 +122,9 @@ This applies inside the isolated workspace too. If you see `"This looks like a s
 
 </details>
 
-## Install
+<br>
 
-**Claude Code:**
-
-```
-/plugin marketplace add calmtiger86/senpai-ask
-/plugin install senpai-ask@senpai-ask
-```
-
-**Codex CLI:** Install as a Codex plugin pointing at this repository (see Codex's plugin-install docs — standard Claude Code / Codex-compatible skill plugin, no special setup required).
-
-Then just say what you want to build or work on. Say it, and `senpai` takes it from there.
-
----
 
 <p align="center">
-  <sub>MIT License · Made by <a href="https://github.com/calmtiger86">CalmTiger</a></sub>
+  <sub>MIT License · Made by <a href="https://www.threads.com/@calmtiger_">CalmTiger</a></sub>
 </p>
