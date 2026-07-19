@@ -157,8 +157,7 @@ short note inside `log.md` so future-you stops tripping on it — for example:
 
 That's the whole mechanism. **Do not** create separate error or playbook files
 (`ERR-0001.md`, `PB-0001.md`, an error index, and so on). A short "seen 3×"
-note in `log.md` carries the same lesson without the file sprawl — that sprawl
-is precisely what this redesign removed.
+note in `log.md` carries the same lesson without the file sprawl.
 
 ## How `senpai-build` writes here
 
@@ -175,8 +174,7 @@ keep the file count down.) The split of responsibility:
   that surprised it or any decision it made.
 
 So a later session reads `log.md` to see how far the build actually got and why,
-without re-reading the whole plan. When you build `senpai-build`, follow this:
-progress goes into `log.md`, not a new file.
+without re-reading the whole plan.
 
 ## Splitting out decisions — only if you must
 

@@ -32,10 +32,12 @@ small step at a time, checking each step before moving on."
   project is `senpai-finish`'s call, with the user's explicit yes. Never merge,
   push, or apply to the real project from here.
 
-**Precondition — isolation.** Run this only inside the isolated workspace that
-`senpai-isolate` set up. If you are not in one (the real project checkout), stop
-and run `senpai-isolate` first. Building directly in the real project defeats
-the whole safety model.
+**Precondition — isolation preferred.** Normally you run inside the isolated
+workspace that `senpai-isolate` set up. If you're in the real project checkout
+and `senpai-isolate` hasn't run yet, stop and run it first. However, if
+`senpai-isolate` already ran and legitimately chose to work in place (user
+declined, sandbox blocked it, or empty folder), that's fine — proceed here
+with the understanding that `senpai-finish` is the undo path.
 
 ## Continuous execution
 

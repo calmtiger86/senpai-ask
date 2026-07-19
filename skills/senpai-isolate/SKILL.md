@@ -9,9 +9,7 @@ description: Use before making any code change for a beginner — sets up an iso
 > leaves the isolated space this skill creates. The real project is not touched
 > while work happens here. Whether any of it gets applied to the real project is
 > decided later — only by `senpai-finish`, with the person's explicit yes.
-> This replaces the old approach of guarding individual files with allowlists
-> and grades. If you are building another senpai skill, treat "work only inside
-> the isolated copy, decide at the end" as the invariant this skill guarantees.
+> The invariant: work only inside the isolated copy, decide at the end.
 
 ## Overview
 
@@ -35,12 +33,13 @@ the first time, and don't make the person learn the word.
 ## Step 0: Are we already in a safe copy?
 
 **First — is this even a git project?** If `git rev-parse` fails (no `.git`
-at all), this is a brand-new folder with nothing to protect yet. Say plainly:
-"아직 저장점이 없어서 먼저 하나 만들어 둘게요" (or the equivalent in their
-language), run `git init && git add -A && git commit -m "initial"`, then
-continue below. If the folder is completely empty, there's nothing to isolate
-from — skip isolation entirely, say so ("빈 폴더라 바로 시작할게요"), and
-proceed to `senpai-plan`.
+at all), this is a brand-new folder. Say plainly: "아직 저장점이 없어서 먼저
+하나 만들어 둘게요" (or the equivalent in their language), run
+`git init && git add -A && git commit --allow-empty -m "initial"`, then
+continue below. (Even an empty folder gets git init — the rest of the pipeline
+needs it for commits and undo.) There's nothing to protect from yet, so skip
+creating an isolated copy and work in place — record the starting SHA in
+`.senpai/log.md` as for any in-place work.
 
 **Before creating anything, check whether the work is already isolated.**
 

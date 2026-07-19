@@ -34,9 +34,9 @@ it working, then you decide what to do with it."
 
 ## Step 1: Show it actually running (for the person)
 
-**The original skill only checks that automated tests pass. A total beginner
-can't read a test log — but they *can* recognize a screen that works or output
-that looks right.** So before anything technical, if the project has something
+**A total beginner can't read a test log — but they *can* recognize a screen
+that works or output that looks right.** So before anything technical, if the
+project has something
 you can actually run, run it briefly and show them.
 
 Detect a runnable entry point (skip this step silently if there isn't one, or
@@ -77,12 +77,14 @@ npm test / cargo test / pytest / go test ./...
 **If tests fail:** say so in plain language and stop.
 
 > "The automatic checks are failing (<N> of them). I won't apply this to your
-> real project until they pass — that's the safety rule. Want me to look into
-> why?"
+> real project until they pass — that's the safety rule. I'll go back and fix
+> it."
 
 Do **not** continue to the choices below. Applying broken work to the real
 project is exactly what this gate prevents. (A nice-looking demo in Step 1 does
-not override a failing test here — the tests are the gate.)
+not override a failing test here — the tests are the gate.) Route back to
+`senpai-build` to find and fix the root cause, then return here once tests
+pass.
 
 **If tests pass (or the project genuinely has no tests):** continue.
 
@@ -110,7 +112,8 @@ Read the state into three facts:
 
 | Fact | How to tell |
 |---|---|
-| Normal checkout (not an isolated copy) | `GIT_DIR == GIT_COMMON`, or it's a submodule |
+| Normal checkout (not an isolated copy) | `GIT_DIR == GIT_COMMON` (or submodule), AND no starting-point SHA in `.senpai/log.md` |
+| Worked in place (isolate chose not to copy) | `GIT_DIR == GIT_COMMON`, AND `.senpai/log.md` contains a `Starting point:` SHA |
 | Isolated copy on a named branch | `GIT_DIR != GIT_COMMON`, `BRANCH` non-empty, not a submodule |
 | Isolated copy, detached HEAD (externally managed) | `GIT_DIR != GIT_COMMON`, `BRANCH` empty |
 | Has an online home | `HAS_REMOTE` non-empty |
@@ -129,7 +132,6 @@ right?" Don't guess silently.
 
 ## Step 5: Present the choices (kept deliberately small)
 
-**The original always offers four choices, including "make a Pull Request."**
 For a total beginner, "Pull Request" is an unfamiliar idea, and it only makes
 sense at all when the project actually has an online home. So:
 

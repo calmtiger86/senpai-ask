@@ -170,6 +170,11 @@ Save one short plan file at the **real project root** (same location as
 .senpai/current-plan.md
 ```
 
+**Timing:** save this file *after* the user approves — not before. In Plan
+Mode, file writes are gated on approval, so present the plan first, get the
+yes, then write the file. Outside Plan Mode the order doesn't matter, but
+keep it consistent: approve first, save second.
+
 This ensures the plan is visible from both the real project and any isolated
 copy. One lightweight file, not a vault or a dated archive tree. Keep the
 schema minimal (the header + tasks above) and don't duplicate what
@@ -225,14 +230,13 @@ When all five hold, present the plan for approval using the path you picked in S
 
 ## After Approval — Execution Handoff
 
-Once (and only once) the user approves, offer how to execute — both routes go through `senpai-build`:
+Once (and only once) the user approves, save the plan to
+`.senpai/current-plan.md` and hand off to `senpai-build`. Use the safe default
+(step-by-step with a review after each task) without asking the person to
+choose an execution strategy — that's a mechanical decision they can't
+meaningfully make. Just say plainly:
 
-**"Plan approved and saved to `.senpai/current-plan.md`. Two ways to build it:**
+**"Plan approved — I'll build it one small step at a time, checking each step
+before moving on."**
 
-**1. Step-by-step with a fresh reviewer (recommended)** — a fresh builder handles each task, with a review between tasks. Slower per task, but each step gets checked before the next.
-
-**2. Straight through with checkpoints** — build several tasks in a row, pausing at checkpoints for you to review.
-
-**Which would you like?"**
-
-Then hand off to `senpai-build` with the chosen approach. Do not begin building in this skill.
+Then hand off to `senpai-build`. Do not begin building in this skill.
