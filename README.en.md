@@ -97,7 +97,13 @@ Just talk to it. It routes your request to the right step automatically.
 ```
 <p></p>
 
-**Codex CLI:** Install as a Codex plugin pointing at this repository (standard Claude Code / Codex-compatible skill plugin, no special setup required).
+**Codex CLI:**
+
+```
+git clone https://github.com/calmtiger86/senpai-ask.git ~/.codex/skills/senpai-ask
+```
+
+Only the skills are used (Claude Code hooks don't run on Codex and can be ignored).
 
 <br> 
 
@@ -115,7 +121,7 @@ Skills are guidance, but one thing is **enforced by code** — a `PreToolUse` gu
 - **Secret files blocked** — `.env`, SSH keys, `.pem`/`.key`, anything with "secret" or "credential" in its name. Read, write, and shell references all blocked.
 - **Control files protected** — anything under `.claude/`, `.codex/`, or `.claude-plugin/` can't be rewritten mid-session.
 
-This applies inside the isolated workspace too. If you see `"This looks like a secret file"`, that's the guard working as intended — not a bug. The guard hook runs on Claude Code only; on Codex, the sandbox plays this role.
+This applies inside the isolated workspace too. If you see `"This looks like a secret file"`, that's the guard working as intended — not a bug. The guard hook runs on Claude Code only; on Codex, rely on the sandbox and approval mode.
 
 > The simplest and most powerful safety measure is **never touching your real project until you approve.**
 > `senpai-isolate` (isolation) and `senpai-finish` (final decision) handle this.

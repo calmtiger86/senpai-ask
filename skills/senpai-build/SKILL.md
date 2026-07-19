@@ -71,7 +71,7 @@ platform's native way; never reinvent one.
   task — never your whole session history. This is the normal path.
 
 - **Codex CLI:** if your Codex version supports delegating to subagents, use
-  that. No special config is required for the basic case.
+  that.
 
   **Fallback if that isn't there.** If your environment has no working
   subagent dispatch — or it behaves differently than expected — don't fight it.
