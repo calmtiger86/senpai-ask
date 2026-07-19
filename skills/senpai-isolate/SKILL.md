@@ -33,13 +33,18 @@ the first time, and don't make the person learn the word.
 ## Step 0: Are we already in a safe copy?
 
 **First — is this even a git project?** If `git rev-parse` fails (no `.git`
-at all), this is a brand-new folder. Say plainly: "아직 저장점이 없어서 먼저
-하나 만들어 둘게요" (or the equivalent in their language), run
-`git init && git add -A && git commit --allow-empty -m "initial"`, then
-continue below. (Even an empty folder gets git init — the rest of the pipeline
-needs it for commits and undo.) There's nothing to protect from yet, so skip
-creating an isolated copy and work in place — record the starting SHA in
-`.senpai/log.md` as for any in-place work.
+at all), this folder has no version history yet. Say plainly: "아직 저장점이
+없어서 먼저 하나 만들어 둘게요" (or the equivalent in their language).
+
+If the folder already contains files, ask briefly before staging them all:
+"여기 있는 파일들을 전부 첫 저장점에 포함해도 될까요?" (or equivalent). If they
+say no or hesitate, run `git init && git commit --allow-empty -m "initial"`
+(empty commit only). If yes (or the folder is empty), run
+`git init && git add -A && git commit --allow-empty -m "initial"`.
+
+The rest of the pipeline needs git for commits and undo. There's nothing to
+protect from yet, so skip creating an isolated copy and work in place — record
+the starting SHA in `.senpai/log.md` as for any in-place work.
 
 **Before creating anything, check whether the work is already isolated.**
 

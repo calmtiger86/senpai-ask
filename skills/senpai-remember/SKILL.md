@@ -89,6 +89,11 @@ ROOT=$(git worktree list --porcelain 2>/dev/null | awk '/^worktree /{sub(/^workt
 # Memory lives at "$ROOT/.senpai/". With no worktree, that's just the project root.
 ```
 
+If writing to `$ROOT/.senpai/` fails (sandbox restricts writes outside the
+current workspace), fall back to `.senpai/` in the current working directory.
+The data survives locally either way; it just won't be visible from the main
+checkout until the work is applied.
+
 ## Starting a session — recall first, automatically
 
 At the start of a session, **without being asked**, check for `.senpai/log.md`:
