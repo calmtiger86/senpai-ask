@@ -34,6 +34,14 @@ the first time, and don't make the person learn the word.
 
 ## Step 0: Are we already in a safe copy?
 
+**First — is this even a git project?** If `git rev-parse` fails (no `.git`
+at all), this is a brand-new folder with nothing to protect yet. Say plainly:
+"아직 저장점이 없어서 먼저 하나 만들어 둘게요" (or the equivalent in their
+language), run `git init && git add -A && git commit -m "initial"`, then
+continue below. If the folder is completely empty, there's nothing to isolate
+from — skip isolation entirely, say so ("빈 폴더라 바로 시작할게요"), and
+proceed to `senpai-plan`.
+
 **Before creating anything, check whether the work is already isolated.**
 
 ```bash
@@ -65,7 +73,9 @@ told you their preference:
 
 Honor any preference they already stated without re-asking. If they decline,
 work in place and skip to Step 2 — but flag that the real project will change
-directly, so `senpai-finish` becomes the only place to undo.
+directly, so `senpai-finish` becomes the only place to undo. Record the
+current commit SHA in `.senpai/log.md` (e.g. `- Starting point: abc1234`) so
+`senpai-finish` can offer an undo path back to it.
 
 ## Step 1: Make the isolated copy
 

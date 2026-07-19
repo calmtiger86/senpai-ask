@@ -11,8 +11,10 @@ Work through the approved plan task by task. For each task: dispatch a fresh
 builder to implement just that one task, commit it, then have a fresh reviewer
 check it against the plan (spec first, code quality second). A task is done only
 when the review is clean. After all tasks, one broad review of the whole branch.
-DRY. YAGNI. TDD. A fresh builder per task keeps each one focused and stops one
-task's confusion from leaking into the next.
+No repetition, nothing speculative, test before trust. (DRY, YAGNI, TDD are
+shorthand for you — never show these abbreviations to the person.) A fresh
+builder per task keeps each one focused and stops one task's confusion from
+leaking into the next.
 
 **Announce at start:** "I'm using senpai-build to build the approved plan one
 small step at a time, checking each step before moving on."

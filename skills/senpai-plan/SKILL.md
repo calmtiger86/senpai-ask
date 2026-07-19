@@ -7,7 +7,7 @@ description: Use when brainstorming has produced an agreed design and you need t
 
 ## Overview
 
-Turn an agreed design into a plan of bite-sized, independently testable steps, then get the user to approve it. Write the plan assuming the implementer has zero context for this codebase: which files to touch, the actual code and tests, exact commands and expected output. DRY. YAGNI. TDD. Frequent commits.
+Turn an agreed design into a plan of bite-sized, independently testable steps, then get the user to approve it. Write the plan assuming the implementer has zero context for this codebase: which files to touch, the actual code and tests, exact commands and expected output. No repetition, nothing speculative, test before trust, commit often. (DRY, YAGNI, TDD are shorthand for you — never show these abbreviations to the person.)
 
 **This skill's boundary — two hard lines:**
 
@@ -162,13 +162,19 @@ Every step must contain the actual content the builder needs. These are **plan f
 
 ## Where to save the plan
 
-Save one short plan file inside the user's actual project:
+Save one short plan file at the **real project root** (same location as
+`log.md` — use the `git worktree list --porcelain` snippet from
+`senpai-remember`):
 
 ```
 .senpai/current-plan.md
 ```
 
-That's it — one lightweight file, not a vault or a dated archive tree. Keep the schema minimal (the header + tasks above) and don't duplicate what `senpai-remember` stores; this file is just the plan the builder follows, and it's replaced next time you plan. Don't invent extra directories.
+This ensures the plan is visible from both the real project and any isolated
+copy. One lightweight file, not a vault or a dated archive tree. Keep the
+schema minimal (the header + tasks above) and don't duplicate what
+`senpai-remember` stores; this file is just the plan the builder follows, and
+it's replaced next time you plan. Don't invent extra directories.
 
 ## Self-Review
 
@@ -207,9 +213,13 @@ Before you present the plan, run this five-question self-check. If any answer is
 
 When all five hold, present the plan for approval using the path you picked in Step 0:
 
-- **Claude Code, in Plan Mode:** present the plan and call `ExitPlanMode`.
-- **Claude Code, not in Plan Mode:** show a short text summary (goal + the plain-language line per task), then call `AskUserQuestion` with "Proceed as-is" / "I want changes" / "Cancel".
-- **Codex CLI:** show the plan as text and ask whether to proceed, change, or cancel.
+- **All paths — show the person this first:** goal + the plain-language line
+  per task (the "In plain language" field from each task). This is what the
+  person actually reads and approves. The full technical plan lives in
+  `.senpai/current-plan.md` for the builder — it is not the approval surface.
+- **Claude Code, in Plan Mode:** show the plain summary above, then call `ExitPlanMode`.
+- **Claude Code, not in Plan Mode:** show the plain summary, then call `AskUserQuestion` with "Proceed as-is" / "I want changes" / "Cancel".
+- **Codex CLI:** show the plain summary and ask whether to proceed, change, or cancel.
 
 **The invariant:** you cannot move to `senpai-build` until the user has approved. You do not approve on their behalf, and you do not treat "I finished writing the plan" as approval. If they ask for changes, revise and re-present. Only an explicit yes from the user opens the next step.
 

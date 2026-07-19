@@ -148,6 +148,7 @@ don't pad them with extra explanation:
 | Normal checkout / isolated copy on a named branch, **no remote** | Apply · Decide later · Throw away (3) |
 | Detached HEAD, **remote exists** | Put online for review · Decide later · Throw away (3) |
 | Detached HEAD, **no remote** | Decide later · Throw away (2) |
+| Worked in place (no isolated copy) | Keep as-is · Undo to starting point · Throw away (3) |
 
 Render it in plain language. For the fullest (4-choice) case:
 
@@ -190,6 +191,10 @@ git merge <feature-branch>
 <test command>
 ```
 
+If the merge reports a conflict, stop and explain plainly: "Your original
+changed while we were working, so I need to match them up." Resolve it
+yourself, re-run the tests, and only continue once tests pass.
+
 Only after the merge succeeds and tests pass on the merged result: tidy up the
 copy (Step 7), then delete the branch (`git branch -d <feature-branch>`). Tell
 the person plainly: "Done — it's now part of your real project."
@@ -203,6 +208,13 @@ git push -u origin <feature-branch>
 Then, in plain words: "It's online now. Someone (or you, later) can look it over
 before it becomes part of the main project." **Leave the copy in place** — the
 person may need it to make changes after the review. Do not tidy it up.
+
+### Undo to starting point (in-place work only)
+
+Only shown when `senpai-isolate` logged a starting-point commit SHA in
+`.senpai/log.md` because isolation wasn't possible. Revert all changes back to
+that commit (`git revert --no-commit <start-SHA>..HEAD && git commit`). Tell
+the person plainly: "I've undone everything back to where we started."
 
 ### Decide later (keep as-is)
 
@@ -221,10 +233,12 @@ This will permanently delete this work — you can't get it back:
 - these saved points: <commit-list>
 - the safe copy at <path>
 
-Type 'discard' to confirm.
+Type '삭제' to confirm.
 ```
 
-Wait for the person to type exactly `discard`. Anything else means don't
+Render the confirmation word in the person's language (e.g. '삭제' in Korean,
+'discard' in English, '削除' in Japanese, '删除' in Chinese). Wait for the
+person to type that exact word. Anything else means don't
 proceed. (This typed confirmation is the one explicit check this toolkit keeps
 for an action that can't be reversed — don't soften it into a yes/no or skip it.)
 

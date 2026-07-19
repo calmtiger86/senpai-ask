@@ -47,17 +47,18 @@ When one shows up: name which of the seven it is, say in beginner language what 
 
 ## Checklist
 
-Make a task for each item and do them in order:
+Do these in order. Items marked *(internal)* happen in your head — don't
+surface them as tasks or steps the person sees:
 
-1. **Detect the tool** and pick the question style (Step 0).
+1. *(internal)* Detect the tool and pick the question style (Step 0).
 2. **Understand the context** — look at existing files, docs, recent commits. In an existing project, follow what's already there.
 3. **Surface the hidden decisions** — before diving into details (see below).
 4. **Ask clarifying questions** — one at a time, multiple choice preferred.
-5. **Run the four-lens self-check** — privately, before you recommend anything (see below).
+5. *(internal)* Run the four-lens self-check — privately, before you recommend anything (see below).
 6. **Propose 2–3 approaches** — recommendation and reasoning first.
 7. **Present the design in sections** — confirm each section before the next.
-8. **Self-review the summary** — placeholders, contradictions, scope, ambiguity.
-9. **Hand off** — give `senpai-plan` a short plain-language summary; let `senpai-remember` store it.
+8. *(internal)* Self-review the summary — placeholders, contradictions, scope, ambiguity.
+9. **Hand off** — `senpai-isolate` first (safe copy), then `senpai-plan`; let `senpai-remember` store the milestone.
 
 ## Surface the hidden decisions first
 
@@ -117,7 +118,7 @@ When the person has approved the design, look at your plain-language summary wit
 
 Then leave a **short, plain-language summary** of what was agreed — the idea, the chosen approach, the decisions made (including any hard-to-undo ones that were confirmed), and what's deliberately out of scope. Keep it brief; it's a handoff note, not a document.
 
-Do not pick a file path or format for it and do not write a file — `senpai-remember` owns where and how things are stored, and it's being designed alongside this skill. Your job ends at handing `senpai-plan` a clear, agreed, plain-language summary to turn into a plan.
+Do not pick a file path or format for it and do not write a file — `senpai-remember` owns where and how things are stored. Your job ends at handing off: first `senpai-isolate` (to set up a safe copy), then `senpai-plan` (to turn the agreed design into steps). The order is isolate → plan → build.
 
 ## Key principles
 

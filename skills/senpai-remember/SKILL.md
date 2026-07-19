@@ -109,6 +109,13 @@ At the start of a session, **without being asked**, check for `.senpai/log.md`:
 (This assumes `senpai`'s session-start hook has already routed here. If the
 person opens with "이어서 하자" / "where did we leave off", do the same thing.)
 
+## Milestones — save immediately, don't wait for session end
+
+When another skill passes a milestone (an agreed design from brainstorming, an
+approved plan from senpai-plan), append one line to `.senpai/log.md` right
+away — don't wait for the person to say "저장해줘" or close the session.
+Non-developers close windows without saving; milestones are the lifeline.
+
 ## Ending a session — save a few lines
 
 When the person signals a stopping point — "오늘 여기까지", "that's it for

@@ -31,6 +31,14 @@ re-explain it after that.
 If this looks like a first conversation or the person seems new to coding, say
 so gently and offer to go slowly.
 
+## Session start — check in first
+
+Before routing to any skill, if `.senpai/log.md` exists, read the last entry
+and open with a short plain recap (what happened last time, what was next),
+then ask whether to continue or do something new. This happens automatically
+— the person doesn't need to say a magic phrase. Only after this check-in
+(or if no log exists), proceed to the routing below.
+
 ## The one rule
 
 Before you write any code — and before you even ask clarifying questions,
