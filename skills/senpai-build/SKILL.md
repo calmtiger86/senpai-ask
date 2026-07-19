@@ -70,10 +70,8 @@ platform's native way; never reinvent one.
   tool spawns an isolated subagent). Give each one only what it needs for its
   task — never your whole session history. This is the normal path.
 
-- **Codex CLI:** subagents are supported by default — just ask to delegate a
-  task to a parallel subagent (defaults are roughly `max_threads=6`,
-  `max_depth=1`; `/agent` lists and switches between threads). No special config
-  is required for the basic case.
+- **Codex CLI:** if your Codex version supports delegating to subagents, use
+  that. No special config is required for the basic case.
 
   **Fallback if that isn't there.** If your environment has no working
   subagent dispatch — or it behaves differently than expected — don't fight it.

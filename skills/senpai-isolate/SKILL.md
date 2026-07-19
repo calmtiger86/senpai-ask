@@ -169,6 +169,11 @@ if [ -f go.mod ]; then go mod download; fi           # Go
 
 Skip silently if none of these files exist.
 
+If an install command fails with DNS, network, or registry errors, the
+platform's sandbox is likely blocking network access. Ask the user to approve
+network for the install — don't hunt for a code bug or try alternate package
+managers.
+
 ## Step 3: Check the copy starts clean
 
 Run the project's tests once, so a later failure can be told apart from a
