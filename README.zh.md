@@ -104,10 +104,20 @@ git clone https://github.com/calmtiger86/senpai-ask.git ~/.codex/skills/senpai-a
 ```
 
 仅使用技能文件（Claude Code 钩子在 Codex 中不运行，可以忽略）。
+Codex 加载器能发现嵌套路径的技能，但这是与标准安装路径（`~/.codex/skills/<name>/SKILL.md`）不同的捆绑结构。
 
 <br> 
 
-安装后直接说出你想做的工作或想做的东西就行。说出来，`senpai` 会自动开始。
+**使用方法：**
+
+- **Claude Code** — 直接说出你想做的工作或想做的东西就行。`senpai` 会自动开始。
+- **Codex CLI** — 用 `/senpai` 显式调用。如果同时安装了其他技能，自动路由可能优先选择其他技能——显式调用最可靠。
+
+> **不想每次在 Codex 上输入 `/senpai`？** 在项目文件夹中创建 `AGENTS.md` 文件，写入以下一行，编码请求就会自动经过 senpai：
+>
+> ```
+> 编码相关请求请先经过 senpai 技能。
+> ```
 
 ---
 

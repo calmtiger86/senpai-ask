@@ -104,10 +104,20 @@ git clone https://github.com/calmtiger86/senpai-ask.git ~/.codex/skills/senpai-a
 ```
 
 스킬만 설치됩니다 (Claude Code 훅은 Codex에서 실행되지 않으므로 무시해도 됩니다).
+Codex 로더가 중첩 경로의 스킬을 발견하지만, 표준 설치 경로(`~/.codex/skills/<name>/SKILL.md`)와는 다른 번들 구조입니다.
 
 <br> 
 
-설치 후 그냥 하고 싶은 작업이나 만들고 싶은 것을 말하면 됩니다. 만들고 싶은 걸 말하면 `senpai`가 알아서 시작합니다.
+**사용법:**
+
+- **Claude Code** — 설치 후 그냥 하고 싶은 작업이나 만들고 싶은 것을 말하면 됩니다. `senpai`가 알아서 시작합니다.
+- **Codex CLI** — `/senpai`로 명시 호출하세요. Codex에 다른 스킬이 함께 설치되어 있으면 자동 라우팅이 경합할 수 있어서, 직접 호출이 확실합니다.
+
+> **Codex에서 매번 `/senpai` 치기 싫다면:** 프로젝트 폴더에 `AGENTS.md` 파일을 만들고 아래 한 줄을 넣어두세요. 그러면 코딩 요청이 자동으로 senpai를 거칩니다.
+>
+> ```
+> 코딩 관련 요청은 senpai 스킬을 먼저 거쳐 주세요.
+> ```
 
 ---
 

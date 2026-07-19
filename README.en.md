@@ -104,10 +104,20 @@ git clone https://github.com/calmtiger86/senpai-ask.git ~/.codex/skills/senpai-a
 ```
 
 Only the skills are used (Claude Code hooks don't run on Codex and can be ignored).
+The Codex loader discovers skills at nested paths, but this is a bundle structure different from the standard install path (`~/.codex/skills/<name>/SKILL.md`).
 
 <br> 
 
-Then just say what you want to build or work on. Say it, and `senpai` takes it from there.
+**Usage:**
+
+- **Claude Code** — Just say what you want to build or work on. `senpai` takes it from there.
+- **Codex CLI** — Invoke explicitly with `/senpai`. If other skills are installed alongside, auto-routing may pick a different skill first — explicit invocation is reliable.
+
+> **Don't want to type `/senpai` every time on Codex?** Create an `AGENTS.md` file in your project folder with this one line, and coding requests will automatically route through senpai:
+>
+> ```
+> Route coding requests through the senpai skill first.
+> ```
 
 ---
 
