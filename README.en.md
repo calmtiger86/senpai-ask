@@ -77,6 +77,7 @@ Just talk to it. It routes your request to the right step automatically.
 | **Isolate** | `senpai-isolate` | Creates a copy of your project to work in separately. Originals never touched |
 | **Plan** | `senpai-plan` | Breaks the agreed design into small 2–5 min tasks. Nothing built until approved |
 | **Build** | `senpai-build` | Executes the plan one step at a time. Reviews after each. Errors fixed here |
+| **(If stuck)** | `senpai-unstuck` | When the same problem repeats three times, offers a fresh angle (simplify, investigate, sideways). Returns to building once unblocked |
 | **Verify** | `senpai-finish` | Actually runs it to check, then asks: keep or discard the result? |
 | **Remember** | `senpai-remember` | Stores what happened in plain language so you can pick up next time |
 
