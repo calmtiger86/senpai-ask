@@ -1,6 +1,6 @@
 ---
 name: senpai-brainstorming
-description: "Use this BEFORE building anything — the moment someone says \"make me X\", \"add a login\", \"build this app\", or describes any feature or change. Turns a rough idea into an agreed direction through one-question-at-a-time conversation, surfaces hidden decisions the person never knew they were making, pauses on hard-to-undo actions, and NEVER writes code, files, or changes any approval state itself."
+description: "Use this BEFORE building anything — the moment someone says \"make me X\", \"add a login\", \"build this app\", or describes any feature or change. Turns a rough idea into an agreed direction through one-question-at-a-time conversation, surfaces hidden decisions the person never knew they were making, pauses on hard-to-undo actions, and writes no files except the one-sentence agreement line to `.senpai/log.md` at the Restate Gate — never code, never any approval state."
 ---
 
 # Senpai Brainstorming
@@ -8,7 +8,7 @@ description: "Use this BEFORE building anything — the moment someone says \"ma
 Turn a rough idea into an agreed direction — the way a patient senior colleague would, sitting next to someone who has never coded. Ask, don't assume. Surface the decisions hiding under the request. Recommend, and say why. Confirm each piece before moving on.
 
 <HARD-GATE>
-This skill is a conversation from start to finish. It does NOT write code, does NOT create or edit files, does NOT scaffold anything, and does NOT change any approval or "go" state. Those are the jobs of `senpai-isolate`, `senpai-plan`, and `senpai-build`. Do not invoke any implementation skill, and do not take any implementation action, until a design is agreed and the person approves it — no matter how simple the request looks. When the design is agreed, hand off to `senpai-plan`; do not build here.
+This skill is a conversation from start to finish. It does NOT write code, does NOT create or edit files (the sole exception: the one-sentence agreement line appended to `.senpai/log.md` at the Restate Gate below), does NOT scaffold anything, and does NOT change any approval or "go" state. Those are the jobs of `senpai-isolate`, `senpai-plan`, and `senpai-build`. Do not invoke any implementation skill, and do not take any implementation action, until a design is agreed and the person approves it — no matter how simple the request looks. When the design is agreed, hand off to `senpai-plan`; do not build here.
 </HARD-GATE>
 
 ## "This is too simple to need a design"
@@ -58,7 +58,7 @@ surface them as tasks or steps the person sees:
 6. **Propose 2–3 approaches** — recommendation and reasoning first.
 7. **Present the design in sections** — confirm each section before the next.
 8. *(internal)* Self-review the summary — placeholders, contradictions, scope, ambiguity.
-9. **Hand off** — `senpai-isolate` first (safe copy), then `senpai-plan`; let `senpai-remember` store the milestone.
+9. **Hand off** — `senpai-isolate` first (safe copy), then `senpai-plan`. (The one-sentence agreement is already written to `.senpai/log.md` at the Restate Gate; `senpai-remember` owns the fuller milestone story from there.)
 
 ## Surface the hidden decisions first
 
@@ -83,6 +83,17 @@ Keep it short: "Here are a few things we'll need to decide that aren't obvious y
 - Focus on purpose, constraints, and success criteria.
 - If the request is actually several independent things at once, say so early and help split it into pieces rather than refining details of something that should be broken up first. Each piece gets its own pass.
 
+## Rhythm guard — don't run ahead of the person
+
+Count how many questions in a row you've answered yourself (from context, code
+inspection, or inference) without the person typing anything. **After three
+consecutive AI-answered questions, the next question MUST go to the person** —
+even if you think you know the answer. Reset the count whenever the person
+actually responds.
+
+This prevents the brainstorming from becoming a monologue where you interview
+yourself. The person should feel like they're driving, not watching.
+
 ## The four-lens self-check (do this in your head, before recommending)
 
 Before you compare approaches, quietly look at the idea through four lenses. Don't list these back to the person — **fold the conclusions into your recommendation** so it reads like advice that already went through a small meeting, not a checklist:
@@ -100,6 +111,32 @@ Digest all four into a single clear recommendation with its reasoning. Keep it t
 - Lead with the one you recommend and why — the "why" is where the four lenses show up.
 - Present it conversationally, not as a spec. Be ready to change your mind if they push back.
 
+## Advisor mode — for decisions bigger than they look
+
+Some decisions during brainstorming are load-bearing — they shape everything
+built on top and are hard to change later. When you detect one:
+
+1. **Name it plainly:** "This one's a big decision — it's hard to change later,
+   so let me give you a few different angles."
+2. **Present 2–3 perspectives** — a pragmatist ("what's simplest right now"), a
+   forward-thinker ("what works if this grows"), and a skeptic ("what could go
+   wrong"). Keep each to 2–3 sentences.
+3. **Surface what the person doesn't know they don't know** — if the decision
+   has a non-obvious consequence (e.g., "choosing SQLite means you can't have
+   two users writing at the same time"), say it in plain language before they
+   choose.
+4. **Don't decide for them.** Present, explain consequences, recommend, wait.
+
+Triggers for advisor mode (not exhaustive):
+- Choosing a database or data model
+- Authentication/authorization approach
+- Deployment target (local vs cloud vs serverless)
+- Choosing between build-it-yourself vs use-a-service
+- Any of the seven hard-to-undo signals above
+
+This is not a separate skill or subagent — it's a mode shift within this
+conversation. Keep it lightweight: a few perspective paragraphs, not a panel.
+
 ## Present the design
 
 - Once you think you understand it, present the design in sections, each scaled to its weight: a sentence or two for the straightforward parts, a short paragraph for anything with nuance.
@@ -116,13 +153,27 @@ When the person has approved the design, look at your plain-language summary wit
 - **Scope** — is this one focused thing, or does it still need splitting?
 - **Ambiguity** — could any part be read two ways? Pick one and say it plainly.
 
+**Restate gate — one sentence, then confirm.** Before writing the full summary,
+compress the entire agreement into a single sentence and ask the person to
+confirm it:
+
+> "So we're building: [one sentence that captures the whole thing]. Is that
+> right?"
+
+Only proceed after they confirm. This catches misunderstandings that survived
+the whole conversation. **Write this one-sentence agreement to
+`.senpai/log.md` immediately** — don't wait for session end — so it survives
+compaction. (This is the one file write this skill makes, and it's memory, not
+code — `senpai-remember`'s domain, recorded here because waiting risks losing
+it.)
+
 Then leave a **short, plain-language summary** of what was agreed — the idea, the chosen approach, the decisions made (including any hard-to-undo ones that were confirmed), and what's deliberately out of scope. Keep it brief; it's a handoff note, not a document.
 
-Do not pick a file path or format for it and do not write a file — `senpai-remember` owns where and how things are stored. Your job ends at handing off: first `senpai-isolate` (to set up a safe copy), then `senpai-plan` (to turn the agreed design into steps). The order is isolate → plan → build.
+Do not pick a file path or format for this summary and do not write it to a file — beyond the one Restate Gate line above, `senpai-remember` owns where and how things are stored. Your job ends at handing off: first `senpai-isolate` (to set up a safe copy), then `senpai-plan` (to turn the agreed design into steps). The order is isolate → plan → build.
 
 ## Key principles
 
-- **Conversation only** — no code, no files, no approvals here. Ever.
+- **Conversation only** — no code, no approvals here. Ever. No files beyond the one Restate Gate line to `.senpai/log.md`.
 - **One question at a time** — don't overwhelm.
 - **Multiple choice preferred** — easier than a blank prompt for a beginner.
 - **Surface the hidden decisions** — before the details, not after.

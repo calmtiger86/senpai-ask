@@ -114,12 +114,38 @@ At the start of a session, **without being asked**, check for `.senpai/log.md`:
 (This assumes `senpai`'s session-start hook has already routed here. If the
 person opens with "이어서 하자" / "where did we leave off", do the same thing.)
 
+## Direction check — how far have we come?
+
+When `log.md` has **5 or more entries**, or after a **long gap** (> 1 week
+between the last entry's date and today), or after a **discard** (senpai-finish
+"throw away"), add a brief direction check after the recall:
+
+1. Read the **first entry** in `log.md` (the original goal / starting point).
+2. Read the **latest entry** (where things are now).
+3. Compare: has the direction shifted? Are there abandoned branches or pivots?
+
+If the direction has noticeably changed, say so plainly:
+
+> "We started out building a todo app, but over the last few sessions it's
+> turned into more of a project tracker with team features. The original plan
+> was simpler — is this still where you want to go, or should we refocus?"
+
+If the direction is consistent, skip this — don't manufacture drama. Also check
+`git log --oneline` and `git branch` when available to see if the commit
+history or branch names tell a story the log doesn't (e.g., abandoned branches
+that were never recorded as discards).
+
+Keep it to 2–3 sentences. The point is awareness, not a formal review.
+
 ## Milestones — save immediately, don't wait for session end
 
-When another skill passes a milestone (an agreed design from brainstorming, an
-approved plan from senpai-plan), append one line to `.senpai/log.md` right
-away — don't wait for the person to say "저장해줘" or close the session.
+When another skill passes a milestone, append one line to `.senpai/log.md`
+right away — don't wait for the person to say "저장해줘" or close the session.
 Non-developers close windows without saving; milestones are the lifeline.
+
+(`senpai-brainstorming` already does this for its own milestone — it writes
+the one-sentence agreement itself at its Restate Gate. This section covers
+milestones from every other skill, e.g. an approved plan from `senpai-plan`.)
 
 ## Ending a session — save a few lines
 

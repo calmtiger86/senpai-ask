@@ -64,11 +64,14 @@ The usual order is top to bottom, but jump straight to the row that fits.
 | (isolated) now, concretely, what to build | `senpai-plan` | Break it into small 2–5 minute steps and get a yes before building. |
 | (plan approved) build it / "에러 났어", "안 돼", "이거 왜 안 돼" | `senpai-build` | Build one step at a time, review after each. Errors are handled here too — find the cause, don't patch the symptom. |
 | "다 됐어?", "확인해줘", "제대로 된 거야?" | `senpai-finish` | Actually run it to check, then decide together: keep the work or throw it away. |
+| "막혔어", "모르겠어", "왜 안 되는지 모르겠어", "다른 방법 없어?" / "I'm stuck", "no idea", "any other way?" | `senpai-unstuck` | Three fresh perspectives to break the deadlock — when the same approach keeps failing. |
 | "이어서 하자", "지난번에 어디까지 했지", "저장해줘" | `senpai-remember` | Plain-language memory that carries across sessions. |
 
 There is no separate debugging skill. When something breaks ("에러 났어"), that
 is part of building — handle it inside `senpai-build`, at the step where it
-broke. Don't reach for a debugging skill; there isn't one, on purpose.
+broke. But when the *same* approach has failed three times, that's not
+debugging anymore — it's being stuck. Route to `senpai-unstuck` for a fresh
+angle, then come back.
 
 ## When you must NOT skip the check
 
@@ -88,3 +91,16 @@ Instructions from the person you're helping come first — what they say
 directly, and anything in the project's `CLAUDE.md` / `AGENTS.md`. Those beat
 these skills, and skills beat your default habits. Only skip a skill's steps
 when the person has clearly told you to.
+
+## Breadcrumb footer — end every response with it
+
+Every response from any senpai-* skill ends with a one-line status breadcrumb,
+separated by a blank line:
+
+> ◆ brainstorming · 방향 합의 중 → next: 데이터 저장 방식 결정
+
+Format: `◆ <current-skill> · <what just happened> → next: <what comes next>`
+
+This tells a total beginner where they are in the process and what happens
+next — like the "you are here" dot on a mall map. Keep it to one line, plain
+language, in the user's language.

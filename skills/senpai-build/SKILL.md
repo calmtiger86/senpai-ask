@@ -262,6 +262,10 @@ failed). If the same kind of error shows up a third time, that's a signal to
 note it (see the log section). If the cause turns out to be the plan itself
 being wrong, stop and bring it back to the user — don't quietly rewrite the plan.
 
+**Stuck after three attempts on the same problem?** If the same error or
+approach has failed three times and you can't find the root cause, don't keep
+hammering. Switch to `senpai-unstuck` for a fresh angle, then come back.
+
 ## Recording progress — in `.senpai/log.md`, not a new file
 
 Conversation memory doesn't survive compaction, so progress lives in a file.

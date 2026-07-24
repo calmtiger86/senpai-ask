@@ -42,9 +42,14 @@ say no or hesitate, run `git init && git commit --allow-empty -m "initial"`
 (empty commit only). If yes (or the folder is empty), run
 `git init && git add -A && git commit --allow-empty -m "initial"`.
 
-The rest of the pipeline needs git for commits and undo. There's nothing to
-protect from yet, so skip creating an isolated copy and work in place — record
-the starting SHA in `.senpai/log.md` as for any in-place work.
+**Empty folder → work in place.** With nothing to protect yet, skip creating an
+isolated copy — record the starting SHA in `.senpai/log.md` as for any
+in-place work.
+
+**Folder already had files → make the isolated copy now.** That first commit
+just gave you something to branch from, so don't skip isolation here — continue
+to Step 1 and create the copy as normal. Existing files are exactly what this
+skill exists to protect; only a genuinely empty folder has nothing to protect.
 
 **Before creating anything, check whether the work is already isolated.**
 

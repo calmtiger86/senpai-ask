@@ -58,6 +58,13 @@ if what to run is unclear):
 Then say, in plain words, what they're looking at — e.g. "this is your login
 screen now checking the password."
 
+**Observe, don't just read.** If the project produces output (a web page, CLI
+output, API response), actually look at what it produces — don't just check
+whether the command exited successfully. A process can exit 0 and still show a
+blank page or wrong data. Tell the person what you *actually see*, not just
+that "it ran." If you can take a screenshot, do so — a beginner trusts their
+eyes more than a log line.
+
 **If it's clearly broken when you run it,** stop here and tell the person
 plainly, before touching the choices. Don't push a visibly broken result toward
 "apply."
@@ -150,7 +157,7 @@ don't pad them with extra explanation:
 | Normal checkout / isolated copy on a named branch, **no remote** | Apply · Decide later · Throw away (3) |
 | Detached HEAD, **remote exists** | Put online for review · Decide later · Throw away (3) |
 | Detached HEAD, **no remote** | Decide later · Throw away (2) |
-| Worked in place (no isolated copy) | Keep as-is · Undo to starting point · Throw away (3) |
+| Worked in place (no isolated copy) | Keep as-is · Undo to starting point (2) |
 
 Render it in plain language. For the fullest (4-choice) case:
 

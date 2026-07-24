@@ -149,6 +149,13 @@ git commit -m "feat: add specific feature"
 
 (The Python/pytest blocks above are only an illustration of shape — use the language, test runner, and commands that actually match the user's project.)
 
+**No test runner, or one would cost more than the feature is worth** (e.g. a
+static page with no build step)? Replace the failing-test steps with an
+explicit manual-check step: the exact command to run or URL to open, and what
+correct output looks like. `senpai-finish` already treats "no tests" as a
+valid, passing state — this is that same allowance, made explicit at planning
+time instead of only at the finish line.
+
 ## No Placeholders
 
 Every step must contain the actual content the builder needs. These are **plan failures** — never write them:
