@@ -130,15 +130,10 @@ Claude Code 钩子在 Codex 中不运行，可以忽略。
 
 <br>
 
-技能是指南，但有一件事**由代码强制执行** — `PreToolUse` 守卫钩子：
-
-- **阻止访问秘密文件** — `.env`、SSH 密钥、`.pem`/`.key`、文件名含 "secret" 或 "credential" 的文件。读取、写入和 shell 引用全部阻止。
-- **保护配置文件** — `.claude/`、`.codex/`、`.claude-plugin/` 下的文件在会话中不可修改。
-
-在隔离工作区内同样适用。如果看到 `"This looks like a secret file"`，这不是 bug，而是守卫正常工作。守卫钩子仅在 Claude Code 中运行；在 Codex 中，依赖沙盒和审批模式。
-
 > 最简单也最强大的安全措施是**在你批准之前绝不触碰真实项目。**
 > `senpai-isolate`（隔离）和 `senpai-finish`（最终决定）负责这件事。
+
+秘密文件（`.env` 等）的保护由 Claude Code / Codex 的内置权限系统负责。
 
 </details>
 

@@ -130,15 +130,10 @@ To update, run the same command again.
 
 <br>
 
-Skills are guidance, but one thing is **enforced by code** — a `PreToolUse` guard hook:
-
-- **Secret files blocked** — `.env`, SSH keys, `.pem`/`.key`, anything with "secret" or "credential" in its name. Read, write, and shell references all blocked.
-- **Control files protected** — anything under `.claude/`, `.codex/`, or `.claude-plugin/` can't be rewritten mid-session.
-
-This applies inside the isolated workspace too. If you see `"This looks like a secret file"`, that's the guard working as intended — not a bug. The guard hook runs on Claude Code only; on Codex, rely on the sandbox and approval mode.
-
 > The simplest and most powerful safety measure is **never touching your real project until you approve.**
 > `senpai-isolate` (isolation) and `senpai-finish` (final decision) handle this.
+
+Secret file protection (`.env`, etc.) is handled by Claude Code / Codex's built-in permission system.
 
 </details>
 

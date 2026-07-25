@@ -11,14 +11,9 @@
 // `senpai` skill's own trigger keywords are the safety net.
 
 const NUDGE = [
-  'senpai mode is on for this project.',
-  'Before responding to the user — especially anything like "만들어줘 / 추가해줘 /',
-  '이거 하고 싶어 / 에러 났어 / 다 됐어? / 이어서 하자" or the English equivalents —',
-  'load the `senpai` skill first and follow its routing. It decides which',
-  'senpai-* skill applies (brainstorm before building, isolate the workspace,',
-  'plan small steps, review each step, verify before done, remember across',
-  'sessions). The user\'s own instructions and CLAUDE.md / AGENTS.md always',
-  'take priority over skills.',
+  'senpai mode is on.',
+  'Load the `senpai` skill before responding to build/add/debug/verify requests.',
+  'User instructions and CLAUDE.md take priority.',
 ].join(' ');
 
 // Read the hook payload from stdin (best-effort) only to echo the event name

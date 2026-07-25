@@ -130,15 +130,10 @@ Claude Code 훅은 Codex에서 실행되지 않으므로 무시해도 됩니다.
 
 <br>
 
-스킬은 가이드라인이지만, **코드로 강제되는** 것이 하나 있습니다 — `PreToolUse` 가드 훅:
-
-- **비밀 파일 차단** — `.env`, SSH 키, `.pem`/`.key`, 이름에 "secret"이나 "credential"이 들어간 파일. 읽기·쓰기·쉘 참조 전부 차단.
-- **설정 파일 보호** — `.claude/`, `.codex/`, `.claude-plugin/` 안의 파일은 세션 중 수정 불가.
-
-격리 공간 안에서도 동일하게 적용됩니다. `"This looks like a secret file"` 메시지가 뜨면 버그가 아니라 이 가드가 정상 작동하는 것입니다. 가드 훅은 Claude Code에서만 실행됩니다. Codex에서는 샌드박스와 승인 모드가 이 역할을 대신합니다.
-
 > 가장 단순하면서 강력한 안전장치는 **승인 전까지 진짜 프로젝트를 안 건드리는 것**입니다.
 > `senpai-isolate`(격리)와 `senpai-finish`(최종 결정)가 담당합니다.
+
+비밀 파일(`.env` 등) 보호는 Claude Code / Codex의 자체 권한 시스템에 맡깁니다.
 
 </details>
 
