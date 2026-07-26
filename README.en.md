@@ -102,6 +102,7 @@ Just talk to it. It routes your request to the right step automatically.
 
 ```bash
 git clone https://github.com/calmtiger86/senpai-ask.git /tmp/senpai-ask && \
+  mkdir -p ~/.codex/skills && \
   cp -r /tmp/senpai-ask/skills/* ~/.codex/skills/ && \
   rm -rf /tmp/senpai-ask
 ```

@@ -102,6 +102,7 @@ Claude Code나 Codex는 이미 강력한 코딩 AI지만, 처음 쓰는 사람�
 
 ```bash
 git clone https://github.com/calmtiger86/senpai-ask.git /tmp/senpai-ask && \
+  mkdir -p ~/.codex/skills && \
   cp -r /tmp/senpai-ask/skills/* ~/.codex/skills/ && \
   rm -rf /tmp/senpai-ask
 ```

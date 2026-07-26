@@ -15,7 +15,14 @@ This skill is a conversation from start to finish. It does NOT write code, does 
 
 Every request goes through this — a todo list, a one-line config change, all of it. "Simple" requests are exactly where an unspoken assumption quietly wastes the most work. The design can be three sentences for a genuinely simple thing, but you still surface it and get a yes before handing off.
 
-## Step 0 — Where are you running? (do this first)
+## Step 0 — Check for an in-progress session first
+
+Before anything else, check `.senpai/log.md` for an existing session. If one
+exists, recap it in one plain-language line ("last time we got to here…")
+before starting the conversation below — don't silently skip the check-in
+just because the request sounded like a fresh "build me X."
+
+## Step 1 — Where are you running?
 
 Before your first question, notice which tool you're in, because it changes only *how* you ask, never *what* you ask.
 
@@ -50,7 +57,7 @@ When one shows up: name which of the seven it is, say in beginner language what 
 Do these in order. Items marked *(internal)* happen in your head — don't
 surface them as tasks or steps the person sees:
 
-1. *(internal)* Detect the tool and pick the question style (Step 0).
+1. *(internal)* Check for an in-progress session, detect the tool, and pick the question style (Steps 0–1).
 2. **Understand the context** — look at existing files, docs, recent commits. In an existing project, follow what's already there.
 3. **Surface the hidden decisions** — before diving into details (see below).
 4. **Ask clarifying questions** — one at a time, multiple choice preferred.
@@ -79,7 +86,7 @@ Keep it short: "Here are a few things we'll need to decide that aren't obvious y
 ## Ask clarifying questions
 
 - One question per message. If a topic needs more, break it into several messages.
-- Prefer multiple choice (rendered per Step 0) when the answer fits a small set; open-ended is fine when it genuinely is.
+- Prefer multiple choice (rendered per Step 1) when the answer fits a small set; open-ended is fine when it genuinely is.
 - Focus on purpose, constraints, and success criteria.
 - If the request is actually several independent things at once, say so early and help split it into pieces rather than refining details of something that should be broken up first. Each piece gets its own pass.
 

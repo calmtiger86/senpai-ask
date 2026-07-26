@@ -102,6 +102,7 @@ Claude CodeやCodexはすでに強力なコーディングAIですが、初め�
 
 ```bash
 git clone https://github.com/calmtiger86/senpai-ask.git /tmp/senpai-ask && \
+  mkdir -p ~/.codex/skills && \
   cp -r /tmp/senpai-ask/skills/* ~/.codex/skills/ && \
   rm -rf /tmp/senpai-ask
 ```

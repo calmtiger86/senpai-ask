@@ -32,6 +32,11 @@ small step at a time, checking each step before moving on."
   project is `senpai-finish`'s call, with the user's explicit yes. Never merge,
   push, or apply to the real project from here.
 
+**Precondition — no plan file.** If `.senpai/current-plan.md` doesn't exist
+(e.g. the user jumped straight to "build it" in a fresh session), stop here and
+route to `senpai-plan` first — this skill only executes an already-approved
+plan, it never invents one.
+
 **Precondition — isolation preferred.** Normally you run inside the isolated
 workspace that `senpai-isolate` set up. If you're in the real project checkout
 and `senpai-isolate` hasn't run yet, stop and run it first. However, if

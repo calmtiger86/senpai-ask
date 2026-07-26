@@ -5,3 +5,7 @@ node_modules/
 .DS_Store
 *.log
 .planning/
+.claude/
+.omc/
+/senpai-ask.png
+/senpai-ask2.png
