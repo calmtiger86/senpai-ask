@@ -96,6 +96,15 @@ Claude CodeやCodexはすでに強力なコーディングAIですが、初め�
 /plugin marketplace add calmtiger86/senpai-ask
 /plugin install senpai-ask@senpai-ask
 ```
+
+アップデートは、ターミナルで次の2行を実行してから Claude Code を再起動してください。
+
+```bash
+claude plugin marketplace update senpai-ask
+claude plugin update senpai-ask@senpai-ask
+```
+
+自分で追加したマーケットプレイスは、自動アップデートが初期状態でオフになっています。自動で受け取るには、Claude Code で `/plugin` を開き、**Marketplaces** → `senpai-ask` → **Enable auto-update** を選んでください。
 <p></p>
 
 **Codex CLI：**

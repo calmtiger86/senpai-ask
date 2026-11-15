@@ -96,6 +96,15 @@ Just talk to it. It routes your request to the right step automatically.
 /plugin marketplace add calmtiger86/senpai-ask
 /plugin install senpai-ask@senpai-ask
 ```
+
+To update, run these two lines in your terminal, then restart Claude Code.
+
+```bash
+claude plugin marketplace update senpai-ask
+claude plugin update senpai-ask@senpai-ask
+```
+
+Marketplaces you add yourself have auto-update turned off by default. To get updates automatically, open `/plugin` in Claude Code and choose **Marketplaces** → `senpai-ask` → **Enable auto-update**.
 <p></p>
 
 **Codex CLI:**
