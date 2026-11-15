@@ -77,26 +77,38 @@ crowded. Do not recreate a folder of many notes.
   read it to see what the current plan is, but never write or restructure it.
 
 **Where the files live.** Memory belongs to the *real* project, not to a
-throwaway copy. If `senpai-isolate` put you in an isolated worktree, the log
-still belongs to the real project so it survives whether the work is later kept
-or discarded. Locate the main project root and write there:
+throwaway copy, so it survives whether the work is later kept or discarded.
+Locate the main project root and write there:
 
 ```bash
 # First entry of `git worktree list` is always the main working tree.
 # Use sub() to drop the "worktree " prefix, not $2/awk field-splitting --
 # field-splitting truncates any path containing a space (e.g. "My Project").
 ROOT=$(git worktree list --porcelain 2>/dev/null | awk '/^worktree /{sub(/^worktree /,""); print; exit}')
-# Memory lives at "$ROOT/.senpai/". With no worktree, that's just the project root.
+ROOT=${ROOT:-$PWD}   # not a git project yet: the current folder is the root
+# Memory lives at "$ROOT/.senpai/".
 ```
 
-If writing to `$ROOT/.senpai/` fails (sandbox restricts writes outside the
-current workspace), fall back to `.senpai/` in the current working directory.
-The data survives locally either way; it just won't be visible from the main
-checkout until the work is applied.
+**Keep `.senpai/` out of git.** Whenever you create a `.senpai/` folder, also
+create `.senpai/.gitignore` containing the single line `*`. Git then ignores
+the whole folder in every checkout: memory is never committed, a copy never
+starts with a stale version of it, and a copy can be removed cleanly.
+
+**When the real project can't be written.** Inside a Claude Code
+`EnterWorktree` copy, edits to the real project are blocked (a Codex sandbox
+may do the same). There, write to `.senpai/` inside the copy — that's the
+normal path, not an error. While that copy exists its `.senpai/` is the current
+one: its `current-plan.md` is the current plan, and its `log.md` holds this
+cycle's lines. `senpai-finish` appends those lines to `$ROOT/.senpai/log.md`
+when the copy is applied or thrown away. Never copy the folder over the real
+one — that would replace the project's whole history with one cycle.
 
 ## Starting a session — recall first, automatically
 
-At the start of a session, **without being asked**, check for `.senpai/log.md`:
+At the start of a session, **without being asked**, check for
+`$ROOT/.senpai/log.md`. Also run `git worktree list`: if another checkout has
+its own `.senpai/log.md` (work left in a copy by "decide later", or a window
+closed mid-build), read its latest entry too and mention that copy in the recap.
 
 - **It exists:** read the last entry (or two) and open with a short, plain
   recap, then ask whether to continue — for example:
@@ -167,10 +179,18 @@ now is what makes the next check-in possible.
 Short, dated, plain. The raw file is a working note (jargon is fine here — see
 the last section), but keep it skimmable:
 
+Keep the line labels in English even when the rest is in the person's
+language: other skills search for `Agreed:`, `Starting point:`, and
+`Finished:`. Each has one writer — `Agreed:` is written only by
+`senpai-brainstorming`, `Starting point:` only by `senpai-isolate`, and
+`Finished:` only by `senpai-finish` (it closes a cycle). Don't repeat these
+lines when saving a session.
+
 ```markdown
 # Project log
 
 ## 2026-07-18
+- Agreed: the login button checks the password; no "remember me" yet.
 - Did: wired the login button to actually check the password (src/auth.js).
 - Decided: no "remember me" for now — keeping the first version small (user agreed).
 - Next: hook the same check into the signup form.

@@ -115,15 +115,19 @@ as a normal repo, not an isolated copy:
 git rev-parse --show-superproject-working-tree 2>/dev/null
 ```
 
-Read the state into three facts:
+Read the state into these facts:
 
 | Fact | How to tell |
 |---|---|
-| Normal checkout (not an isolated copy) | `GIT_DIR == GIT_COMMON` (or submodule), AND no starting-point SHA in `.senpai/log.md` |
-| Worked in place (isolate chose not to copy) | `GIT_DIR == GIT_COMMON`, AND `.senpai/log.md` contains a `Starting point:` SHA |
+| Normal checkout (not an isolated copy) | `GIT_DIR == GIT_COMMON` (or submodule), AND `$ROOT/.senpai/log.md` has no open starting point |
+| Worked in place (isolate chose not to copy) | `GIT_DIR == GIT_COMMON`, AND the log has an open starting point |
 | Isolated copy on a named branch | `GIT_DIR != GIT_COMMON`, `BRANCH` non-empty, not a submodule |
 | Isolated copy, detached HEAD (externally managed) | `GIT_DIR != GIT_COMMON`, `BRANCH` empty |
 | Has an online home | `HAS_REMOTE` non-empty |
+
+The open starting point is the last `- Starting point: <SHA>` line with no
+`- Finished:` line after it. A `Starting point:` line that a `Finished:` line
+follows belongs to finished work — never act on it.
 
 ## Step 4: Find the base branch
 
@@ -220,10 +224,13 @@ person may need it to make changes after the review. Do not tidy it up.
 
 ### Undo to starting point (in-place work only)
 
-Only shown when `senpai-isolate` logged a starting-point commit SHA in
-`.senpai/log.md` because isolation wasn't possible. Revert all changes back to
-that commit (`git revert --no-commit <start-SHA>..HEAD && git commit`). Tell
-the person plainly: "I've undone everything back to where we started."
+Only shown when `$ROOT/.senpai/log.md` has an open starting point (Step 3)
+because the work was done in place. Use that SHA, never one a `Finished:` line
+already closed (that would also undo earlier, finished work). Revert all changes back to that commit
+(`git revert --no-commit <start-SHA>..HEAD && git commit --no-edit`; skip it if
+`<start-SHA>` is already `HEAD`). Then check `git status --short`: files that
+were never committed are still there. Tell the person plainly that the work is
+undone back to where we started, and name any files that are still there.
 
 ### Decide later (keep as-is)
 
@@ -260,11 +267,22 @@ cd "$MAIN_ROOT"
 
 Save the memory note first (Step 8 — so the *why* survives), then tidy up the
 copy (Step 7), then force-delete the branch (`git branch -D <feature-branch>`).
+In a Claude Code `EnterWorktree` copy, the real project can only be written
+after leaving the copy, so the order there is: read the copy's `.senpai/log.md`,
+leave the copy, write the note and its lines to `$ROOT/.senpai/log.md`, then
+tidy up.
 
 ## Step 7: Tidy up the copy
 
 **Only for "Apply" and "Throw away."** "Put online for review" and "Decide
 later" always keep the copy alive.
+
+**Bring memory home first.** If the copy has its own `.senpai/log.md`
+(`senpai-remember`'s rule when the real project is blocked — Claude Code does
+this inside an `EnterWorktree` copy), read it before leaving the copy. After
+leaving, append its lines that aren't already in `$ROOT/.senpai/log.md`, then write
+the Step 8 wrap-up there too. Don't carry `current-plan.md` over — that plan is
+finished. Removing the copy deletes its `.senpai/`, since git ignores it.
 
 ```bash
 GIT_DIR=$(cd "$(git rev-parse --git-dir)" 2>/dev/null && pwd -P)
@@ -298,22 +316,29 @@ Do not create a new file for this.
 
 The log belongs to the **real** project, not the copy — so it survives even when
 the copy is thrown away. As `senpai-remember` does, write to the real root, and
-for the "throw away" case write it *before* removing the copy:
+for the "throw away" case write it *before* removing the copy. For "decide
+later" and "put online" inside a copy whose real project is blocked, write it
+to the copy's `.senpai/log.md`; `senpai-remember` finds it there next session.
 
 ```bash
 # First entry of `git worktree list` is always the real (main) working tree.
 # Use sub() to drop the "worktree " prefix, not $2/awk field-splitting --
 # field-splitting truncates any path containing a space (e.g. "My Project").
 ROOT=$(git worktree list --porcelain 2>/dev/null | awk '/^worktree /{sub(/^worktree /,""); print; exit}')
+ROOT=${ROOT:-$PWD}
 # The note goes in "$ROOT/.senpai/log.md".
 ```
 
-Keep it to the usual few lines — did / decided / next:
+Keep it to the usual few lines — did / decided / next. When the choice ends the
+cycle (apply, throw away, keep as-is, undo), add a `- Finished:` line; only this
+skill writes it, and it closes the cycle. "Decide later" and "put online" leave
+the cycle open, so they don't.
 
 ```markdown
 - Did: finished the login work and applied it to the real project.
 - Decided: kept it — demo looked right and all checks passed (user confirmed).
 - Next: start on the signup form.
+- Finished: applied
 ```
 
 **Even when the person throws the work away, record *why*.** A discarded attempt
@@ -324,6 +349,7 @@ end next time:
 - Did: tried adding offline mode; threw it away.
 - Decided: discarded — it broke the sync tests and the approach was a dead end
   (user agreed). Note: don't retry offline mode without solving sync first.
+- Finished: discarded
 ```
 
 Then tell the person, in plain language, that it's saved — not the raw file.

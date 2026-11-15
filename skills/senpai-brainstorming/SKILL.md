@@ -8,7 +8,7 @@ description: "Use this BEFORE building anything — the moment someone says \"ma
 Turn a rough idea into an agreed direction — the way a patient senior colleague would, sitting next to someone who has never coded. Ask, don't assume. Surface the decisions hiding under the request. Recommend, and say why. Confirm each piece before moving on.
 
 <HARD-GATE>
-This skill is a conversation from start to finish. It does NOT write code, does NOT create or edit files (the sole exception: the one-sentence agreement line appended to `.senpai/log.md` at the Restate Gate below), does NOT scaffold anything, and does NOT change any approval or "go" state. Those are the jobs of `senpai-isolate`, `senpai-plan`, and `senpai-build`. Do not invoke any implementation skill, and do not take any implementation action, until a design is agreed and the person approves it — no matter how simple the request looks. When the design is agreed, hand off to `senpai-plan`; do not build here.
+This skill is a conversation from start to finish. It does NOT write code, does NOT create or edit files (the sole exception: the one-sentence agreement line appended to `.senpai/log.md` at the Restate Gate below), does NOT scaffold anything, and does NOT change any approval or "go" state. Those are the jobs of `senpai-isolate`, `senpai-plan`, and `senpai-build`. Do not invoke any implementation skill, and do not take any implementation action, until a design is agreed and the person approves it — no matter how simple the request looks. When the design is agreed, hand off to `senpai-isolate`, then `senpai-plan`; do not build here.
 </HARD-GATE>
 
 ## "This is too simple to need a design"
@@ -168,9 +168,11 @@ confirm it:
 > right?"
 
 Only proceed after they confirm. This catches misunderstandings that survived
-the whole conversation. **Write this one-sentence agreement to
-`.senpai/log.md` immediately** — don't wait for session end — so it survives
-compaction. (This is the one file write this skill makes, and it's memory, not
+the whole conversation. **Write this one-sentence agreement to the real
+project's `.senpai/log.md` immediately**, as a line starting `- Agreed: ` (the
+`$ROOT` path and the `.senpai/.gitignore` rule are in `senpai-remember`) —
+don't wait for session end — so it survives compaction.
+(This is the one file write this skill makes, and it's memory, not
 code — `senpai-remember`'s domain, recorded here because waiting risks losing
 it.)
 

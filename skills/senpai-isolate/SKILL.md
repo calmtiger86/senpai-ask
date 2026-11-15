@@ -40,9 +40,10 @@ If the folder already contains files, ask briefly before staging them all:
 "여기 있는 파일들을 전부 첫 저장점에 포함해도 될까요?" (or equivalent). If they
 say no or hesitate, run `git init && git commit --allow-empty -m "initial"`
 (empty commit only). If yes (or the folder is empty), run
-`git init && git add -A && git commit --allow-empty -m "initial"`.
+`git init && git add -A -- . ':(exclude).senpai' && git commit --allow-empty -m "initial"`.
 
-**Empty folder → work in place.** With nothing to protect yet, skip creating an
+**Empty folder → work in place.** A folder holding only `.senpai/` counts as
+empty. With nothing to protect yet, skip creating an
 isolated copy — record the starting SHA in `.senpai/log.md` as for any
 in-place work.
 
@@ -70,6 +71,11 @@ git rev-parse --show-superproject-working-tree 2>/dev/null
 **If `GIT_DIR != GIT_COMMON` (and not a submodule):** already in an isolated
 copy. Skip to Step 2. Do NOT make another copy inside it.
 
+**Picking up a copy left earlier?** If `senpai-remember` found unfinished work
+in another copy (`git worktree list`) and the person wants to continue it,
+enter that copy (in Claude Code, `EnterWorktree` with its `path`) instead of
+making a new one.
+
 Tell the person plainly, matching the state:
 - On a branch: "Good — we're already in a safe copy, so your real project is protected."
 - Detached HEAD: "We're already in a safe copy that's externally managed. I'll name a branch for it later, at the finish step."
@@ -82,9 +88,23 @@ told you their preference:
 
 Honor any preference they already stated without re-asking. If they decline,
 work in place and skip to Step 2 — but flag that the real project will change
-directly, so `senpai-finish` becomes the only place to undo. Record the
-current commit SHA in `.senpai/log.md` (e.g. `- Starting point: abc1234`) so
-`senpai-finish` can offer an undo path back to it.
+directly, so `senpai-finish` becomes the only place to undo. Append the line
+`- Starting point: <short SHA>` under the current `- Agreed:` line in
+`$ROOT/.senpai/log.md` so `senpai-finish` can offer an undo path back to it.
+Keep the label `Starting point:` in English even when the rest of the log is in
+another language — `senpai-finish` searches for that exact text. Write it only
+for in-place work (here, the empty-folder case, and a sandbox that blocks the
+copy); an isolated copy doesn't need it, because the copy's branch is already
+the way back.
+
+**Leave `.senpai/` where it is.** Memory lives in the real project (see
+`senpai-remember`). Uncommitted changes there — such as the agreement line
+`senpai-brainstorming` just wrote — are expected: don't stash, move, copy, or
+commit them, and don't clean them up before making the copy. If `git ls-files
+.senpai` prints anything (an older version committed memory), untrack it once
+before making the copy: `git rm -r -q --cached .senpai && git commit -q -m
+"chore: stop tracking senpai memory"`, and make sure `.senpai/.gitignore`
+exists.
 
 ## Step 1: Make the isolated copy
 
@@ -148,8 +168,8 @@ cd "$path"
 **Sandbox blocked it?** If `git worktree add` fails with a permission/sandbox
 error, don't fight it. Tell the person plainly that the safe copy couldn't be
 made, that you'll work in the real project instead, and that the finish step is
-now the only place to keep or undo the work. Then run setup and baseline tests
-in place. (On Codex, see the "Codex App Finishing" note under 1c.)
+now the only place to keep or undo the work. Record the `- Starting point:`
+line as for any in-place work, then run setup and baseline tests in place. (On Codex, see the "Codex App Finishing" note under 1c.)
 
 ### 1c. Codex sandbox — the second layer (Codex CLI only)
 

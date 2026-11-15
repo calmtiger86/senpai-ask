@@ -174,16 +174,19 @@ Save one short plan file at the **real project root** (same location as
 `senpai-remember`):
 
 ```
-.senpai/current-plan.md
+$ROOT/.senpai/current-plan.md
 ```
+
+Don't commit it. If the real project can't be written from inside the copy,
+save it in the copy's `.senpai/` instead (`senpai-remember` explains when);
+`senpai-build` looks there first.
 
 **Timing:** save this file *after* the user approves — not before. In Plan
 Mode, file writes are gated on approval, so present the plan first, get the
 yes, then write the file. Outside Plan Mode the order doesn't matter, but
 keep it consistent: approve first, save second.
 
-This ensures the plan is visible from both the real project and any isolated
-copy. One lightweight file, not a vault or a dated archive tree. Keep the
+One lightweight file, not a vault or a dated archive tree. Keep the
 schema minimal (the header + tasks above) and don't duplicate what
 `senpai-remember` stores; this file is just the plan the builder follows, and
 it's replaced next time you plan. Don't invent extra directories.

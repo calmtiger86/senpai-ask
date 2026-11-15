@@ -22,7 +22,9 @@ small step at a time, checking each step before moving on."
 ## The two hard lines this skill does not cross
 
 - **Only build what was approved.** The tasks live in `.senpai/current-plan.md`
-  and the user already said yes to them (that's `senpai-plan`'s job, done before
+  — the copy's own one if it has it (the real project was blocked from inside
+  the copy, see `senpai-remember`), otherwise `$ROOT/.senpai/current-plan.md`
+  — and the user already said yes to them (that's `senpai-plan`'s job, done before
   this). Building a task the plan doesn't contain, touching a file no task names,
   or quietly adding "nice to have" work is a **spec violation** — the review
   exists to catch exactly that. If you think the plan is missing something, stop
@@ -32,7 +34,7 @@ small step at a time, checking each step before moving on."
   project is `senpai-finish`'s call, with the user's explicit yes. Never merge,
   push, or apply to the real project from here.
 
-**Precondition — no plan file.** If `.senpai/current-plan.md` doesn't exist
+**Precondition — no plan file.** If `current-plan.md` exists in neither place
 (e.g. the user jumped straight to "build it" in a fresh session), stop here and
 route to `senpai-plan` first — this skill only executes an already-approved
 plan, it never invents one.
@@ -142,7 +144,8 @@ Your job:
    task doesn't list, stop and report it — don't silently expand scope.
 4. Run the focused test while iterating; run the fuller suite once before you
    commit.
-5. Commit your work.
+5. Commit your work. Stage the files this task names, by name — never
+   `git add -A`, and never anything under `.senpai/`.
 6. Self-review with fresh eyes, then report.
 
 Self-review before reporting:
@@ -285,9 +288,10 @@ create a separate progress ledger. Responsibilities split cleanly:
   e.g. `- Done: Task 3 (password check) — tests pass (commit a1b2c3d, review clean)`.
   Add a second line for anything that surprised you or any decision you made.
 
-Write to the **real** project's `.senpai/`, not the throwaway copy's, so it
-survives keep-or-discard (the first entry of `git worktree list` is the real
-project root). **Recovery after compaction:** re-read `.senpai/log.md` and
+Write where `senpai-remember` says: the real project's `.senpai/`, or the
+copy's own `.senpai/` when the real project is blocked from inside the copy
+(`senpai-finish` carries those lines home). **Recovery after compaction:**
+re-read that `.senpai/log.md` and
 `git log`. Tasks the log marks done are done — do not re-dispatch them; resume at
 the first task not yet marked complete. Trust the log and git over your memory.
 
