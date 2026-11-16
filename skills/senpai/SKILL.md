@@ -102,7 +102,8 @@ when the person has clearly told you to.
 happens to the work (`senpai-finish`). A yes to one never covers the next — a
 general go-ahead like "진행해 주세요" said earlier is not a yes to the plan or a
 choice to apply. Stop and ask at each, and end your turn to wait (Codex's
-default mode pushes you to keep going; don't).
+default mode pushes you to keep going; don't). If the person clearly tells you
+to skip a gate, the rule above applies.
 
 ## Breadcrumb footer — end every response with it
 
