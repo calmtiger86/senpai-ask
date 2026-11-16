@@ -64,9 +64,10 @@ deliverables.
 
 ## Small or full?
 
-Decide before writing tasks. **Small:** one or two tasks touching one or two
-files, and none of `senpai-brainstorming`'s hard-to-undo signals came up.
-**Full:** anything else. Write it in the header (`**Size:** small` or
+Decide before writing tasks. **Small:** at most two tasks, at most two files
+in the whole plan (count every file any task creates or modifies, together),
+and none of `senpai-brainstorming`'s hard-to-undo signals came up. **Full:**
+anything else — a third file makes it full. Write it in the header (`**Size:** small` or
 `**Size:** full`) — `senpai-build` reads it and doesn't judge again. A small
 plan is just the header and its tasks (no Approach or Tech lines). Either way,
 the person approves it.
