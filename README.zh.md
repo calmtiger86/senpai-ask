@@ -161,6 +161,13 @@ git clone https://github.com/calmtiger86/senpai-ask.git /tmp/senpai-ask && \
 > 编码相关请求请先经过 senpai 技能。
 > ```
 
+**临时关闭：** 创建下面的文件后，从下一个会话起 senpai 不会主动介入（直接调用仍然可用）。删除该文件即可恢复，插件仍保持安装。
+
+```bash
+touch ~/.claude/.senpai-off   # 关闭（Codex 为 ~/.codex/.senpai-off）
+rm ~/.claude/.senpai-off      # 重新开启
+```
+
 ---
 
 <details>

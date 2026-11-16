@@ -161,6 +161,13 @@ git clone https://github.com/calmtiger86/senpai-ask.git /tmp/senpai-ask && \
 > コーディング関連のリクエストはsenpaiスキルを最初に経由してください。
 > ```
 
+**一時的にオフにするには：** 下のファイルを作ると、次のセッションから senpai が自分から動かなくなります（直接呼べば今までどおり動きます）。ファイルを削除すると元に戻り、インストールはそのまま残ります。
+
+```bash
+touch ~/.claude/.senpai-off   # オフ（Codex は ~/.codex/.senpai-off）
+rm ~/.claude/.senpai-off      # オンに戻す
+```
+
 ---
 
 <details>

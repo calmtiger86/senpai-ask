@@ -153,7 +153,7 @@ conversation. Keep it lightweight: a few perspective paragraphs, not a panel.
 - Once you think you understand it, present the design in sections, each scaled to its weight: a sentence or two for the straightforward parts, a short paragraph for anything with nuance.
 - After each section, ask whether it looks right before moving on.
 - Cover what matters for this idea: what it does, how someone uses it, what it needs, and what "working" means. Skip anything that doesn't apply — don't pad.
-- Cut anything nobody asked for. YAGNI, out loud.
+- Cut anything nobody asked for, and say plainly that you're leaving it out.
 
 ## Self-review the summary, then hand off
 

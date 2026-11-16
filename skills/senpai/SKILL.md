@@ -110,9 +110,10 @@ to skip a gate, the rule above applies.
 Every response from any senpai-* skill ends with a one-line status breadcrumb,
 separated by a blank line:
 
-> ◆ brainstorming · 방향 합의 중 → next: 데이터 저장 방식 결정
+> ◆ brainstorming · 방향 합의 중 → 다음: 데이터 저장 방식 결정
 
-Format: `◆ <current-skill> · <what just happened> → next: <what comes next>`
+Format: `◆ <current-skill> · <what just happened> → <"next" in the user's language>: <what comes next>`
+("다음" in Korean, "next" in English, "次" in Japanese, "下一步" in Chinese).
 
 This tells a total beginner where they are in the process and what happens
 next — like the "you are here" dot on a mall map. Keep it to one line, plain

@@ -161,6 +161,13 @@ If you copied just the skills, run the same command again to update.
 > Route coding requests through the senpai skill first.
 > ```
 
+**To pause it:** create the file below and, from the next session, senpai won't step in on its own (calling it directly still works). Delete the file to turn it back on; senpai-ask stays installed.
+
+```bash
+touch ~/.claude/.senpai-off   # pause (Codex: ~/.codex/.senpai-off)
+rm ~/.claude/.senpai-off      # turn back on
+```
+
 ---
 
 <details>

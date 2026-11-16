@@ -161,6 +161,13 @@ git clone https://github.com/calmtiger86/senpai-ask.git /tmp/senpai-ask && \
 > 코딩 관련 요청은 senpai 스킬을 먼저 거쳐 주세요.
 > ```
 
+**잠깐 끄려면:** 아래 파일을 만들면 다음 세션부터 senpai가 먼저 나서지 않습니다(직접 부르면 그대로 동작합니다). 파일을 지우면 다시 켜지고, 설치는 그대로 남습니다.
+
+```bash
+touch ~/.claude/.senpai-off   # 끄기 (Codex는 ~/.codex/.senpai-off)
+rm ~/.claude/.senpai-off      # 다시 켜기
+```
+
 ---
 
 <details>
