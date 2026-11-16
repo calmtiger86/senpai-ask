@@ -5,6 +5,25 @@
   "homepage": "https://github.com/calmtiger86/senpai-ask",
   "repository": "https://github.com/calmtiger86/senpai-ask",
   "license": "MIT",
-  "keywords": ["beginner", "vibe-coding", "planning", "brainstorming", "senior-colleague"],
-  "hooks": "./hooks/codex-hooks.json"
+  "keywords": [
+    "beginner",
+    "vibe-coding",
+    "planning",
+    "brainstorming",
+    "senior-colleague"
+  ],
+  "hooks": "./hooks/codex-hooks.json",
+  "interface": {
+    "displayName": "senpai-ask",
+    "shortDescription": "A patient senior colleague for coding beginners",
+    "longDescription": "senpai-ask helps people who are new to coding. Before writing code it asks one question at a time to agree on what to build, does the work in a safe copy of your project, breaks it into small steps you approve, and shows it working before you decide to keep it or throw it away. It also remembers where you left off, in plain language.",
+    "developerName": "CalmTiger",
+    "websiteURL": "https://github.com/calmtiger86/senpai-ask",
+    "defaultPrompt": [
+      "카운터 페이지 만들어줘",
+      "Change the text on this button",
+      "지난번에 어디까지 했지?"
+    ],
+    "logo": "./assets/senpai_ask.png"
+  }
 }

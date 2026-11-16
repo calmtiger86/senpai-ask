@@ -106,8 +106,9 @@ the recap.
 - **It doesn't exist:** this is a first session. Say nothing about past work —
   don't invent a history. Just start fresh.
 
-(This assumes `senpai`'s session-start hook has already routed here. If the
-person opens with "이어서 하자" / "where did we leave off", do the same thing.)
+(The session-start hook only notes that a log exists; `senpai` does the
+recap. If the person opens with "이어서 하자" / "where did we leave off", do
+the same thing.)
 
 ## Direction check — how far have we come?
 

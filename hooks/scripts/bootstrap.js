@@ -28,11 +28,15 @@ try {
     : process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.claude');
   const instructionsFile = isCodex ? 'AGENTS.md' : 'CLAUDE.md';
   const offFlag = path.join(configDir, '.senpai-off');
+  // Hooks usually run with the project folder as the working directory; if not,
+  // this line is simply left out.
+  const hasLog = fs.existsSync(path.join(process.cwd(), '.senpai', 'log.md'));
 
   const context = fs.existsSync(offFlag)
     ? `senpai mode is paused in this session because ${offFlag} exists. Deleting that file turns it back on.`
     : 'senpai mode is on in this session: requests to build, add, change, fix, remove, debug, or check something go through the `senpai` skill first. '
-      + `The person's own instructions and ${instructionsFile} take priority.`;
+      + `The person's own instructions and ${instructionsFile} take priority.`
+      + (hasLog ? ' This project has a senpai log at .senpai/log.md.' : '');
 
   process.stdout.write(JSON.stringify({
     hookSpecificOutput: { hookEventName: 'SessionStart', additionalContext: context },

@@ -11,7 +11,7 @@
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-111111?style=flat-square" alt="MIT License"></a>
   <img src="https://img.shields.io/badge/Claude_Code-compatible-111111?style=flat-square" alt="Claude Code">
-  <img src="https://img.shields.io/badge/Codex_CLI-compatible-111111?style=flat-square" alt="Codex CLI">
+  <img src="https://img.shields.io/badge/Codex-compatible-111111?style=flat-square" alt="Codex">
 </p>
 
 <p align="center">
@@ -74,9 +74,9 @@ Just talk to it. It routes your request to the right step automatically.
 |:----:|-------|-------------|
 | **Entry** | `senpai` | Always on — listens and routes to the right skill |
 | **Design** | `senpai-brainstorming` | One question at a time, surfaces hidden intentions and ideas. Writes zero code |
-| **Isolate** | `senpai-isolate` | Creates a copy of your project to work in separately. Originals never touched |
+| **Isolate** | `senpai-isolate` | Creates a copy of your project to work in separately. Originals stay as they are until you decide at the end |
 | **Plan** | `senpai-plan` | Breaks the agreed design into small 2–5 min tasks. Nothing built until approved |
-| **Build** | `senpai-build` | Executes the plan one step at a time. Reviews after each. Errors fixed here |
+| **Build** | `senpai-build` | Builds the plan and reviews it — once for a small change, after each step for a bigger one. Errors fixed here |
 | **(If stuck)** | `senpai-unstuck` | When the same problem repeats three times, offers a fresh angle (simplify, investigate, sideways). Returns to building once unblocked |
 | **Verify** | `senpai-finish` | Actually runs it to check, then asks: keep or discard the result? |
 | **Remember** | `senpai-remember` | Stores what happened in plain language so you can pick up next time |
@@ -90,12 +90,26 @@ Just talk to it. It routes your request to the right step automatically.
 
 ## Install
 
+| Environment | Support | How to install |
+|---|---|---|
+| Claude Code in the terminal | Supported | Commands below |
+| Claude desktop app (local and SSH sessions) | Supported | Commands below (for SSH sessions, run them on that computer) |
+| Claude Code extension for VS Code | Supported | `/plugins` → Marketplaces tab |
+| Codex in the terminal | Supported | Commands below |
+| Codex desktop app | Experimental | Commands below, or the app's Plugins tab |
+| Codex extension for editors | Skills only (no hook) | Copy the skills folder (below) |
+| Cloud sessions on claude.ai, WSL sessions in the desktop app | Not supported | They don't load plugins |
+
+We tested Claude Code and Codex in the terminal directly. Local sessions in the Claude desktop app use the same settings as the terminal, so they load plugins installed there. The VS Code and Codex desktop app rows follow each product's documentation.
+
 **Claude Code:**
 
 ```
 /plugin marketplace add calmtiger86/senpai-ask
 /plugin install senpai-ask@senpai-ask
 ```
+
+Local sessions in the Claude desktop app use the same settings as the terminal, so installing with the commands above makes senpai-ask available in the app too. For an SSH session, run the commands on the computer you connect to. In VS Code, type `/plugins` to open **Manage plugins**, then add `calmtiger86/senpai-ask` on the **Marketplaces** tab and install senpai-ask.
 
 To update, run these two lines in your terminal, then restart Claude Code.
 
@@ -139,7 +153,7 @@ If you copied just the skills, run the same command again to update.
 **Usage:**
 
 - **Claude Code** — Just say what you want to build or work on. `senpai` takes it from there.
-- **Codex** — Just say what you want to build. `senpai` picks it up. To call it directly, type `$` or open `/skills` and pick `senpai-ask:senpai` (`senpai` if you copied just the skills).
+- **Codex** — Just say what you want to build. `senpai` picks it up. To call it directly, type `$` or open `/skills` and pick `senpai-ask:senpai` (`senpai` if you copied just the skills; in the desktop app, use `@` instead of `$`).
 
 > **To ensure auto-routing:** Create an `AGENTS.md` file in your project folder with this one line:
 >

@@ -11,7 +11,7 @@
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-111111?style=flat-square" alt="MIT License"></a>
   <img src="https://img.shields.io/badge/Claude_Code-compatible-111111?style=flat-square" alt="Claude Code">
-  <img src="https://img.shields.io/badge/Codex_CLI-compatible-111111?style=flat-square" alt="Codex CLI">
+  <img src="https://img.shields.io/badge/Codex-compatible-111111?style=flat-square" alt="Codex">
 </p>
 
 <p align="center">
@@ -74,9 +74,9 @@ Claude Code 和 Codex 已经是强大的编码 AI，但对于初次使用的人�
 |:----:|------|------|
 | **入口** | `senpai` | 始终在线 — 听取请求，连接到合适的技能 |
 | **梳理** | `senpai-brainstorming` | 逐个提问，挖出隐藏的意图和想法。一行代码都不写 |
-| **隔离** | `senpai-isolate` | 创建项目副本，只在那里单独工作。原始文件绝不触碰 |
+| **隔离** | `senpai-isolate` | 创建项目副本，只在那里单独工作。原始文件在最后决定是否应用之前保持不变 |
 | **计划** | `senpai-plan` | 将商定的设计拆分为 2~5 分钟的小任务。批准前什么都不做 |
-| **构建** | `senpai-build` | 按步骤逐一执行计划。每步完成后审查。错误在这里修复 |
+| **构建** | `senpai-build` | 按计划构建并审查——小改动审查一次，大改动每步审查。错误在这里修复 |
 | **(卡住时)** | `senpai-unstuck` | 同样的问题反复三次时，从不同角度（简化·调查·另辟蹊径）提出建议。解决后回到构建 |
 | **验证** | `senpai-finish` | 实际运行检查，然后问：保留还是丢弃成果？ |
 | **记忆** | `senpai-remember` | 用人话记录发生了什么，下次可以直接继续 |
@@ -90,12 +90,26 @@ Claude Code 和 Codex 已经是强大的编码 AI，但对于初次使用的人�
 
 ## 安装
 
+| 环境 | 支持 | 安装方式 |
+|---|---|---|
+| 终端中的 Claude Code | 支持 | 下面的命令 |
+| Claude 桌面应用（本地、SSH 会话） | 支持 | 下面的命令（SSH 会话请在所连接的电脑上运行） |
+| VS Code 的 Claude Code 扩展 | 支持 | `/plugins` → Marketplaces 标签页 |
+| 终端中的 Codex | 支持 | 下面的命令 |
+| Codex 桌面应用 | 试验性支持 | 下面的命令，或应用的 Plugins 标签页 |
+| 编辑器中的 Codex 扩展 | 仅技能（无钩子） | 复制技能文件夹（见下文） |
+| claude.ai 网页的云端会话、桌面应用的 WSL 会话 | 不支持 | 不加载插件 |
+
+我们直接测试过终端中的 Claude Code 和 Codex。Claude 桌面应用的本地会话与终端使用相同的设置，会直接加载在终端中安装的插件。VS Code 和 Codex 桌面应用两行依据各产品的文档。
+
 **Claude Code：**
 
 ```
 /plugin marketplace add calmtiger86/senpai-ask
 /plugin install senpai-ask@senpai-ask
 ```
+
+Claude 桌面应用的本地会话与终端使用相同的设置，所以用上面的命令安装后，在应用中也能使用。如果是 SSH 会话，请在所连接的电脑上运行上面的命令。在 VS Code 中，在输入框输入 `/plugins` 打开 **Manage plugins** 界面，在 **Marketplaces** 标签页添加 `calmtiger86/senpai-ask` 并安装 senpai-ask。
 
 更新时，在终端运行下面两行命令，然后重启 Claude Code。
 
@@ -139,7 +153,7 @@ git clone https://github.com/calmtiger86/senpai-ask.git /tmp/senpai-ask && \
 **使用方法：**
 
 - **Claude Code** — 直接说出你想做的工作或想做的东西就行。`senpai` 会自动开始。
-- **Codex** — 说出想做的东西，`senpai` 会自动开始。要直接调用，输入 `$` 或打开 `/skills`，选择 `senpai-ask:senpai`（只复制技能时为 `senpai`）。
+- **Codex** — 说出想做的东西，`senpai` 会自动开始。要直接调用，输入 `$` 或打开 `/skills`，选择 `senpai-ask:senpai`（只复制技能时为 `senpai`；桌面应用中用 `@` 代替 `$`）。
 
 > **确保自动路由：** 在项目文件夹中创建 `AGENTS.md` 文件，写入以下一行：
 >

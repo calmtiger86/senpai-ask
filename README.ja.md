@@ -11,7 +11,7 @@
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-111111?style=flat-square" alt="MIT License"></a>
   <img src="https://img.shields.io/badge/Claude_Code-compatible-111111?style=flat-square" alt="Claude Code">
-  <img src="https://img.shields.io/badge/Codex_CLI-compatible-111111?style=flat-square" alt="Codex CLI">
+  <img src="https://img.shields.io/badge/Codex-compatible-111111?style=flat-square" alt="Codex">
 </p>
 
 <p align="center">
@@ -74,9 +74,9 @@ Claude CodeやCodexはすでに強力なコーディングAIですが、初め�
 |:--------:|--------|------|
 | **入口** | `senpai` | 常にオン — リクエストを聞いて適切なスキルに接続 |
 | **整理** | `senpai-brainstorming` | 一つずつ質問して隠れた意図や考えを引き出す。コードは一行も書かない |
-| **隔離** | `senpai-isolate` | プロジェクトのコピーを作ってそこでだけ作業。元のファイルには絶対触れない |
+| **隔離** | `senpai-isolate` | プロジェクトのコピーを作ってそこでだけ作業。元のファイルは最後に反映を決めるまでそのまま |
 | **計画** | `senpai-plan` | 合意した設計を2〜5分の小さな作業に分割。承認まで何も作らない |
-| **作成** | `senpai-build` | 計画を一歩ずつ実行。各ステップ後にレビュー。エラーはここで修正 |
+| **作成** | `senpai-build` | 計画どおりに作ってレビュー。小さな変更はレビュー1回、大きな変更は各ステップ後にレビュー。エラーはここで修正 |
 | **(詰まったら)** | `senpai-unstuck` | 同じ問題が3回繰り返されたら別の角度（単純化・調査・別方向）を提案。解決したら作成に戻る |
 | **確認** | `senpai-finish` | 実際に動かして確認し、成果物を残すか捨てるか聞く |
 | **記憶** | `senpai-remember` | 何をしたか人の言葉で保存。次回そのまま続けられる |
@@ -90,12 +90,26 @@ Claude CodeやCodexはすでに強力なコーディングAIですが、初め�
 
 ## インストール
 
+| 環境 | 対応 | インストール方法 |
+|---|---|---|
+| ターミナルの Claude Code | 対応 | 下のコマンド |
+| Claude デスクトップアプリ（ローカル・SSH セッション） | 対応 | 下のコマンド（SSH セッションは接続先のコンピュータで実行） |
+| VS Code の Claude Code 拡張機能 | 対応 | `/plugins` → Marketplaces タブ |
+| ターミナルの Codex | 対応 | 下のコマンド |
+| Codex デスクトップアプリ | 試験対応 | 下のコマンド、またはアプリの Plugins タブ |
+| エディタの Codex 拡張機能 | スキルのみ（フックなし） | スキルフォルダをコピー（下記） |
+| claude.ai Web のクラウドセッション、デスクトップアプリの WSL セッション | 非対応 | プラグインを読み込みません |
+
+直接試したのはターミナルの Claude Code と Codex です。Claude デスクトップアプリのローカルセッションはターミナルと同じ設定を使うので、ターミナルでインストールしたプラグインをそのまま読み込みます。VS Code と Codex デスクトップアプリの行は各製品のドキュメントに基づいています。
+
 **Claude Code：**
 
 ```
 /plugin marketplace add calmtiger86/senpai-ask
 /plugin install senpai-ask@senpai-ask
 ```
+
+Claude デスクトップアプリのローカルセッションはターミナルと同じ設定を使うので、上のコマンドでインストールすればアプリでも使えます。SSH セッションの場合は、接続先のコンピュータで上のコマンドを実行してください。VS Code では入力欄に `/plugins` と入力して開く **Manage plugins** 画面の **Marketplaces** タブで `calmtiger86/senpai-ask` を追加し、senpai-ask をインストールします。
 
 アップデートは、ターミナルで次の2行を実行してから Claude Code を再起動してください。
 
@@ -139,7 +153,7 @@ git clone https://github.com/calmtiger86/senpai-ask.git /tmp/senpai-ask && \
 **使い方：**
 
 - **Claude Code** — やりたい作業や作りたいものを話すだけ。`senpai`が始めます。
-- **Codex** — 作りたいものを話せば`senpai`が始めます。直接呼び出すには、`$`を入力するか`/skills`を開いて`senpai-ask:senpai`を選んでください（スキルだけをコピーした場合は`senpai`）。
+- **Codex** — 作りたいものを話せば`senpai`が始めます。直接呼び出すには、`$`を入力するか`/skills`を開いて`senpai-ask:senpai`を選んでください（スキルだけをコピーした場合は`senpai`、デスクトップアプリでは`$`の代わりに`@`）。
 
 > **自動ルーティングを確実にするには：** プロジェクトフォルダに`AGENTS.md`ファイルを作り、以下の一行を入れてください。
 >
