@@ -7,7 +7,7 @@ description: Use when brainstorming has produced an agreed design and you need t
 
 ## Overview
 
-Turn an agreed design into a plan of bite-sized, independently testable steps, then get the user to approve it. Write the plan assuming the implementer has zero context for this codebase: which files to touch, the actual code and tests, exact commands and expected output. No repetition, nothing speculative, test before trust, commit often. (DRY, YAGNI, TDD are shorthand for you — never show these abbreviations to the person.)
+Turn an agreed design into a plan of small, independently testable tasks, then get the user to approve it. Write the plan so a builder with zero context for this codebase can do each task: which files to touch, the names other tasks rely on, the constraints, and a check that proves the task works. Don't write the code itself — the builder writes it. No repetition, nothing speculative, test before trust, commit often. (DRY, YAGNI, TDD are shorthand for you — never show these abbreviations to the person.)
 
 **This skill's boundary — two hard lines:**
 
@@ -55,17 +55,17 @@ This structure informs the task breakdown. Each task should produce self-contain
 
 A task is the smallest unit that carries its own test cycle and is worth a fresh reviewer's gate. Fold setup, config, scaffolding, and docs into the task whose deliverable needs them. Split only where a reviewer could meaningfully reject one task while approving its neighbor. Each task ends with an independently testable deliverable.
 
-## Bite-Sized Step Granularity
+Aim for tasks of about 2–5 minutes of work each; split one that bundles two
+deliverables.
 
-**Each step is one action (2-5 minutes):**
+## Small or full?
 
-- "Write the failing test" — step
-- "Run it to make sure it fails" — step
-- "Write the minimal code to make the test pass" — step
-- "Run the tests and make sure they pass" — step
-- "Commit" — step
-
-If a step would take much longer than five minutes or bundles two actions, split it.
+Decide before writing tasks. **Small:** one or two tasks touching one or two
+files, and none of `senpai-brainstorming`'s hard-to-undo signals came up.
+**Full:** anything else. Write it in the header (`**Size:** small` or
+`**Size:** full`) — `senpai-build` reads it and doesn't judge again. A small
+plan is just the header and its tasks (no Approach or Tech lines). Either way,
+the person approves it.
 
 ## Plan Document Header
 
@@ -77,6 +77,8 @@ If a step would take much longer than five minutes or bundles two actions, split
 > **For the builder:** REQUIRED NEXT SKILL: use senpai-build to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. Do not start building until the user has approved this plan.
 
 **Goal:** [One sentence describing what this builds]
+
+**Size:** [small | full — see "Small or full?"]
 
 **Approach:** [2-3 sentences about how]
 
@@ -105,7 +107,7 @@ the password, and proves it by testing a right and a wrong password."]
 
 **Files:**
 - Create: `exact/path/to/file.py`
-- Modify: `exact/path/to/existing.py:123-145`
+- Modify: `exact/path/to/existing.py` (the function or section)
 - Test: `tests/exact/path/to/test.py`
 
 **Interfaces:**
@@ -114,58 +116,30 @@ the password, and proves it by testing a right and a wrong password."]
   return types. A task's builder sees only their own task; this block is how
   they learn the names and types neighboring tasks use.]
 
-- [ ] **Step 1: Write the failing test**
+**Do:** [What to change, in a few plain sentences: the behavior, the edge
+cases, anything a builder could get wrong. Name functions, values, and
+messages exactly where they matter — but don't write the code; the builder
+writes it.]
 
-```python
-def test_specific_behavior():
-    result = function(input)
-    assert result == expected
-```
+**Check:** [How to prove it works, runnable exactly as written. With a test
+runner: the test to write first and what it asserts, the command, and the
+expected result (fails before, passes after). Without one — e.g. a static
+page with no build step — the command or page to open, what to do, and what
+correct output looks like; `senpai-finish` treats "no tests" as a valid state.]
 
-- [ ] **Step 2: Run test to verify it fails**
-
-Run: `pytest tests/path/test.py::test_name -v`
-Expected: FAIL with "function not defined"
-
-- [ ] **Step 3: Write minimal implementation**
-
-```python
-def function(input):
-    return expected
-```
-
-- [ ] **Step 4: Run test to verify it passes**
-
-Run: `pytest tests/path/test.py::test_name -v`
-Expected: PASS
-
-- [ ] **Step 5: Commit**
-
-```bash
-git add tests/path/test.py src/path/file.py
-git commit -m "feat: add specific feature"
-```
+- [ ] Build it, run the Check, commit
 ````
 
-(The Python/pytest blocks above are only an illustration of shape — use the language, test runner, and commands that actually match the user's project.)
+## No vague tasks
 
-**No test runner, or one would cost more than the feature is worth** (e.g. a
-static page with no build step)? Replace the failing-test steps with an
-explicit manual-check step: the exact command to run or URL to open, and what
-correct output looks like. `senpai-finish` already treats "no tests" as a
-valid, passing state — this is that same allowance, made explicit at planning
-time instead of only at the finish line.
-
-## No Placeholders
-
-Every step must contain the actual content the builder needs. These are **plan failures** — never write them:
+Every task must give the builder what it needs. These are **plan failures** —
+never write them:
 
 - "TBD", "TODO", "implement later", "fill in details"
-- "Add appropriate error handling" / "add validation" / "handle edge cases"
-- "Write tests for the above" (without the actual test code)
-- "Similar to Task N" (repeat the code — the builder may read tasks out of order)
-- Steps that say what to do without showing how (code steps need code blocks)
-- References to types, functions, or methods not defined in any task
+- "Add appropriate error handling" / "handle edge cases" without saying which
+- "Similar to Task N" (the builder may read tasks out of order — say it again)
+- A task without a Check that runs exactly as written
+- Names used across tasks that no task's Interfaces defines
 
 ## Where to save the plan
 
@@ -196,7 +170,7 @@ it's replaced next time you plan. Don't invent extra directories.
 After writing the complete plan, look at the agreed design with fresh eyes and check the plan against it. This is a checklist you run yourself — not a subagent dispatch.
 
 1. **Design coverage:** Skim each part of the agreed design. Can you point to a task that implements it? List any gaps and add the missing task.
-2. **Placeholder scan:** Search the plan for the red flags in "No Placeholders" above. Fix them.
+2. **Vague-task scan:** Search the plan for the failures in "No vague tasks" above. Fix them.
 3. **Type consistency:** Do the types, signatures, and names in later tasks match what earlier tasks defined? A function called `clearLayers()` in Task 3 but `clearFullLayers()` in Task 7 is a bug — fix it.
 
 Fix issues inline; no need to re-review.

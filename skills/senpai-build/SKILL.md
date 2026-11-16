@@ -70,6 +70,16 @@ For every task in the plan, in order:
 6. **Record progress** in `.senpai/log.md` and show the user one plain line.
 7. Move to the next task.
 
+**Small plan** (`**Size:** small` in the plan header): build each task yourself
+in this session — no builder subagent: implement, run the task's Check, commit.
+After the last task, dispatch **one** fresh reviewer over the whole diff
+(`git diff <start>..HEAD`, `<start>` = the commit before the first task),
+tier scaled to the diff. You wrote the code, so the review can't be yours. That
+one review replaces the per-task reviews and the final whole-branch review.
+Switch to the full loop if a task needs a file the plan didn't name (stop and
+ask first, as always), a hard-to-undo signal shows up, or the same step fails
+twice.
+
 After the last task: **one broad review of the whole branch** (below).
 
 ## Step 0: Detect how you dispatch subagents
@@ -109,8 +119,8 @@ you're on. Only *how you dispatch* changes.
 Use the least powerful model that can do each role — it's cheaper and faster.
 Never hard-code a model name; reason in relative tiers.
 
-- **Mechanical task** (one or two files, the plan already contains the code to
-  write, clear spec) → the **cheapest** tier. It's transcription plus testing.
+- **Mechanical task** (one or two files, clear spec and check) → the
+  **cheapest** tier.
 - **Integration / judgment task** (several files, coordination, debugging) →
   the **standard** tier.
 - **Design / architecture task**, and **the final whole-branch review** → the
@@ -217,7 +227,9 @@ lowers a finding's severity; judge the code on its merits. This is read-only:
 don't change the working tree, index, or branch.
 
 ### Part 1 — Spec compliance
-Compare the diff to what was requested:
+Compare the diff to what was requested — the task's Do, Files, Interfaces, and
+Check. The plan has no code to match line by line; judge whether the diff does
+what Do says, and run the Check if it changes no files.
 - Missing: requirements skipped or claimed but not actually implemented.
 - Extra: anything built that the plan did not ask for — over-engineering,
   unrequested "nice to haves", files no task named. **This is the same question
