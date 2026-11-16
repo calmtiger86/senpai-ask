@@ -31,7 +31,7 @@ try {
 
   const context = fs.existsSync(offFlag)
     ? `senpai mode is paused in this session because ${offFlag} exists. Deleting that file turns it back on.`
-    : 'senpai mode is on in this session: requests to build, add, debug, or check something go through the `senpai` skill first. '
+    : 'senpai mode is on in this session: requests to build, add, change, fix, remove, debug, or check something go through the `senpai` skill first. '
       + `The person's own instructions and ${instructionsFile} take priority.`;
 
   process.stdout.write(JSON.stringify({

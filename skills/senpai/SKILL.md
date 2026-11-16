@@ -60,16 +60,19 @@ The usual order is top to bottom, but jump straight to the row that fits.
 
 | The person says… | Load first | Why |
 |---|---|---|
-| "만들어줘", "추가해줘", "바꿔줘", "고쳐줘", "수정해줘", "지워줘", "이거 하고 싶어", "~ 기능 넣어줘" / build, add, change, fix, edit, remove, I want to make | `senpai-brainstorming` | Don't write code yet — surface the hidden decisions together first. Any change to project files counts, even one word in an existing file. |
+| "만들어줘", "추가해줘", "바꿔줘", "고쳐줘", "수정해줘", "(파일이나 기능을) 지워줘", "이거 하고 싶어", "~ 기능 넣어줘" / build, add, change, fix, edit, remove a file or feature, I want to make | `senpai-brainstorming` | Don't write code yet — surface the hidden decisions together first. Any change to project files counts, even one word in an existing file. |
 | (direction is agreed) let's start the work | `senpai-isolate` | Set up an isolated copy so the real project is untouched until they approve. |
 | (isolated) now, concretely, what to build | `senpai-plan` | Break it into small 2–5 minute steps and get a yes before building. |
 | (plan approved) build it / "에러 났어", "안 돼", "이거 왜 안 돼" | `senpai-build` | Build one step at a time, review after each. Errors are handled here too — find the cause, don't patch the symptom. |
-| "다 됐어?", "확인해줘", "제대로 된 거야?" | `senpai-finish` | Actually run it to check, then decide together: keep the work or throw it away. |
+| "다 됐어?", "확인해줘", "제대로 된 거야?", "방금 한 거 버려줘", "없던 일로 해줘" / is it done, throw this work away | `senpai-finish` | Actually run it to check, then decide together: keep the work or throw it away. |
 | "막혔어", "모르겠어", "왜 안 되는지 모르겠어", "다른 방법 없어?" / "I'm stuck", "no idea", "any other way?" | `senpai-unstuck` | Three fresh perspectives to break the deadlock — when the same approach keeps failing. |
 | "이어서 하자", "지난번에 어디까지 했지", "저장해줘" | `senpai-remember` | Plain-language memory that carries across sessions. |
 
-While an approved plan is being built, "고쳐줘" / "fix this" about that work
-belongs to `senpai-build`, not a new brainstorm.
+When a request fits more than one row, decide by what's in progress, not by
+the words: if `current-plan.md` has unfinished tasks and the problem is in that
+work, it's `senpai-build`; a change to the plan itself ("2번 단계 바꿔줘") goes
+to `senpai-plan`; anything else — no plan in progress, or a change the plan
+doesn't cover — starts at `senpai-brainstorming`.
 
 There is no separate debugging skill. When something breaks ("에러 났어"), that
 is part of building — handle it inside `senpai-build`, at the step where it
