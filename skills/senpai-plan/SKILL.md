@@ -219,8 +219,8 @@ When all five hold, present the plan for approval using the path you picked in S
 
 ## After Approval — Execution Handoff
 
-Once (and only once) the user approves: if there's no isolated copy yet
-(Plan Mode kept `senpai-isolate` from running), run `senpai-isolate` first —
+Once (and only once) the user approves: if `senpai-isolate` hasn't run yet
+(Plan Mode kept it from running), run it first —
 approval of the plan is not a go-ahead to edit the real project. Then save the
 plan to `.senpai/current-plan.md` and hand off to `senpai-build`. Use the safe default
 (step-by-step with a review after each task) without asking the person to
