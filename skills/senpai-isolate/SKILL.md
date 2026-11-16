@@ -82,14 +82,21 @@ Tell the person plainly, matching the state:
 - Detached HEAD: "We're already in a safe copy that's externally managed. I'll name a branch for it later, at the finish step."
 
 **If `GIT_DIR == GIT_COMMON` (or in a submodule):** this is the person's real
-checkout. Get a plain-language yes before making a copy, unless they already
-told you their preference:
+checkout. Make the copy without asking — just tell the person in one sentence
+(the "Say this" line above). If the copy needs the one-line `.gitignore` save
+point from Step 1a/1b, say that too: it's the one change the real project gets
+now. Work in place only if the person already asked for it ("그냥 여기서 해") —
+then flag that the real project will change directly, so `senpai-finish`
+becomes the only place to undo.
 
-> "I'll do the work in a safe copy so your real files aren't touched — okay?"
+**Unsaved changes in the real project?** Check `git status --short`, ignoring
+`.senpai/`. A copy starts from the last save point, so project files changed
+since then would be missing from it. If there are any, name them and ask once:
+save them in a save point first (commit those files by name), or work in place
+instead. Apart from the first-save-point question above, it's the only question
+this step asks.
 
-Honor any preference they already stated without re-asking. If they decline,
-work in place and skip to Step 2 — but flag that the real project will change
-directly, so `senpai-finish` becomes the only place to undo. Append the line
+For in-place work, append the line
 `- Starting point: <short SHA>` under the current `- Agreed:` line in
 `$ROOT/.senpai/log.md` so `senpai-finish` can offer an undo path back to it.
 Keep the label `Starting point:` in English even when the rest of the log is in

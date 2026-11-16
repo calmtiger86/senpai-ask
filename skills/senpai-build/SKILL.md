@@ -43,7 +43,7 @@ plan, it never invents one.
 workspace that `senpai-isolate` set up. If you're in the real project checkout
 and `senpai-isolate` hasn't run yet, stop and run it first. However, if
 `senpai-isolate` already ran and legitimately chose to work in place (user
-declined, sandbox blocked it, or empty folder), that's fine — proceed here
+asked to work in place, sandbox blocked it, or empty folder), that's fine — proceed here
 with the understanding that `senpai-finish` is the undo path.
 
 ## Continuous execution
