@@ -58,11 +58,13 @@ user **one plain-language line** (see below), then keep going.
 
 For every task in the plan, in order:
 
-1. **Dispatch a fresh builder** for just that one task (template below).
+1. **Dispatch a fresh builder** for just that one task (template below) —
+   never two builders at once on the same branch; they clash.
 2. Builder implements, tests (TDD), commits, self-reviews, reports its status.
 3. **Handle the status** (DONE / DONE_WITH_CONCERNS / BLOCKED / NEEDS_CONTEXT).
 4. **Dispatch a fresh reviewer** on the task's diff (template below) — spec
-   compliance first, then code quality.
+   compliance first, then code quality. Don't tell it what not to flag or
+   pre-rate a finding's severity; adjudicate findings in the fix loop.
 5. If the review finds Critical/Important issues, **dispatch a fix**, then
    re-review. Repeat until the review is clean.
 6. **Record progress** in `.senpai/log.md` and show the user one plain line.
@@ -272,7 +274,7 @@ here, at the step that broke. When a test or the build fails, find the **root
 cause** before changing anything — don't patch the symptom (don't loosen a test
 to make it pass, don't swallow the error, don't special-case the one input that
 failed). If the same kind of error shows up a third time, that's a signal to
-note it (see the log section). If the cause turns out to be the plan itself
+note it (see `senpai-remember`). If the cause turns out to be the plan itself
 being wrong, stop and bring it back to the user — don't quietly rewrite the plan.
 
 **Stuck after three attempts on the same problem?** If the same error or
@@ -281,21 +283,13 @@ hammering. Switch to `senpai-unstuck` for a fresh angle, then come back.
 
 ## Recording progress — in `.senpai/log.md`, not a new file
 
-Conversation memory doesn't survive compaction, so progress lives in a file.
-This toolkit keeps that in the **one** running log, `.senpai/log.md` — do **not**
-create a separate progress ledger. Responsibilities split cleanly:
-
-- `.senpai/current-plan.md` (owned by `senpai-plan`) is the **checklist** — its
-  `- [ ]` / `- [x]` boxes track which tasks exist and which are finished. Tick a
-  task's box when its review comes back clean.
-- `.senpai/log.md` (owned by `senpai-remember`) is the **running story** — after
-  each task passes review, append one line under the current session's entry,
-  e.g. `- Done: Task 3 (password check) — tests pass (commit a1b2c3d, review clean)`.
-  Add a second line for anything that surprised you or any decision you made.
-
-Write where `senpai-remember` says: the real project's `.senpai/`, or the
-copy's own `.senpai/` when the real project is blocked from inside the copy
-(`senpai-finish` carries those lines home). **Recovery after compaction:**
+When a task's review comes back clean, tick its box in `current-plan.md` and
+append `- Done: Task N (<name>) — tests pass (commit <sha>, review clean)` to
+`.senpai/log.md`, plus a line for anything surprising or decided (the log's
+rules live in `senpai-remember`). Write where `senpai-remember` says: the
+real project's `.senpai/`, or the copy's own `.senpai/` when the real project
+is blocked from inside the copy (`senpai-finish` carries those lines home).
+**Recovery after compaction:**
 re-read that `.senpai/log.md` and
 `git log`. Tasks the log marks done are done — do not re-dispatch them; resume at
 the first task not yet marked complete. Trust the log and git over your memory.
@@ -340,31 +334,3 @@ keep it or throw it away. Tell the user plainly, e.g.:
 > decide together whether to keep this or start over — that's the finish step."
 
 Do not merge, push, or apply anything to the real project here.
-
-## Red flags
-
-**Never:**
-- Build a task the approved plan doesn't contain, or touch a file no task names.
-  That's a scope violation — it must be caught in review, not shipped.
-- Add "nice to have" work the user didn't approve. Silent scope growth is the
-  thing the review's Extra/spec check exists to stop.
-- Run outside the isolated copy from `senpai-isolate`, or merge/apply to the
-  real project (that's `senpai-finish`).
-- Start building on the real main branch without the user's explicit consent.
-- Skip a review, or accept a review missing either verdict (spec AND quality).
-- Move to the next task with open Critical/Important findings.
-- Dispatch two builder subagents in parallel on the same branch (they'll clash).
-- Leave a subagent's model unspecified (it inherits the priciest one).
-- Patch a symptom instead of the root cause when something breaks.
-- Create a separate progress ledger — progress goes in `.senpai/log.md`.
-- Re-dispatch a task the log already marks complete (check after any compaction).
-- Tell the reviewer what *not* to flag or pre-rate a finding's severity — let it
-  raise the issue and adjudicate it in the loop.
-
-**Always:**
-- Confirm you're in the isolated copy before Task 1.
-- Build only the approved tasks, in order, one at a time.
-- Review every task (spec first, quality second) and loop until clean.
-- Name the model tier on every dispatch.
-- Record each finished task in `.senpai/log.md` and show the user one plain line.
-- End with a whole-branch review, then hand off to `senpai-finish`.

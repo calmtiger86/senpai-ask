@@ -203,7 +203,7 @@ Fix issues inline; no need to re-review.
 
 ## Minimality Self-Review (the whole plan)
 
-Now step back from the individual tasks and check the plan **as a whole** — before you show it to anyone. Same spirit as `ponytail`: the goal is to cut anything that's in the plan "just in case." Walk these rungs and **stop at the first that holds** for each proposed task or piece of scope:
+Now step back from the individual tasks and check the plan **as a whole** — before you show it to anyone. The goal is to cut anything that's in the plan "just in case." Walk these rungs and **stop at the first that holds** for each proposed task or piece of scope:
 
 1. **Does this feature really need to exist right now?** Speculative "we might need it later" = cut it, and say so in one line.
 2. **Does a standard tool or library already do it?** Use that instead of a custom task.

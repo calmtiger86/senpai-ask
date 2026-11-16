@@ -27,12 +27,7 @@ the person always match the language they're speaking.
 
 This is the **check-in / check-out for a coding project**: at the start of a
 session it *checks in* by recalling where you were, and at the end it *checks
-out* by saving a few lines about what happened. Some setups already have their
-own lightweight check-in / check-out commands for non-coding work (often
-something like `/ci` and `/co`) — this skill does not replace those. It is the
-coding-project counterpart, extended with the things a coding project needs to
-remember: the decisions behind the code and the errors that keep coming back.
-If a project has no such commands, this skill simply is the check-in/check-out.
+out* by saving a few lines about what happened.
 
 **Two hard lines this skill does not cross:**
 
@@ -45,21 +40,13 @@ If a project has no such commands, this skill simply is the check-in/check-out.
 
 ## Two layers: let the native tools do the native job
 
-Two different kinds of "remembering" exist. Don't reinvent the first one.
+Two different kinds of "remembering" exist. Don't reinvent the first one —
+point the person to the native command in one line.
 
 | What the person wants | What actually does it |
 |---|---|
 | Jump back into the *exact* session — the precise commands and files from before | **Native tools.** Claude Code: `/resume` (pick a past session). Codex CLI: `codex resume` (`--last`, `--all`, or search). |
 | Remember the *story* across many sessions — what got built weeks ago and **why** | **This skill's `.senpai/log.md`.** |
-
-`/resume` (or `codex resume`) reopens one exact past session; it can't tell you
-why login was dropped three weeks ago in a *different* session, because that
-reasoning lived in a session that's now closed and not the one being resumed.
-That accumulated, plain-language thread is exactly what this skill keeps. So
-when the person wants to retrace *precisely* where they were, point them at
-the native feature in one line ("in Claude Code, `/resume` reopens the exact
-session") — don't rebuild it. This skill fills the gap the native tools leave:
-the human narrative that spans sessions.
 
 ## The files — keep it to two
 
@@ -206,23 +193,21 @@ short note inside `log.md` so future-you stops tripping on it — for example:
   Next time, stop it first: check `lsof -i :3000` before `npm test`.
 ```
 
-That's the whole mechanism. **Do not** create separate error or playbook files
-(`ERR-0001.md`, `PB-0001.md`, an error index, and so on). A short "seen 3×"
-note in `log.md` carries the same lesson without the file sprawl.
+That's the whole mechanism — no separate error files.
 
 ## How `senpai-build` writes here
 
 `senpai-build` (the step-by-step builder) records its progress **in this same
-`log.md`** — it must not create a separate progress ledger. (The original
-tooling kept a standalone `progress.md`; this toolkit deliberately does not, to
-keep the file count down.) The split of responsibility:
+`log.md`** — it must not create a separate progress ledger. The split of
+responsibility:
 
 - **`.senpai/current-plan.md`** (owned by `senpai-plan`) is the checklist — its
   `- [ ]` / `- [x]` boxes track which tasks exist and which are finished.
-- **`.senpai/log.md`** (this skill) is the running story — after each task it
-  finishes, `senpai-build` appends one line under the current session's entry,
-  e.g. `- Done: Task 3 (password check) — tests pass`, plus a line for anything
-  that surprised it or any decision it made.
+- **`.senpai/log.md`** (this skill) is the running story — after each task
+  passes review, `senpai-build` appends one line under the current session's
+  entry, e.g. `- Done: Task 3 (password check) — tests pass (commit a1b2c3d,
+  review clean)`, plus a line for anything that surprised it or any decision it
+  made.
 
 So a later session reads `log.md` to see how far the build actually got and why,
 without re-reading the whole plan.
@@ -244,23 +229,3 @@ But when you actually **show** any of it to the person, translate it back into
 plain words every time. They should hear "we made the login button check the
 password," not "wired `verifyPassword()` into `src/auth.js:42`." The file can be
 technical; what you say to the person never is.
-
-## Red flags
-
-**Never:**
-- Recreate a multi-file memory vault (per-topic notes, separate error/playbook
-  files, an index). Two files at most: `log.md`, and `decisions.md` only if
-  needed.
-- Write or edit product code, scaffold anything, or run the build. Memory only.
-- Change any approval or keep/discard state — that's `senpai-plan` and
-  `senpai-finish`, never here.
-- Touch `.senpai/current-plan.md` beyond reading it.
-- Reinvent `/resume` or `codex resume` — point to them instead.
-- Invent past history when `.senpai/log.md` doesn't exist yet.
-- Paste raw log lines (hashes, paths) at the person without translating.
-
-**Always:**
-- Recall at the start of a session, save at the end — automatically.
-- Keep each entry to a few plain-language lines: did / decided / next.
-- Write memory to the *real* project root, so it survives keep-or-discard.
-- Roll repeated-error lessons and build progress into `log.md`, not new files.

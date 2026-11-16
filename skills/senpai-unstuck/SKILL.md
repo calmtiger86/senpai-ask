@@ -48,7 +48,8 @@ beat three padded ones.
 
 ## Step 3: Recommend and try
 
-Pick the most promising angle, say why in one sentence, and try it:
+Pick the most promising angle — one, not all three at once — say why in one
+sentence, and try it:
 
 > "The investigator angle looks best — we assumed the session is saved, but we
 > never actually checked. Let me add one log line to see what's happening."
@@ -56,8 +57,8 @@ Pick the most promising angle, say why in one sentence, and try it:
 If the person prefers a different angle, go with theirs.
 
 Then route back to wherever the work was happening (`senpai-build`, usually).
-Record what angle worked in `.senpai/log.md` so the same dead end isn't
-retried next session.
+Record what angle worked (or didn't) in `.senpai/log.md` so the same dead end
+isn't retried next session.
 
 ## What this is NOT
 
@@ -65,18 +66,4 @@ retried next session.
 - Not a replacement for debugging — it feeds back into `senpai-build`.
 - Not a team of subagents — it's you thinking from different angles in one
   response.
-
-## Red flags
-
-**Never:**
-- Spend more than one response on the perspectives — this is a quick unlock,
-  not an investigation.
-- Try all three approaches at once — pick one, try it, come back if needed.
-- Use this as a stalling tactic when the real answer is "ask the user."
-- Stay here — get back to building as soon as you have a direction.
-
-**Always:**
-- Name what's been tried and why it failed before proposing new angles.
-- Give concrete next steps with actual commands or code, not abstract advice.
-- Record what worked (or didn't) in `.senpai/log.md`.
-- Get back to building quickly — the goal is to unblock, not to philosophize.
+- Not a way to stall when the real answer is to ask the person.

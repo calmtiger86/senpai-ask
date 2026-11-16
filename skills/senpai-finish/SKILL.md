@@ -9,9 +9,9 @@ description: Use when the work is done and it's time to decide what happens to i
 > skill did its work inside an isolated copy and left the real project
 > untouched. This skill is the only place that decides whether that work gets
 > applied to the real project or thrown away — and it never decides on the
-> person's behalf. There is no file-level allowlist and no approval token here;
-> the whole safety model of this toolkit is "work in isolation, then one clear
-> keep-or-discard choice at the end." That choice lives here.
+> person's behalf. The whole safety model of this toolkit is "work in
+> isolation, then one clear keep-or-discard choice at the end." That choice
+> lives here.
 
 ## Overview
 
@@ -101,7 +101,8 @@ pass.
 **If tests pass (or the project genuinely has no tests):** continue.
 
 The gate guards applying, not throwing away. If the person came here to throw
-the work away, skip the tests.
+the work away, skip the tests; if the tests fail and they'd rather throw it
+away, that choice stays open.
 
 ## Step 3: Detect the environment
 
@@ -143,7 +144,8 @@ For a total beginner, "Pull Request" is an unfamiliar idea, and it only makes
 sense at all when the project actually has an online home. So:
 
 - **Only show the "put it online for review" choice when a remote actually
-  exists** (`HAS_REMOTE` is non-empty). No remote → drop that choice.
+  exists** (`HAS_REMOTE` is non-empty). No remote → drop that choice. Push
+  only when the person picks it — never push or force-push otherwise.
 - **"Apply to your real project" needs a copy on a named branch.** A
   detached-HEAD copy belongs to the host (see below), and without a copy the
   work is already in the real project.
@@ -400,73 +402,3 @@ end next time:
 ```
 
 Then tell the person, in plain language, that it's saved — not the raw file.
-
-## Quick Reference
-
-| Choice | Merge | Push | Keep copy | Delete branch | Needs remote |
-|---|---|---|---|---|---|
-| Apply to real project | yes | – | – | yes | – |
-| Put online for review | – | yes | yes | – | yes |
-| Decide later | – | – | yes | – | – |
-| Throw away | – | – | – | yes (force) | – |
-
-| Situation | What changes |
-|---|---|
-| Tests fail (Step 2) | Stop — nothing applied; only "Throw away" stays open |
-| No runnable entry point | Skip Step 1, rely on tests |
-| No remote configured | Drop the "put online for review" choice |
-| Detached HEAD | Drop "apply locally"; host manages where it lands |
-
-## Common Mistakes
-
-**Applying work when tests fail** — the gate exists exactly to stop this. A good
-demo in Step 1 is not a substitute; tests are the gate.
-
-**Skipping the "show it running" step when something *is* runnable** — the demo
-is the part a beginner actually understands. Skip it only when there's nothing
-to run.
-
-**Offering "put it online for review" with no remote** — the choice makes no
-sense without an online home. Drop it.
-
-**Merging from inside the copy** — `git worktree remove` and merges fail or
-misbehave when run from inside the copy. Leave it first (Step 5, "First, go
-back").
-
-**Deleting the branch before removing the copy** — `git branch -d` fails while a
-worktree still references the branch. Merge, tidy the copy, *then* delete.
-
-**Tidying up the copy after "Put online" or "Decide later"** — the person needs
-it alive. Only "Apply" and "Throw away" tidy up.
-
-**Skipping the typed "discard" confirmation** — it's the one guard against
-accidentally deleting work that can't be recovered.
-
-**Forgetting to record *why* on a discard** — the lesson is lost and the same
-dead end gets retried later.
-
-## Red Flags
-
-**Never:**
-- Apply work to the real project when tests fail.
-- Merge without re-checking tests on the merged result.
-- Throw work away without the typed `discard` confirmation.
-- Push or force-push without the person asking for it.
-- Remove a copy before confirming the merge succeeded.
-- Tidy up a copy you didn't create (only under `.claude/worktrees/`,
-  `.worktrees/`, `worktrees/`), or one whose lock belongs to a running session.
-- Run `git worktree remove` from inside the copy being removed.
-- Offer the online-review choice when no remote exists.
-- Recreate file-level allowlists or approval tokens — isolation plus this one
-  keep-or-discard choice is the whole safety model.
-
-**Always:**
-- Show it running when you can, before anything technical.
-- Confirm tests pass before offering to apply.
-- Detect the environment (isolated? remote?) before building the menu.
-- Present exactly the choices for the matching situation, in plain words.
-- Leave a Claude Code copy with `ExitWorktree` `keep`, then merge and tidy up
-  with git from the real project.
-- Tidy up the copy for "Apply" and "Throw away" only.
-- Save a few plain lines to `.senpai/log.md` at the real project root — always,
-  including the *why* on a discard.

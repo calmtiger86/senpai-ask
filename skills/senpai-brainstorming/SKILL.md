@@ -17,10 +17,7 @@ Every request goes through this — a todo list, a one-line config change, all o
 
 ## Step 0 — Check for an in-progress session first
 
-Before anything else, check `.senpai/log.md` for an existing session. If one
-exists, recap it in one plain-language line ("last time we got to here…")
-before starting the conversation below — don't silently skip the check-in
-just because the request sounded like a fresh "build me X."
+`senpai`'s session-start check runs first. If this skill was called directly, check `.senpai/log.md` yourself first and recap it in one line (details in `senpai-remember`).
 
 ## Step 1 — Where are you running?
 
@@ -34,7 +31,7 @@ The structure is identical everywhere: **one question at a time, multiple choice
 
 ## Talking to a total beginner (keep this on the whole time)
 
-- **Explain a term the first time it appears, in 2–4 words in parentheses** — e.g. `a database (where the app stores data)`, `deploy (put it online)`. Do this on first appearance only; never re-explain the same term. Skip the gloss for words the person used themselves. Apply this in whatever language the person is speaking.
+- **Explain a term once, in 2–4 words, the first time it appears** (`senpai`'s rule); skip words the person used themselves.
 - **Before each decision, add one short line: "what changes if you pick this."** One sentence, plain words — so the person is choosing an outcome, not a piece of jargon.
 - Lead with the point, then the reason. One idea per message.
 
@@ -179,14 +176,3 @@ it.)
 Then leave a **short, plain-language summary** of what was agreed — the idea, the chosen approach, the decisions made (including any hard-to-undo ones that were confirmed), and what's deliberately out of scope. Keep it brief; it's a handoff note, not a document.
 
 Do not pick a file path or format for this summary and do not write it to a file — beyond the one Restate Gate line above, `senpai-remember` owns where and how things are stored. Your job ends at handing off: first `senpai-isolate` (to set up a safe copy), then `senpai-plan` (to turn the agreed design into steps). The order is isolate → plan → build.
-
-## Key principles
-
-- **Conversation only** — no code, no approvals here. Ever. No files beyond the one Restate Gate line to `.senpai/log.md`.
-- **One question at a time** — don't overwhelm.
-- **Multiple choice preferred** — easier than a blank prompt for a beginner.
-- **Surface the hidden decisions** — before the details, not after.
-- **Pause on hard-to-undo signals** — flag, explain, confirm.
-- **Recommend with reasoning** — the four lenses live inside the "why."
-- **YAGNI ruthlessly** — the smallest version that proves the idea.
-- **Confirm each piece** — present, get a yes, then move on.
