@@ -2,7 +2,8 @@
 name: senpai-brainstorming
 description: >
   Agrees on what to build before any code — "만들어줘", "추가해줘",
-  "바꿔줘", "고쳐줘", "수정해줘", "이거 하고 싶어", "make me X", "add a login",
+  "바꿔줘", "고쳐줘", "수정해줘", "지워줘", "~ 기능 넣어줘", "이거 하고 싶어",
+  "make me X", "add a login",
   "change this text", "fix this": any feature or change, even a one-word edit
   to an existing file. One question at a time; surfaces hidden decisions and
   pauses on hard-to-undo actions. Writes only the one-sentence agreement line

@@ -3,7 +3,7 @@ name: senpai-build
 description: >
   Builds an already-approved plan (`.senpai/current-plan.md`) one task at a
   time — implement, check, commit, review — and fixes errors at the root
-  cause: "진행해 주세요" after the plan is approved, "에러 났어", "안 돼",
+  cause: "이대로 진행" once the plan is approved, "에러 났어", "안 돼",
   "이거 왜 안 돼", "build it", "it broke". Builds only approved tasks; never
   decides whether to keep the result (senpai-finish's job).
 ---
@@ -40,9 +40,11 @@ small step at a time, checking each step before moving on."
   push, or apply to the real project from here.
 
 **Precondition — no plan file.** If `current-plan.md` exists in neither place
-(e.g. the user jumped straight to "build it" in a fresh session), stop here and
-route to `senpai-plan` first — this skill only executes an already-approved
-plan, it never invents one.
+(e.g. the user said "에러 났어" or "build it" with no plan in progress), stop
+here: route to `senpai-plan` if `.senpai/log.md` has an agreed direction not yet
+finished (an `Agreed:` line with no `Finished:` after it), otherwise to
+`senpai-brainstorming`. This skill only executes an already-approved plan, it
+never invents one.
 
 **Precondition — isolation preferred.** Normally you run inside the isolated
 workspace that `senpai-isolate` set up. If you're in the real project checkout
@@ -79,13 +81,19 @@ For every task in the plan, in order:
 in this session — no builder subagent: implement, run the task's Check, commit.
 After the last task, dispatch **one** fresh reviewer over the whole diff
 (`git diff <start>..HEAD`, `<start>` = the commit before the first task),
-tier scaled to the diff. You wrote the code, so the review can't be yours. That
-one review replaces the per-task reviews and the final whole-branch review.
+tier scaled to the diff. You wrote the code, so the review can't be yours — if
+you have no way to dispatch a subagent, do it as Step 0's fallback says: a
+separate, deliberate pass over the diff. That one review replaces the per-task
+reviews and the final whole-branch review; if it finds Critical/Important
+issues, fix them and review again until clean. Commit as the builder template's
+step 5 says (files by name, never `git add -A`, nothing under `.senpai/`).
 Switch to the full loop if a task needs a file the plan didn't name (stop and
-ask first, as always), a hard-to-undo signal shows up, or the same step fails
-twice.
+ask first, as always) or the same step fails twice. If a hard-to-undo signal
+shows up, stop and ask the person before going on. A plan with no `**Size:**`
+line is full.
 
-After the last task: **one broad review of the whole branch** (below).
+After the last task of a full plan: **one broad review of the whole branch**
+(below).
 
 ## Step 0: Detect how you dispatch subagents
 
@@ -148,7 +156,7 @@ Implement Task N: [task name] — model tier: [cheapest | standard | most capabl
 
 Your task (from the approved plan):
 [paste this task's block from .senpai/current-plan.md — the plain-language
-line, the Files list, the Interfaces block, and every step with its code]
+line, Files, Interfaces, Do, and Check]
 
 Where this fits:
 [one or two lines — what this task is part of, and anything from earlier tasks
@@ -302,7 +310,8 @@ hammering. Switch to `senpai-unstuck` for a fresh angle, then come back.
 
 ## Recording progress — in `.senpai/log.md`, not a new file
 
-When a task's review comes back clean, tick its box in `current-plan.md` and
+When a task's review comes back clean (small plan: once its Check passes and
+it's committed), tick its box in `current-plan.md` and
 append `- Done: Task N (<name>) — tests pass (commit <sha>, review clean)` to
 `.senpai/log.md`, plus a line for anything surprising or decided (the log's
 rules live in `senpai-remember`). Write where `senpai-remember` says: the

@@ -4,7 +4,7 @@ description: >
   Decides what happens to finished work — shows it running, confirms tests
   pass, then apply, put online, decide later, or throw away: "다 됐어?",
   "확인해줘", "끝내자", "이대로 반영해줘", "마무리해줘", "방금 한 거 버려줘",
-  "없던 일로 해줘", "finish this", "wrap it up", "keep or discard". The one
+  "없던 일로 해줘", "이거 쓸까 버릴까", "finish this", "wrap it up", "keep or discard". The one
   skill that makes the keep-or-discard call; never applies failing work.
 ---
 
@@ -46,9 +46,10 @@ with its `path`; elsewhere, `cd` into it.
 
 **Already checked in this session?** If `senpai-build` ran it here on the
 copy's current commit (`git rev-parse --short HEAD` matches the one it noted,
-and `git status --short` shows nothing new), show the person that result
-instead of running it again. A new session, or anything merged, means running
-it again.
+`git status --short` shows nothing new, and the result is still in this
+conversation), show the person that result instead of running it again. A new
+session, or anything merged, means running it again. This covers showing it
+only — Step 2's tests still run.
 
 **A total beginner can't read a test log — but they *can* recognize a screen
 that works or output that looks right.** So before anything technical, if the

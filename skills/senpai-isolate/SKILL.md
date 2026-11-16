@@ -2,7 +2,7 @@
 name: senpai-isolate
 description: >
   Makes a safe copy of the project before any change, once the direction is
-  agreed ("좋아요, 진행해 주세요", "let's start") — Claude Code's
+  agreed (the yes after the one-sentence restate, "let's start") — Claude Code's
   `EnterWorktree`, a git worktree, or the Codex sandbox — so the real files
   stay untouched until senpai-finish decides whether to keep the work.
 ---
@@ -93,12 +93,19 @@ now. Work in place only if the person already asked for it ("그냥 여기서 �
 then flag that the real project will change directly, so `senpai-finish`
 becomes the only place to undo.
 
-**Unsaved changes in the real project?** Check `git status --short`, ignoring
-`.senpai/`. A copy starts from the last save point, so project files changed
-since then would be missing from it. If there are any, name them and ask once:
-save them in a save point first (commit those files by name), or work in place
-instead. Apart from the first-save-point question above, it's the only question
-this step asks.
+**Unsaved changes in the real project?** Check `git status --short`. Don't
+count `.senpai/`, `.claude/`, or folders tools make (`node_modules/`, build
+output). A copy starts from the last save point, so other changed files would
+be missing from it. If there are any, name them and ask once:
+
+1. Save them in a save point first — commit those files by name, leaving out
+   anything that looks secret (`.env`, keys, tokens), and say so.
+2. Leave them out — work in the copy without them.
+3. Work in place instead.
+
+If the person just said no to the first save point (above), take that as
+"work in place" and don't ask again. Apart from that question, this is the only
+one this step asks.
 
 For in-place work, append the line
 `- Starting point: <short SHA>` under the current `- Agreed:` line in

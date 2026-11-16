@@ -218,16 +218,14 @@ When all five hold, present the plan for approval using the path you picked in S
 
 ## After Approval — Execution Handoff
 
-Once (and only once) the user approves, save the plan to
-`.senpai/current-plan.md` and hand off to `senpai-build`. Use the safe default
+Once (and only once) the user approves: if there's no isolated copy yet
+(Plan Mode kept `senpai-isolate` from running), run `senpai-isolate` first —
+approval of the plan is not a go-ahead to edit the real project. Then save the
+plan to `.senpai/current-plan.md` and hand off to `senpai-build`. Use the safe default
 (step-by-step with a review after each task) without asking the person to
 choose an execution strategy — that's a mechanical decision they can't
 meaningfully make. Just say plainly:
 
-**"Plan approved — I'll build it one small step at a time, checking each step
-before moving on."**
+**"Plan approved — I'll build it now and check the work as I go."**
 
-Then hand off to `senpai-build`. Do not begin building in this skill. If the
-approval came through `ExitPlanMode` and there's no isolated copy yet (Plan Mode
-kept `senpai-isolate` from running), run `senpai-isolate` first — approval of
-the plan is not a go-ahead to edit the real project.
+Then hand off to `senpai-build`. Do not begin building in this skill.
