@@ -81,8 +81,10 @@ platform's native way; never reinvent one.
   tool spawns an isolated subagent). Give each one only what it needs for its
   task — never your whole session history. This is the normal path.
 
-- **Codex CLI:** if your Codex version supports delegating to subagents, use
-  that.
+- **Codex:** if your Codex version supports delegating to subagents, use
+  that. Before the first commit, tell the person in one plain sentence that
+  Codex may ask them to approve saving each step — its sandbox keeps `.git`
+  read-only.
 
   **Fallback if that isn't there.** If your environment has no working
   subagent dispatch — or it behaves differently than expected — don't fight it.
@@ -145,7 +147,10 @@ Your job:
 4. Run the focused test while iterating; run the fuller suite once before you
    commit.
 5. Commit your work. Stage the files this task names, by name — never
-   `git add -A`, and never anything under `.senpai/`.
+   `git add -A`, and never anything under `.senpai/`. In Codex, run
+   `git commit` as an escalated command (`require_escalated`) — a plain run
+   fails with a permission error. If it's refused or still fails, stop and
+   report it; don't move on with the task uncommitted.
 6. Self-review with fresh eyes, then report.
 
 Self-review before reporting:

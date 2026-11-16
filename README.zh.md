@@ -107,25 +107,39 @@ claude plugin update senpai-ask@senpai-ask
 自己添加的插件市场默认关闭自动更新。如需自动更新，请在 Claude Code 中打开 `/plugin`，选择 **Marketplaces** → `senpai-ask` → **Enable auto-update**。
 <p></p>
 
-**Codex CLI：**
+**Codex：**
+
+```bash
+codex plugin marketplace add calmtiger86/senpai-ask
+codex plugin add senpai-ask@senpai-ask
+```
+
+如果 Codex 询问是否允许运行 senpai 钩子，请允许。这样每次开始会话时都会开启 senpai 模式。不允许也可以使用技能。
+在 Codex 中，senpai 创建 Git 保存点（提交）或工作副本时可能会弹出批准提示。这是因为 Codex 沙盒保护着 `.git` 文件夹，批准即可继续。
+
+更新时运行下面的命令，然后重启 Codex。
+
+```bash
+codex plugin marketplace upgrade senpai-ask
+```
+
+VS Code 等编辑器中的 Codex 扩展不支持插件。要在编辑器中使用，只需复制技能（不含钩子）。不要与插件同时安装，否则同样的技能会出现两次。
 
 ```bash
 git clone https://github.com/calmtiger86/senpai-ask.git /tmp/senpai-ask && \
-  mkdir -p ~/.codex/skills && \
-  cp -r /tmp/senpai-ask/skills/* ~/.codex/skills/ && \
+  mkdir -p ~/.agents/skills && \
+  cp -r /tmp/senpai-ask/skills/* ~/.agents/skills/ && \
   rm -rf /tmp/senpai-ask
 ```
 
-各技能单独安装到 Codex 标准路径（`~/.codex/skills/<name>/SKILL.md`）。
-Claude Code 钩子在 Codex 中不运行，可以忽略。
-更新时重新运行相同命令即可。
+如果只复制了技能，重新运行相同命令即可更新。
 
 <br> 
 
 **使用方法：**
 
 - **Claude Code** — 直接说出你想做的工作或想做的东西就行。`senpai` 会自动开始。
-- **Codex CLI** — 说出想做的东西，`senpai` 会自动开始。如果自动路由未生效，用 `/senpai` 直接调用。
+- **Codex** — 说出想做的东西，`senpai` 会自动开始。要直接调用，输入 `$` 或打开 `/skills`，选择 `senpai-ask:senpai`（只复制技能时为 `senpai`）。
 
 > **确保自动路由：** 在项目文件夹中创建 `AGENTS.md` 文件，写入以下一行：
 >

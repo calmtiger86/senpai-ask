@@ -27,7 +27,7 @@ just because the request sounded like a fresh "build me X."
 Before your first question, notice which tool you're in, because it changes only *how* you ask, never *what* you ask.
 
 - **Claude Code** — when you ask a question with a small set of choices, use the `AskUserQuestion` tool so the person clicks an option instead of typing. For genuinely open questions ("what should it be called?"), plain text is fine.
-- **Codex CLI** — there is no clickable-choices tool. Show the same question as a short numbered list and invite an answer by number or in their own words.
+- **Codex** — its default mode tells you to assume and keep going rather than stop to ask. Here, asking *is* the work: ask one question, then end your turn and wait — don't answer it yourself or start building. If a `request_user_input` tool is in your tools, use it for choices; otherwise show a short numbered list and invite an answer by number or in their own words. Codex's Plan mode (`/plan`) doesn't allow writing files: if the person is in it, talk there, and write the `Agreed:` line and move on to the next step once they leave it.
 - **Not sure / anything else** — default to a plain numbered list.
 
 The structure is identical everywhere: **one question at a time, multiple choice whenever the answer fits a small set.** Only the rendering differs.

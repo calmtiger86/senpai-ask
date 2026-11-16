@@ -115,12 +115,19 @@ git fallback next, and on Codex confirm the sandbox as a second layer.
 ### 1a. Native worktree tool (preferred)
 
 Look for a native tool before touching git yourself. Native tools handle where
-the copy goes, the branch, and cleanup — running `git worktree add` when a
+the copy goes and the branch — running `git worktree add` when a
 native tool exists creates phantom state the platform can't see.
 
 - **Claude Code:** you have native tools named **`EnterWorktree`** (make and
-  enter the safe copy) and **`ExitWorktree`** (leave it). Note the real
-  project's commit first (`git rev-parse HEAD`), then use `EnterWorktree`.
+  enter the safe copy) and **`ExitWorktree`** (leave it). `EnterWorktree` puts
+  the copy in `.claude/worktrees/`, so first make sure git ignores that folder,
+  the same way as in 1b: if `git check-ignore -q .claude/worktrees` fails,
+  append the line `.claude/worktrees` to `.gitignore` and commit just that
+  file (`git add .gitignore && git commit -m "chore: ignore senpai copies" -- .gitignore`).
+  Otherwise the real project shows `?? .claude/` for as long as the copy
+  exists. Don't hide it any other way (`.git/info/exclude`, or a file inside
+  `.claude/`) — those ask for extra permission. Then note the real project's
+  commit (`git rev-parse HEAD`) and use `EnterWorktree`.
   Inside the new copy, compare its `git rev-parse HEAD` with the noted commit:
   depending on its `worktree.baseRef` setting, Claude Code may start the copy
   from the online default branch, which leaves out commits that were never
@@ -130,9 +137,10 @@ native tool exists creates phantom state the platform can't see.
   some reason `EnterWorktree` is not available in this session, fall through to
   Step 1b.
 
-- **Codex CLI:** no dedicated worktree tool is confirmed here (likely none) — so
-  do NOT wait for one. Go to Step 1b (git fallback), and then do the Codex
-  sandbox check in 1c as a second, independent layer.
+- **Codex:** Codex makes its own managed copies, but only when the person
+  starts one (`codex --worktree`, `/worktree`, or the app's Worktree mode) —
+  Step 0 already notices when you're inside one. You can't start one yourself,
+  so go to Step 1b (git fallback), then do the sandbox check in 1c.
 
 - **Other platforms:** if you see a tool like `WorktreeCreate`, a `/worktree`
   command, or a `--worktree` flag, use it and skip to Step 2.
@@ -152,7 +160,8 @@ Only proceed to Step 1b if you have no native worktree tool.
    ls -d worktrees 2>/dev/null    # alternative
    ```
    If both exist, `.worktrees` wins.
-3. If none, default to `.worktrees/` at the project root.
+3. If none, default to `.worktrees/` at the project root — never a temporary
+   folder outside the project, which can vanish.
 
 **Make sure the copy folder is ignored** (project-local locations only) — this
 keeps the copy from being committed into the real repo:
@@ -178,7 +187,7 @@ made, that you'll work in the real project instead, and that the finish step is
 now the only place to keep or undo the work. Record the `- Starting point:`
 line as for any in-place work, then run setup and baseline tests in place. (On Codex, see the "Codex App Finishing" note under 1c.)
 
-### 1c. Codex sandbox — the second layer (Codex CLI only)
+### 1c. Codex sandbox — the second layer (Codex only)
 
 The worktree isolates *what the work changes*. The Codex sandbox independently
 limits *what any command is allowed to touch*. They're two separate defenses;
@@ -189,6 +198,15 @@ Confirm the beginner-safe sandbox is on: **`workspace-write`** with
 recommended default for beginners. If it's off or looser, say so plainly and
 suggest turning it on before real work.
 
+This sandbox keeps `.git` read-only, so `git worktree add` and `git commit`
+need the person's approval. Run them as escalated commands
+(`require_escalated`, with a one-line reason), and say first, in one plain
+sentence, why Codex may ask ("안전한 복사본을 만들려면 허락이 필요해요"). A plain
+run fails with `Operation not permitted` or `cannot lock ref` — that's this
+sandbox, not a dead end: retry it escalated. If it's refused, or fails
+without asking, tell the person plainly and follow "Sandbox blocked it?" in
+1b.
+
 **Codex App Finishing (when the sandbox blocks branching).** If the sandbox
 won't let you create a branch (detached HEAD in an externally managed
 workspace), don't pretend it worked. Be honest:
@@ -196,10 +214,11 @@ workspace), don't pretend it worked. Be honest:
 - Give up on making a separate copy and work in the current location.
 - When the work is done, commit it and hand the decision back to the person:
   tell them a suggested **branch name** and **commit message**, and point them
-  to the App's native controls ("Create branch" / "Hand off to local") so they
+  to the App's native controls ("Create branch here" / "Hand off") so they
   apply the work themselves.
-- You can still run tests, stage files, and write out the suggested names — you
-  just can't push the branch from inside the sandbox.
+- You can still run tests, stage files, and write out the suggested names.
+  Pushing needs the network, which this sandbox blocks by default — ask for
+  approval, or let the person push it themselves.
 
 ## Step 2: Set the copy up
 
@@ -251,7 +270,7 @@ they ask, but lead with the plain sentence.
 | Already in a linked worktree | Skip creation (Step 0) |
 | In a submodule | Treat as normal repo (Step 0 guard) |
 | Claude Code, `EnterWorktree` available | Use it (Step 1a), skip to Step 2 |
-| Codex CLI | Git fallback (1b) + confirm sandbox (1c) |
+| Codex | Git fallback (1b) + confirm sandbox (1c) |
 | Other native worktree tool | Use it (Step 1a) |
 | No native tool | Git worktree fallback (Step 1b) |
 | `.worktrees/` / `worktrees/` exists | Use it (verify ignored); `.worktrees` wins |

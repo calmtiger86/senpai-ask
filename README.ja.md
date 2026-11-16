@@ -107,25 +107,39 @@ claude plugin update senpai-ask@senpai-ask
 自分で追加したマーケットプレイスは、自動アップデートが初期状態でオフになっています。自動で受け取るには、Claude Code で `/plugin` を開き、**Marketplaces** → `senpai-ask` → **Enable auto-update** を選んでください。
 <p></p>
 
-**Codex CLI：**
+**Codex：**
+
+```bash
+codex plugin marketplace add calmtiger86/senpai-ask
+codex plugin add senpai-ask@senpai-ask
+```
+
+Codexがsenpaiフックの実行を許可するか尋ねたら、許可してください。セッションを始めるたびにsenpaiモードがオンになります。許可しなくてもスキルは使えます。
+Codexでは、Gitの保存ポイント（コミット）や作業用コピーを作るときに承認画面が表示されることがあります。Codexのサンドボックスが`.git`フォルダを保護しているためなので、承認すれば進みます。
+
+更新するには、次のコマンドを実行してからCodexを再起動してください。
+
+```bash
+codex plugin marketplace upgrade senpai-ask
+```
+
+VS CodeなどのエディタのCodex拡張機能はプラグインに対応していません。エディタで使うにはスキルだけをコピーしてください（フックはありません）。プラグインと一緒にインストールすると同じスキルが二重に表示されるので、どちらか一方だけを使ってください。
 
 ```bash
 git clone https://github.com/calmtiger86/senpai-ask.git /tmp/senpai-ask && \
-  mkdir -p ~/.codex/skills && \
-  cp -r /tmp/senpai-ask/skills/* ~/.codex/skills/ && \
+  mkdir -p ~/.agents/skills && \
+  cp -r /tmp/senpai-ask/skills/* ~/.agents/skills/ && \
   rm -rf /tmp/senpai-ask
 ```
 
-各スキルがCodex標準パス（`~/.codex/skills/<name>/SKILL.md`）に個別インストールされます。
-Claude CodeフックはCodexでは実行されないため無視して構いません。
-更新時も同じコマンドを再実行するだけです。
+スキルだけをコピーした場合は、同じコマンドを再実行すると更新されます。
 
 <br> 
 
 **使い方：**
 
 - **Claude Code** — やりたい作業や作りたいものを話すだけ。`senpai`が始めます。
-- **Codex CLI** — 作りたいものを話せば`senpai`が始めます。自動ルーティングが動かない場合は`/senpai`で直接呼び出してください。
+- **Codex** — 作りたいものを話せば`senpai`が始めます。直接呼び出すには、`$`を入力するか`/skills`を開いて`senpai-ask:senpai`を選んでください（スキルだけをコピーした場合は`senpai`）。
 
 > **自動ルーティングを確実にするには：** プロジェクトフォルダに`AGENTS.md`ファイルを作り、以下の一行を入れてください。
 >

@@ -107,25 +107,39 @@ claude plugin update senpai-ask@senpai-ask
 Marketplaces you add yourself have auto-update turned off by default. To get updates automatically, open `/plugin` in Claude Code and choose **Marketplaces** → `senpai-ask` → **Enable auto-update**.
 <p></p>
 
-**Codex CLI:**
+**Codex:**
+
+```bash
+codex plugin marketplace add calmtiger86/senpai-ask
+codex plugin add senpai-ask@senpai-ask
+```
+
+If Codex asks whether to allow the senpai hook, allow it — that turns senpai mode on at the start of each session. The skills still work without it.
+Codex may show an approval prompt when senpai makes a git save point (commit) or a working copy, because its sandbox protects the `.git` folder. Approve it to continue.
+
+To update, run this and restart Codex:
+
+```bash
+codex plugin marketplace upgrade senpai-ask
+```
+
+The Codex extension for editors such as VS Code doesn't support plugins. To use senpai there, copy just the skills (no hook). Don't combine this with the plugin — the same skills would show up twice.
 
 ```bash
 git clone https://github.com/calmtiger86/senpai-ask.git /tmp/senpai-ask && \
-  mkdir -p ~/.codex/skills && \
-  cp -r /tmp/senpai-ask/skills/* ~/.codex/skills/ && \
+  mkdir -p ~/.agents/skills && \
+  cp -r /tmp/senpai-ask/skills/* ~/.agents/skills/ && \
   rm -rf /tmp/senpai-ask
 ```
 
-Each skill is installed individually at the Codex standard path (`~/.codex/skills/<name>/SKILL.md`).
-Claude Code hooks don't run on Codex and can be ignored.
-To update, run the same command again.
+If you copied just the skills, run the same command again to update.
 
 <br> 
 
 **Usage:**
 
 - **Claude Code** — Just say what you want to build or work on. `senpai` takes it from there.
-- **Codex CLI** — Just say what you want to build. `senpai` picks it up. If auto-routing doesn't work, invoke directly with `/senpai`.
+- **Codex** — Just say what you want to build. `senpai` picks it up. To call it directly, type `$` or open `/skills` and pick `senpai-ask:senpai` (`senpai` if you copied just the skills).
 
 > **To ensure auto-routing:** Create an `AGENTS.md` file in your project folder with this one line:
 >

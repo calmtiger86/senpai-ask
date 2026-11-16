@@ -24,8 +24,8 @@ Before anything else, figure out how you will get the plan approved at the end. 
 
 Detect two things:
 
-1. **Are you in Plan Mode?** (Claude Code only.) You are in Plan Mode if the harness is holding edits until you present a plan — i.e. an `ExitPlanMode` tool is available and file writes are gated on plan approval. If so, `ExitPlanMode` is your approval path (the most native one — this very interaction, where the tool won't let you build until the user approves, is Plan Mode).
-2. **Which assistant are you?** Claude Code (has `ExitPlanMode` / `AskUserQuestion` tools) or Codex CLI (no Plan Mode concept, no such tools).
+1. **Are you in Plan Mode?** (Claude Code's — the one with `ExitPlanMode`.) You are in Plan Mode if the harness is holding edits until you present a plan — i.e. an `ExitPlanMode` tool is available and file writes are gated on plan approval. If so, `ExitPlanMode` is your approval path (the most native one — this very interaction, where the tool won't let you build until the user approves, is Plan Mode).
+2. **Which assistant are you?** Claude Code (has `ExitPlanMode` / `AskUserQuestion` tools) or Codex (neither of those; it may have `request_user_input`).
 
 Map to an approval path — you'll use it at the very end, in the Final Approval Gate:
 
@@ -33,7 +33,7 @@ Map to an approval path — you'll use it at the very end, in the Final Approval
 |---|---|
 | Claude Code, already in Plan Mode | Present the plan and call `ExitPlanMode` to get approval. Most native — prefer this. |
 | Claude Code, not in Plan Mode | Show a short text summary, then call `AskUserQuestion` with choices: "Proceed as-is" / "I want changes" / "Cancel". |
-| Codex CLI | No Plan Mode. Show the plan as text and ask plainly whether to proceed, change, or cancel. Same intent as above — only the rendering is plain text. |
+| Codex | Show the plan as text and ask whether to proceed, change, or cancel — with `request_user_input` if it's in your tools — then end your turn and wait. Codex's Plan mode (`/plan`) doesn't allow writing files; if the person is in it, save the plan once they leave it. |
 
 **Optional tip (not required):** if you got here from brainstorming and there are two genuinely different approaches worth building out separately, in Claude Code you can mention `/branch` (fork this conversation to try one direction without losing the other). Offer it only if a real fork would help — don't push it.
 
@@ -234,7 +234,7 @@ When all five hold, present the plan for approval using the path you picked in S
   `.senpai/current-plan.md` for the builder — it is not the approval surface.
 - **Claude Code, in Plan Mode:** show the plain summary above, then call `ExitPlanMode`.
 - **Claude Code, not in Plan Mode:** show the plain summary, then call `AskUserQuestion` with "Proceed as-is" / "I want changes" / "Cancel".
-- **Codex CLI:** show the plain summary and ask whether to proceed, change, or cancel.
+- **Codex:** show the plain summary, ask whether to proceed, change, or cancel, and wait for the answer.
 
 **The invariant:** you cannot move to `senpai-build` until the user has approved. You do not approve on their behalf, and you do not treat "I finished writing the plan" as approval. If they ask for changes, revise and re-present. Only an explicit yes from the user opens the next step.
 

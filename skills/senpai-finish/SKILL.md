@@ -32,6 +32,11 @@ it working, then you decide what to do with it."
 > automatic checks pass, and then you choose: keep it, or throw it away.
 > Nothing touches your real project until you say so."
 
+**Run Steps 1–3 inside the copy that holds the work.** If an earlier session
+left that copy (`senpai-remember` found it in `git worktree list`) and you're
+in the real project now, go into it first: in Claude Code, `EnterWorktree`
+with its `path`; elsewhere, `cd` into it.
+
 ## Step 1: Show it actually running (for the person)
 
 **A total beginner can't read a test log — but they *can* recognize a screen
@@ -95,6 +100,9 @@ pass.
 
 **If tests pass (or the project genuinely has no tests):** continue.
 
+The gate guards applying, not throwing away. If the person came here to throw
+the work away, skip the tests.
+
 ## Step 3: Detect the environment
 
 Two things decide which choices to offer and how tidy-up works: **are we in an
@@ -122,46 +130,36 @@ Read the state into these facts:
 | Normal checkout (not an isolated copy) | `GIT_DIR == GIT_COMMON` (or submodule), AND `$ROOT/.senpai/log.md` has no open starting point |
 | Worked in place (isolate chose not to copy) | `GIT_DIR == GIT_COMMON`, AND the log has an open starting point |
 | Isolated copy on a named branch | `GIT_DIR != GIT_COMMON`, `BRANCH` non-empty, not a submodule |
-| Isolated copy, detached HEAD (externally managed) | `GIT_DIR != GIT_COMMON`, `BRANCH` empty |
+| Detached-HEAD copy (host-owned) | `GIT_DIR != GIT_COMMON`, `BRANCH` empty |
 | Has an online home | `HAS_REMOTE` non-empty |
 
 The open starting point is the last `- Starting point: <SHA>` line with no
 `- Finished:` line after it. A `Starting point:` line that a `Finished:` line
 follows belongs to finished work — never act on it.
 
-## Step 4: Find the base branch
-
-Only needed if "apply locally" is on the menu (Step 5). Figure out what this
-work branched from:
-
-```bash
-git merge-base HEAD main 2>/dev/null || git merge-base HEAD master 2>/dev/null
-```
-
-If neither resolves, ask plainly: "This work split off from `main` — is that
-right?" Don't guess silently.
-
-## Step 5: Present the choices (kept deliberately small)
+## Step 4: Present the choices (kept deliberately small)
 
 For a total beginner, "Pull Request" is an unfamiliar idea, and it only makes
 sense at all when the project actually has an online home. So:
 
 - **Only show the "put it online for review" choice when a remote actually
   exists** (`HAS_REMOTE` is non-empty). No remote → drop that choice.
-- **The "apply to your real project" choice is available** unless we're on a
-  detached HEAD (externally managed — see below).
-- **"Decide later" and "Throw it away" are always there.**
+- **"Apply to your real project" needs a copy on a named branch.** A
+  detached-HEAD copy belongs to the host (see below), and without a copy the
+  work is already in the real project.
+- **"Decide later" and "Throw it away" are there whenever there's a copy.**
 
 Which gives these menus. Present exactly the choices for the matching row —
 don't pad them with extra explanation:
 
 | Situation | Choices |
 |---|---|
-| Normal checkout / isolated copy on a named branch, **remote exists** | Apply · Put online for review · Decide later · Throw away (4) |
-| Normal checkout / isolated copy on a named branch, **no remote** | Apply · Decide later · Throw away (3) |
-| Detached HEAD, **remote exists** | Put online for review · Decide later · Throw away (3) |
-| Detached HEAD, **no remote** | Decide later · Throw away (2) |
-| Worked in place (no isolated copy) | Keep as-is · Undo to starting point (2) |
+| Copy on a named branch, **remote exists** | Apply · Put online for review · Decide later · Throw away (4) |
+| Copy on a named branch, **no remote** | Apply · Decide later · Throw away (3) |
+| Detached-HEAD copy, **remote exists** | Put online for review · Decide later · Throw away (3) |
+| Detached-HEAD copy, **no remote** | Decide later · Throw away (2) |
+| Worked in place | Keep as-is · Undo to starting point (2) |
+| Normal checkout, no open starting point | None — the work is already in the real project. Say so, then save the note (Step 7, `- Finished: kept`). |
 
 Render it in plain language. For the fullest (4-choice) case:
 
@@ -181,48 +179,98 @@ drop "Apply it to your real project" (the host manages where this work lands, so
 we can't merge it locally). Keep the wording this plain every time.
 
 **Native rendering (optional, your call):** in Claude Code you may present these
-same choices with `AskUserQuestion` instead of a numbered list if you prefer —
-it's the same choices either way. A plain text menu is completely fine and is
-the default. Don't force a tool where a sentence works.
+same choices with `AskUserQuestion` (in Codex, `request_user_input` if it's in
+your tools) instead of a numbered list — it's the same choices either way. A
+plain text menu is completely fine and is the default.
 
-## Step 6: Carry out the choice
+## Step 5: Carry out the choice
+
+In Codex, `.git` is read-only inside the sandbox: run every git command that
+writes (commit, merge, revert, `switch -c`, `worktree remove`, `branch -d`) as an escalated
+command (`require_escalated`) so the person can approve it. If one is refused
+or fails, tell the person plainly instead of working around it.
+
+### First, go back to the real project (copy on a named branch)
+
+**A detached-HEAD copy belongs to the host — Codex makes these. Skip this and
+follow "Host-made copy" below.** Worked in place? You're already
+in the real project; skip this too.
+
+Otherwise, the rest happens from the real project with the copy sitting at a
+path: merging or removing from inside the copy fails, and in a Claude Code
+copy the real project can't even be written from there.
+
+1. **Commit what's not committed yet** (skip this for "Throw away"). Check
+   `git status --short` in the copy — the copy may be cleaned up later, and
+   uncommitted work would go with it. Stage this work's files by name, never
+   `git add -A`; if something that looks secret (`.env`, keys, tokens) shows
+   up, leave it out and tell the person.
+2. **Note the copy's path and branch** (`git rev-parse --show-toplevel`,
+   `git branch --show-current`), and read the copy's `.senpai/log.md` if it
+   has one.
+3. **Leave the copy.** Claude Code copy: `ExitWorktree` with `action: "keep"` —
+   never `remove`, which deletes the branch before the work is merged. If
+   `ExitWorktree` says there's no copy to leave, or for any other copy:
+   `cd "$ROOT"` (`ROOT` as defined in `senpai-remember`).
+4. **Bring the copy's notes home.** Append the copy's log lines that aren't
+   already in `$ROOT/.senpai/log.md`. Don't carry `current-plan.md` over — that
+   plan is done. The wrap-up itself comes in Step 7, once the choice is
+   carried out.
 
 ### Apply it to your real project (local merge)
 
-```bash
-# Move to the real project root first — never merge from inside the copy.
-MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)
-cd "$MAIN_ROOT"
+From the real project:
 
-git checkout <base-branch>
-# Only pull if there's actually an online home to pull from (HAS_REMOTE from
-# Step 3) -- running `git pull` with no remote configured is a plain error.
-if [ -n "$HAS_REMOTE" ]; then git pull; fi
-git merge <feature-branch>
+```bash
+git branch --show-current   # where the work lands; empty → ask which branch
+# Pull only if this branch follows an online branch, fast-forward only; if
+# that fails, skip it and tell the person.
+git rev-parse @{u} >/dev/null 2>&1 && git pull --ff-only
+git merge <copy-branch>
 
 # Re-run the tests on the merged result before trusting it.
 <test command>
 ```
+
+Before merging, tell the person which branch it goes into ("`main`에
+합칠게요") — after a break, the real project may be on a different branch than
+when the work started. If the tests need dependencies that were only installed
+in the copy, install them here first (`senpai-isolate` Step 2).
 
 If the merge reports a conflict, stop and explain plainly: "Your original
 changed while we were working, so I need to match them up." Resolve it
 yourself, re-run the tests, and only continue once tests pass.
 
 Only after the merge succeeds and tests pass on the merged result: tidy up the
-copy (Step 7), then delete the branch (`git branch -d <feature-branch>`). Tell
+copy (Step 6), then delete the branch (`git branch -d <copy-branch>`) — unless
+Step 6 left the copy in place because the host owns it; then leave the branch
+too. Tell
 the person plainly: "Done — it's now part of your real project."
 
 ### Put it online and ask for a review (needs a remote)
 
-First commit anything still uncommitted in the copy (see "Decide later"), then:
+From the real project (the copy's work is already committed):
 
 ```bash
-git push -u origin <feature-branch>
+git push -u origin <copy-branch>
 ```
 
 Then, in plain words: "It's online now. Someone (or you, later) can look it over
 before it becomes part of the main project." **Leave the copy in place** — the
 person may need it to make changes after the review. Do not tidy it up.
+
+### Decide later
+
+The work is already committed on the copy's branch (step 1 above). Don't merge,
+push, or remove anything. Say: "I've left everything exactly as it is in the
+safe copy — your real project is untouched. We can pick this back up anytime."
+**Leave the copy in place.**
+
+### Keep as-is (in-place work only)
+
+The work is already in the real project. Change nothing. Step 7 records
+`- Finished: kept`, which closes the starting point so a later undo can't reach
+back past this work.
 
 ### Undo to starting point (in-place work only)
 
@@ -234,20 +282,24 @@ already closed (that would also undo earlier, finished work). Revert all changes
 were never committed are still there. Tell the person plainly that the work is
 undone back to where we started, and name any files that are still there.
 
-### Decide later (keep as-is)
+### Host-made copy (detached HEAD — the Codex app, `codex --worktree`)
 
-First check `git status --short` inside the copy and commit any work that isn't
-committed yet. A copy can be deleted later — when the session window closes or
-by the app's automatic cleanup — and uncommitted work would go with it; a
-commit keeps it on the copy's branch. Stage this work's files by name, never
-`git add -A`; if something that looks secret (`.env`, keys, tokens) shows up,
-leave it out and tell the person. On a detached HEAD, make a branch first
-(`git switch -c <name>`) so the commit has somewhere to stay. Then change
-nothing else. Say: "I've left everything exactly as it is in the safe copy —
-your real project is untouched. We can pick this back up anytime." **Leave the
-copy in place.**
+The host owns this copy: don't leave, merge, or remove it.
 
-### Throw this work away (discard)
+- **Decide later:** make a branch (`git switch -c <name>`) and commit this
+  work's files by name, as in step 1 above. Leave it there. If the branch
+  can't be made, give the person a suggested branch name and commit message
+  instead.
+- **Put online:** the same, then `git push -u origin <name>` from the copy.
+  The sandbox blocks the network by default, so this needs approval; if it's
+  refused, give the person the branch name to push themselves.
+- **Throw away:** delete nothing yourself. Tell the person Codex manages this
+  copy — in the Codex app, archiving this chat removes it.
+
+In the Codex app, "Hand off" moves the work to their local project ("Create
+branch here" if no branch could be made).
+
+### Throw this work away (copy on a named branch)
 
 **This can't be undone, so confirm first — keep this exact, deliberate step.**
 Show what will be lost and require the person to type the word:
@@ -256,10 +308,16 @@ Show what will be lost and require the person to type the word:
 This will permanently delete this work — you can't get it back:
 - the branch <name>
 - these saved points: <commit-list>
+- files not saved yet: <file-list>
 - the safe copy at <path>
 
 Type '삭제' to confirm.
 ```
+
+Inside the copy, `<commit-list>` is `git log --oneline <real-branch>..HEAD`,
+where `<real-branch>` is the `branch` line in the first block of
+`git worktree list --porcelain`; `<file-list>` is `git status --short`. Drop a
+line that would be empty.
 
 Render the confirmation word in the person's language (e.g. '삭제' in Korean,
 'discard' in English, '削除' in Japanese, '删除' in Chinese). Wait for the
@@ -267,81 +325,61 @@ person to type that exact word. Anything else means don't
 proceed. (This typed confirmation is the one explicit check this toolkit keeps
 for an action that can't be reversed — don't soften it into a yes/no or skip it.)
 
-If confirmed:
+If confirmed: go back to the real project (steps 2–4 of "First, go back" —
+skip the commit), tidy up the copy (Step 6, with `--force`), force-delete the
+branch (`git branch -D <copy-branch>`), then save the note with the *why*
+(Step 7).
+
+## Step 6: Tidy up the copy
+
+**Only for "Apply" and "Throw away," on a copy with a named branch.** "Put
+online for review" and "Decide later" keep the copy alive.
+
+From the real project, and only for the copy the person just decided on. A copy
+in `.claude/worktrees/` (made by `EnterWorktree`), `.worktrees/`, or
+`worktrees/` was made by senpai, so remove it with git. A copy anywhere else
+belongs to the host — never remove it.
 
 ```bash
-MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)
-cd "$MAIN_ROOT"
+git worktree remove "<copy path>"   # Throw away: add --force (confirmed above)
+git worktree prune                  # clean up any stale registration
 ```
 
-Save the memory note first (Step 8 — so the *why* survives), then tidy up the
-copy (Step 7), then force-delete the branch (`git branch -D <feature-branch>`).
-In a Claude Code `EnterWorktree` copy, the real project can only be written
-after leaving the copy, so the order there is: read the copy's `.senpai/log.md`,
-leave the copy, write the note and its lines to `$ROOT/.senpai/log.md`, then
-tidy up.
+**After "Apply", if git refuses because files are left over** (something kept
+out of the commit, like `.env`), don't use `--force`: show the person the
+leftover files and ask whether to move them to the real project or delete them.
 
-## Step 7: Tidy up the copy
+Removing the copy deletes its `.senpai/` too, since git ignores it. An empty
+`.claude/worktrees/` folder may stay behind — leave it; Claude Code manages
+that folder, and writing there asks for extra permission.
 
-**Only for "Apply" and "Throw away."** "Put online for review" and "Decide
-later" always keep the copy alive.
+**If git says the copy is locked**, read the reason in
+`git worktree list --porcelain` (the `locked` line). Claude Code's reason looks
+like `claude session <name> (pid <N> start …)`. If `ps -p <N>` shows no
+process, that session has ended: `git worktree unlock "<copy path>"`, then
+remove it. If the process is still running, or the reason has no pid, another
+session may be using the copy — leave it and tell the person plainly. Never
+override a lock with `git worktree remove -f -f`.
 
-**Bring memory home first.** If the copy has its own `.senpai/log.md`
-(`senpai-remember`'s rule when the real project is blocked — Claude Code does
-this inside an `EnterWorktree` copy), read it before leaving the copy. After
-leaving, append its lines that aren't already in `$ROOT/.senpai/log.md`, then write
-the Step 8 wrap-up there too. Don't carry `current-plan.md` over — that plan is
-finished. Removing the copy deletes its `.senpai/`, since git ignores it.
+## Step 7: Save a few lines to memory
 
-```bash
-GIT_DIR=$(cd "$(git rev-parse --git-dir)" 2>/dev/null && pwd -P)
-GIT_COMMON=$(cd "$(git rev-parse --git-common-dir)" 2>/dev/null && pwd -P)
-WORKTREE_PATH=$(git rev-parse --show-toplevel)
-```
+Whatever the person chose, end by saving a short wrap-up so the next session
+knows how this ended. Follow `senpai-remember`'s schema: append a few plain
+lines to **`.senpai/log.md`**. Do not create a new file for this.
 
-- **Native exit tool first (Claude Code):** if the copy was made with
-  `EnterWorktree`, leave it with the matching native tool **`ExitWorktree`**.
-  Running raw `git worktree remove` on a copy the platform created leaves
-  phantom state it can't see.
-- **`GIT_DIR == GIT_COMMON`:** a normal checkout — there's no separate copy to
-  remove. Done.
-- **Copy lives under `.worktrees/` or `worktrees/`:** this toolkit created it, so
-  we own removing it. From the real project root:
-  ```bash
-  MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)
-  cd "$MAIN_ROOT"
-  git worktree remove "$WORKTREE_PATH"
-  git worktree prune   # clean up any stale registration
-  ```
-- **Anywhere else:** the host environment owns this workspace. Do **not** remove
-  it. If the platform has a workspace-exit tool, use that; otherwise leave it be.
-
-## Step 8: Save a few lines to memory
-
-Whatever the person chose — apply, online for review, decide later, or throw
-away — end by saving a short wrap-up so the next session knows how this ended.
-Follow `senpai-remember`'s schema: append a few plain lines to **`.senpai/log.md`**.
-Do not create a new file for this.
-
-The log belongs to the **real** project, not the copy — so it survives even when
-the copy is thrown away. As `senpai-remember` does, write to the real root, and
-for the "throw away" case write it *before* removing the copy. For "decide
-later" and "put online" inside a copy whose real project is blocked, write it
-to the copy's `.senpai/log.md`; `senpai-remember` finds it there next session.
-
-```bash
-# First entry of `git worktree list` is always the real (main) working tree.
-# Use sub() to drop the "worktree " prefix, not $2/awk field-splitting --
-# field-splitting truncates any path containing a space (e.g. "My Project").
-ROOT=$(git worktree list --porcelain 2>/dev/null | awk '/^worktree /{sub(/^worktree /,""); print; exit}')
-ROOT=${ROOT:-$PWD}
-# The note goes in "$ROOT/.senpai/log.md".
-```
+Write it to the real project's `$ROOT/.senpai/log.md` (`ROOT` as defined in
+`senpai-remember`) once the choice is carried out — it survives even when the
+copy is thrown away. For a host-made copy, still try `$ROOT/.senpai/log.md`
+first (with approval if Codex asks), because the copy may be removed; only if
+that fails, follow `senpai-remember`'s rule for when the real project can't be
+written, and tell the person the *why* in words too.
 
 Keep it to the usual few lines — did / decided / next. When the choice ends the
 cycle (apply, throw away, keep as-is, undo), add a `- Finished:` line; only this
 skill writes it, and it closes the cycle. "Decide later" and "put online" leave
-the cycle open, so they don't.
+the cycle open, so they don't — instead, name the copy's branch (and path) in
+the `Next:` line, so the work can be found even if the copy folder is cleaned
+up.
 
 ```markdown
 - Did: finished the login work and applied it to the real project.
@@ -374,12 +412,10 @@ Then tell the person, in plain language, that it's saved — not the raw file.
 
 | Situation | What changes |
 |---|---|
-| Tests fail (Step 2) | Stop — no choices offered, nothing applied |
+| Tests fail (Step 2) | Stop — nothing applied; only "Throw away" stays open |
 | No runnable entry point | Skip Step 1, rely on tests |
 | No remote configured | Drop the "put online for review" choice |
 | Detached HEAD | Drop "apply locally"; host manages where it lands |
-| Copy under `.worktrees/`/`worktrees/` | We tidy it up (Apply / Throw away only) |
-| Copy is host-owned | Never remove it; use a native exit tool if any |
 
 ## Common Mistakes
 
@@ -394,7 +430,8 @@ to run.
 sense without an online home. Drop it.
 
 **Merging from inside the copy** — `git worktree remove` and merges fail or
-misbehave when run from inside the copy. `cd` to the real project root first.
+misbehave when run from inside the copy. Leave it first (Step 5, "First, go
+back").
 
 **Deleting the branch before removing the copy** — `git branch -d` fails while a
 worktree still references the branch. Merge, tidy the copy, *then* delete.
@@ -416,7 +453,8 @@ dead end gets retried later.
 - Throw work away without the typed `discard` confirmation.
 - Push or force-push without the person asking for it.
 - Remove a copy before confirming the merge succeeded.
-- Tidy up a copy you didn't create (only under `.worktrees/`/`worktrees/`).
+- Tidy up a copy you didn't create (only under `.claude/worktrees/`,
+  `.worktrees/`, `worktrees/`), or one whose lock belongs to a running session.
 - Run `git worktree remove` from inside the copy being removed.
 - Offer the online-review choice when no remote exists.
 - Recreate file-level allowlists or approval tokens — isolation plus this one
@@ -424,10 +462,11 @@ dead end gets retried later.
 
 **Always:**
 - Show it running when you can, before anything technical.
-- Confirm tests pass before offering any choice.
+- Confirm tests pass before offering to apply.
 - Detect the environment (isolated? remote?) before building the menu.
 - Present exactly the choices for the matching situation, in plain words.
-- Prefer a native exit tool (`ExitWorktree`) over raw git for cleanup.
+- Leave a Claude Code copy with `ExitWorktree` `keep`, then merge and tidy up
+  with git from the real project.
 - Tidy up the copy for "Apply" and "Throw away" only.
 - Save a few plain lines to `.senpai/log.md` at the real project root — always,
   including the *why* on a discard.

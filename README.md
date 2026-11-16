@@ -107,25 +107,39 @@ claude plugin update senpai-ask@senpai-ask
 직접 추가한 마켓플레이스는 자동 업데이트가 기본으로 꺼져 있습니다. 자동으로 받으려면 Claude Code에서 `/plugin`을 열고 **Marketplaces** → `senpai-ask` → **Enable auto-update**를 고르세요.
 <p></p>
 
-**Codex CLI:**
+**Codex:**
+
+```bash
+codex plugin marketplace add calmtiger86/senpai-ask
+codex plugin add senpai-ask@senpai-ask
+```
+
+Codex가 senpai 훅을 실행해도 되는지 물으면 허락해 주세요. 그래야 세션을 시작할 때마다 senpai 모드가 켜집니다. 허락하지 않아도 스킬은 쓸 수 있습니다.
+Codex에서는 Git 저장점(커밋)이나 작업 복사본을 만들 때 승인 창이 뜰 수 있습니다. Codex 샌드박스가 `.git` 폴더를 보호하기 때문이니 승인하면 됩니다.
+
+업데이트는 아래 명령을 실행한 뒤 Codex를 다시 시작하면 됩니다.
+
+```bash
+codex plugin marketplace upgrade senpai-ask
+```
+
+VS Code 같은 편집기의 Codex 확장은 플러그인을 지원하지 않습니다. 편집기에서 쓰려면 스킬만 복사하세요(훅은 없습니다). 플러그인과 함께 설치하면 같은 스킬이 두 번 보이니 둘 중 하나만 쓰세요.
 
 ```bash
 git clone https://github.com/calmtiger86/senpai-ask.git /tmp/senpai-ask && \
-  mkdir -p ~/.codex/skills && \
-  cp -r /tmp/senpai-ask/skills/* ~/.codex/skills/ && \
+  mkdir -p ~/.agents/skills && \
+  cp -r /tmp/senpai-ask/skills/* ~/.agents/skills/ && \
   rm -rf /tmp/senpai-ask
 ```
 
-각 스킬이 Codex 표준 경로(`~/.codex/skills/<name>/SKILL.md`)에 개별 설치됩니다.
-Claude Code 훅은 Codex에서 실행되지 않으므로 무시해도 됩니다.
-업데이트할 때도 같은 명령을 다시 실행하면 됩니다.
+스킬만 복사한 경우에는 같은 명령을 다시 실행하면 업데이트됩니다.
 
 <br> 
 
 **사용법:**
 
 - **Claude Code** — 설치 후 그냥 하고 싶은 작업이나 만들고 싶은 것을 말하면 됩니다. `senpai`가 알아서 시작합니다.
-- **Codex CLI** — 만들고 싶은 것을 말하면 `senpai`가 시작합니다. 자동 라우팅이 안 될 경우 `/senpai`로 직접 호출하세요.
+- **Codex** — 만들고 싶은 것을 말하면 `senpai`가 시작합니다. 직접 부르려면 `$`를 입력하거나 `/skills`를 열어 `senpai-ask:senpai`를 고르세요(스킬만 복사했다면 `senpai`).
 
 > **자동 라우팅을 확실히 하려면:** 프로젝트 폴더에 `AGENTS.md` 파일을 만들고 아래 한 줄을 넣어두세요.
 >

@@ -97,18 +97,18 @@ starts with a stale version of it, and a copy can be removed cleanly.
 **When the real project can't be written.** Inside a Claude Code
 `EnterWorktree` copy, edits to the real project are blocked (a Codex sandbox
 may do the same). There, write to `.senpai/` inside the copy — that's the
-normal path, not an error. While that copy exists its `.senpai/` is the current
-one: its `current-plan.md` is the current plan, and its `log.md` holds this
+normal path, not an error. While you're working inside that copy, its
+`.senpai/` is the current one: its `current-plan.md` is the current plan, and its `log.md` holds this
 cycle's lines. `senpai-finish` appends those lines to `$ROOT/.senpai/log.md`
-when the copy is applied or thrown away. Never copy the folder over the real
-one — that would replace the project's whole history with one cycle.
+when it leaves the copy — on every choice, for a copy on a named branch. Never copy the folder over
+the real one — that would replace the project's whole history with one cycle.
 
 ## Starting a session — recall first, automatically
 
 At the start of a session, **without being asked**, check for
 `$ROOT/.senpai/log.md`. Also run `git worktree list`: if another checkout has
-its own `.senpai/log.md` (work left in a copy by "decide later", or a window
-closed mid-build), read its latest entry too and mention that copy in the recap.
+its own `.senpai/log.md`, read its latest entry too and mention that copy in
+the recap.
 
 - **It exists:** read the last entry (or two) and open with a short, plain
   recap, then ask whether to continue — for example:
