@@ -1,6 +1,10 @@
 ---
 name: senpai-isolate
-description: Use before making any code change for a beginner — sets up an isolated copy of the project (native worktree tool if available, git worktree fallback, or Codex sandbox as a second layer) so the real files are never touched until senpai-finish decides whether to keep the work.
+description: >
+  Makes a safe copy of the project before any change, once the direction is
+  agreed ("좋아요, 진행해 주세요", "let's start") — Claude Code's
+  `EnterWorktree`, a git worktree, or the Codex sandbox — so the real files
+  stay untouched until senpai-finish decides whether to keep the work.
 ---
 
 # Senpai Isolate

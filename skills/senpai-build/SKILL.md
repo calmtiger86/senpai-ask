@@ -1,6 +1,11 @@
 ---
 name: senpai-build
-description: Use to execute an already-approved plan in `.senpai/current-plan.md`, one task at a time — implement a task, commit it, review it (does it match the plan, is it well built), and only then move on. Errors that come up during a task are found and fixed here, at the root cause. This skill only builds tasks the user already approved; it never invents new work, and it never decides whether to keep the result (that is senpai-finish's job).
+description: >
+  Builds an already-approved plan (`.senpai/current-plan.md`) one task at a
+  time — implement, check, commit, review — and fixes errors at the root
+  cause: "진행해 주세요" after the plan is approved, "에러 났어", "안 돼",
+  "이거 왜 안 돼", "build it", "it broke". Builds only approved tasks; never
+  decides whether to keep the result (senpai-finish's job).
 ---
 
 # Senpai Build

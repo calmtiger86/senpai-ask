@@ -1,6 +1,11 @@
 ---
 name: senpai-finish
-description: Use when the work is done and it's time to decide what happens to it — keep it and apply it to the real project, put it online for review, decide later, or throw it away. This is the one skill that makes the keep-or-discard call. It first shows the person the work actually running and confirms tests pass (and never applies anything on failing tests), then presents a small set of plain-language choices. Triggers include "끝내자", "이대로 반영해줘", "마무리해줘", "이거 쓸까 버릴까", and the English "finish this", "wrap it up", "keep or discard".
+description: >
+  Decides what happens to finished work — shows it running, confirms tests
+  pass, then apply, put online, decide later, or throw away: "다 됐어?",
+  "확인해줘", "끝내자", "이대로 반영해줘", "마무리해줘", "방금 한 거 버려줘",
+  "없던 일로 해줘", "finish this", "wrap it up", "keep or discard". The one
+  skill that makes the keep-or-discard call; never applies failing work.
 ---
 
 # Senpai Finish

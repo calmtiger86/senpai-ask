@@ -1,15 +1,13 @@
 ---
 name: senpai
 description: >
-  Always-on entry skill for total beginners (first time with a terminal,
-  coding, or vibe-coding). Runs before any other response and decides which
-  senpai-* skill fits, so work starts from a calm plan instead of raw code.
-  Use whenever the user says things like "만들어줘", "추가해줘", "바꿔줘",
-  "고쳐줘", "수정해줘", "지워줘", "이거 하고 싶어", "~ 기능 넣어줘", "에러
-  났어", "안 돼", "다 됐어?", "확인해줘", "이어서 하자", "지난번에 어디까지
-  했지", "저장해줘", or the English equivalents "build", "add", "change",
-  "fix", "edit", "remove", "I want to make", "it broke / error", "is it done",
-  "check it", "continue", "where did we leave off", "remember".
+  Entry skill for total beginners — runs before any other response and picks
+  the senpai-* skill that fits. "만들어줘", "추가해줘", "바꿔줘", "고쳐줘",
+  "수정해줘", "지워줘", "이거 하고 싶어", "~ 기능 넣어줘", "에러 났어", "안 돼",
+  "다 됐어?", "확인해줘", "이어서 하자", "지난번에 어디까지 했지", "저장해줘",
+  and "build", "add", "change", "fix", "edit", "remove", "I want to make",
+  "it broke / error", "is it done", "check it", "continue", "where did we
+  leave off", "remember". Starts work from a calm plan instead of raw code.
 ---
 
 <dispatched-subagent>

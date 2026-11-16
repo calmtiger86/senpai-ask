@@ -1,15 +1,11 @@
 ---
 name: senpai-remember
 description: >
-  Plain-language memory that carries a coding project across sessions — the
-  coding-project check-in / check-out. Runs automatically at the start of a
-  session to recall where things were left off ("last time we got to here…"),
-  and again when a session wraps up to save a few lines about what happened and
-  why. Use when the user says "이어서 하자", "지난번에 어디까지 했지",
-  "저장해줘", "오늘 여기까지", or the English "continue", "where did we leave
-  off", "remember this", "save where we are", "that's it for today". Native
-  /resume and `codex resume` restore the exact session; this skill adds
-  the human story across many sessions that those don't keep.
+  Plain-language memory across sessions — "이어서 하자", "지난번에 어디까지
+  했지", "저장해줘", "오늘 여기까지", "continue", "where did we leave off",
+  "remember this", "that's it for today". Recalls where things were left at
+  session start and saves a few lines on what happened and why. /resume and
+  `codex resume` reopen one exact session; this keeps the story across many.
 ---
 
 # Senpai Remember

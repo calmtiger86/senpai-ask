@@ -1,6 +1,10 @@
 ---
 name: senpai-plan
-description: Use when brainstorming has produced an agreed design and you need to turn it into small (2-5 minute), reviewable steps and get the user's approval — before any code is written. This skill writes and gets approval for a plan; it never writes product code (that is senpai-build's job) and never approves its own plan (only the user can).
+description: >
+  Turns an agreed direction into small (2–5 minute), checkable tasks and
+  gets the person's yes before any code — "계획 보여줘", "어떻게 만들 거야?",
+  "2번 단계 바꿔줘", "show me the plan". Writes only the plan, never product
+  code (senpai-build's job), and never approves its own plan.
 ---
 
 # Senpai Plan
