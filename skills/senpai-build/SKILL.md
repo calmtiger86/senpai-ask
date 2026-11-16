@@ -92,6 +92,8 @@ platform's native way; never reinvent one.
   change between versions, so if that name isn't available, look for whatever
   tool spawns an isolated subagent). Give each one only what it needs for its
   task — never your whole session history. This is the normal path.
+  Subagents may run in the background: wait for each one's completion notice
+  before using its result or starting the next task.
 
 - **Codex:** if your Codex version supports delegating to subagents, use
   that. Before the first commit, tell the person in one plain sentence that

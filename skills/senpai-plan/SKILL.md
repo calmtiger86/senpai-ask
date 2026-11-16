@@ -223,4 +223,7 @@ meaningfully make. Just say plainly:
 **"Plan approved — I'll build it one small step at a time, checking each step
 before moving on."**
 
-Then hand off to `senpai-build`. Do not begin building in this skill.
+Then hand off to `senpai-build`. Do not begin building in this skill. If the
+approval came through `ExitPlanMode` and there's no isolated copy yet (Plan Mode
+kept `senpai-isolate` from running), run `senpai-isolate` first — approval of
+the plan is not a go-ahead to edit the real project.
