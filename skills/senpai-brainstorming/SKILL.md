@@ -1,6 +1,6 @@
 ---
 name: senpai-brainstorming
-description: "Use this BEFORE building anything — the moment someone says \"make me X\", \"add a login\", \"build this app\", or describes any feature or change. Turns a rough idea into an agreed direction through one-question-at-a-time conversation, surfaces hidden decisions the person never knew they were making, pauses on hard-to-undo actions, and writes no files except the one-sentence agreement line to `.senpai/log.md` at the Restate Gate — never code, never any approval state."
+description: "Use this BEFORE building anything — the moment someone says \"make me X\", \"add a login\", \"build this app\", \"change this text\", \"fix this\", or describes any feature or change — including a one-word edit to an existing file. Turns a rough idea into an agreed direction through one-question-at-a-time conversation, surfaces hidden decisions the person never knew they were making, pauses on hard-to-undo actions, and writes no files except the one-sentence agreement line to `.senpai/log.md` at the Restate Gate — never code, never any approval state."
 ---
 
 # Senpai Brainstorming

@@ -214,6 +214,8 @@ the person plainly: "Done — it's now part of your real project."
 
 ### Put it online and ask for a review (needs a remote)
 
+First commit anything still uncommitted in the copy (see "Decide later"), then:
+
 ```bash
 git push -u origin <feature-branch>
 ```
@@ -234,7 +236,14 @@ undone back to where we started, and name any files that are still there.
 
 ### Decide later (keep as-is)
 
-Change nothing. Say: "I've left everything exactly as it is in the safe copy —
+First check `git status --short` inside the copy and commit any work that isn't
+committed yet. A copy can be deleted later — when the session window closes or
+by the app's automatic cleanup — and uncommitted work would go with it; a
+commit keeps it on the copy's branch. Stage this work's files by name, never
+`git add -A`; if something that looks secret (`.env`, keys, tokens) shows up,
+leave it out and tell the person. On a detached HEAD, make a branch first
+(`git switch -c <name>`) so the commit has somewhere to stay. Then change
+nothing else. Say: "I've left everything exactly as it is in the safe copy —
 your real project is untouched. We can pick this back up anytime." **Leave the
 copy in place.**
 

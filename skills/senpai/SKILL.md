@@ -4,11 +4,12 @@ description: >
   Always-on entry skill for total beginners (first time with a terminal,
   coding, or vibe-coding). Runs before any other response and decides which
   senpai-* skill fits, so work starts from a calm plan instead of raw code.
-  Use whenever the user says things like "만들어줘", "추가해줘", "이거 하고
-  싶어", "~ 기능 넣어줘", "에러 났어", "안 돼", "다 됐어?", "확인해줘",
-  "이어서 하자", "지난번에 어디까지 했지", "저장해줘", or the English
-  equivalents "build", "add", "I want to make", "it broke / error", "is it
-  done", "check it", "continue", "where did we leave off", "remember".
+  Use whenever the user says things like "만들어줘", "추가해줘", "바꿔줘",
+  "고쳐줘", "수정해줘", "지워줘", "이거 하고 싶어", "~ 기능 넣어줘", "에러
+  났어", "안 돼", "다 됐어?", "확인해줘", "이어서 하자", "지난번에 어디까지
+  했지", "저장해줘", or the English equivalents "build", "add", "change",
+  "fix", "edit", "remove", "I want to make", "it broke / error", "is it done",
+  "check it", "continue", "where did we leave off", "remember".
 ---
 
 <dispatched-subagent>
@@ -59,13 +60,16 @@ The usual order is top to bottom, but jump straight to the row that fits.
 
 | The person says… | Load first | Why |
 |---|---|---|
-| "만들어줘", "추가해줘", "이거 하고 싶어", "~ 기능 넣어줘" / build, add, I want to make | `senpai-brainstorming` | Don't write code yet — surface the hidden decisions together first. |
+| "만들어줘", "추가해줘", "바꿔줘", "고쳐줘", "수정해줘", "지워줘", "이거 하고 싶어", "~ 기능 넣어줘" / build, add, change, fix, edit, remove, I want to make | `senpai-brainstorming` | Don't write code yet — surface the hidden decisions together first. Any change to project files counts, even one word in an existing file. |
 | (direction is agreed) let's start the work | `senpai-isolate` | Set up an isolated copy so the real project is untouched until they approve. |
 | (isolated) now, concretely, what to build | `senpai-plan` | Break it into small 2–5 minute steps and get a yes before building. |
 | (plan approved) build it / "에러 났어", "안 돼", "이거 왜 안 돼" | `senpai-build` | Build one step at a time, review after each. Errors are handled here too — find the cause, don't patch the symptom. |
 | "다 됐어?", "확인해줘", "제대로 된 거야?" | `senpai-finish` | Actually run it to check, then decide together: keep the work or throw it away. |
 | "막혔어", "모르겠어", "왜 안 되는지 모르겠어", "다른 방법 없어?" / "I'm stuck", "no idea", "any other way?" | `senpai-unstuck` | Three fresh perspectives to break the deadlock — when the same approach keeps failing. |
 | "이어서 하자", "지난번에 어디까지 했지", "저장해줘" | `senpai-remember` | Plain-language memory that carries across sessions. |
+
+While an approved plan is being built, "고쳐줘" / "fix this" about that work
+belongs to `senpai-build`, not a new brainstorm.
 
 There is no separate debugging skill. When something breaks ("에러 났어"), that
 is part of building — handle it inside `senpai-build`, at the step where it

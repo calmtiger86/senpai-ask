@@ -74,7 +74,8 @@ copy. Skip to Step 2. Do NOT make another copy inside it.
 **Picking up a copy left earlier?** If `senpai-remember` found unfinished work
 in another copy (`git worktree list`) and the person wants to continue it,
 enter that copy (in Claude Code, `EnterWorktree` with its `path`) instead of
-making a new one.
+making a new one. Skip the starting-commit check and reset in 1a for it — that
+copy already holds the person's work.
 
 Tell the person plainly, matching the state:
 - On a branch: "Good — we're already in a safe copy, so your real project is protected."
@@ -118,10 +119,16 @@ the copy goes, the branch, and cleanup — running `git worktree add` when a
 native tool exists creates phantom state the platform can't see.
 
 - **Claude Code:** you have native tools named **`EnterWorktree`** (make and
-  enter the safe copy) and **`ExitWorktree`** (leave it). Use `EnterWorktree`
-  now and skip to Step 2. `ExitWorktree` is used later by `senpai-finish`, not
-  here. If for some reason `EnterWorktree` is not available in this session,
-  fall through to Step 1b.
+  enter the safe copy) and **`ExitWorktree`** (leave it). Note the real
+  project's commit first (`git rev-parse HEAD`), then use `EnterWorktree`.
+  Inside the new copy, compare its `git rev-parse HEAD` with the noted commit:
+  depending on its `worktree.baseRef` setting, Claude Code may start the copy
+  from the online default branch, which leaves out commits that were never
+  pushed. If they differ, move the fresh copy to the noted commit with
+  `git reset --hard <noted SHA>` — safe only now, before any work. Then skip to
+  Step 2. `ExitWorktree` is used later by `senpai-finish`, not here. If for
+  some reason `EnterWorktree` is not available in this session, fall through to
+  Step 1b.
 
 - **Codex CLI:** no dedicated worktree tool is confirmed here (likely none) — so
   do NOT wait for one. Go to Step 1b (git fallback), and then do the Codex
