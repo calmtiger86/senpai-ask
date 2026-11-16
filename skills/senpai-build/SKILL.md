@@ -337,6 +337,11 @@ the merge-level check the per-task gates don't replace.
 
 ## Handing off to senpai-finish
 
+Before handing off, make sure the plan's checks have run on the finished copy —
+the last task's run counts if nothing changed after it. Keep what you saw
+(output, screenshot) and the commit it ran on (`git rev-parse --short HEAD`):
+`senpai-finish` shows that to the person instead of running it again.
+
 When all tasks are built and the final review is clean, you're done building —
 but **you do not keep or apply the work.** Hand off to `senpai-finish`, which
 runs the result to confirm it works and then decides with the user whether to

@@ -39,6 +39,12 @@ with its `path`; elsewhere, `cd` into it.
 
 ## Step 1: Show it actually running (for the person)
 
+**Already checked in this session?** If `senpai-build` ran it here on the
+copy's current commit (`git rev-parse --short HEAD` matches the one it noted,
+and `git status --short` shows nothing new), show the person that result
+instead of running it again. A new session, or anything merged, means running
+it again.
+
 **A total beginner can't read a test log — but they *can* recognize a screen
 that works or output that looks right.** So before anything technical, if the
 project has something
