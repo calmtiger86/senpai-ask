@@ -2,7 +2,7 @@
   "hooks": {
     "SessionStart": [
       {
-        "matcher": "startup|resume|clear",
+        "matcher": "startup|resume|clear|compact|fork",
         "hooks": [
           {
             "type": "command",
@@ -10,19 +10,6 @@
             "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/scripts/bootstrap.js"],
             "timeout": 5,
             "statusMessage": "Loading senpai mode..."
-          }
-        ]
-      }
-    ],
-    "PostCompact": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node",
-            "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/scripts/bootstrap.js"],
-            "timeout": 5,
-            "statusMessage": "Restoring senpai mode after compaction..."
           }
         ]
       }

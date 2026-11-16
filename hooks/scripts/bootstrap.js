@@ -1,63 +1,42 @@
 #!/usr/bin/env node
-// senpai — bootstrap hook.
+// senpai — bootstrap hook (SessionStart only).
 //
-// Re-injects a short "senpai mode is on" nudge as hidden context on
-// SessionStart and after compaction (PostCompact), so the assistant loads the
-// `senpai` skill before its first response and doesn't forget the mode when the
-// conversation is compacted.
+// Adds a short fact about senpai mode as hidden context when a session starts,
+// resumes, clears, forks, or is compacted, so the assistant routes build/add/
+// debug/verify requests through the `senpai` skill. Written as a statement of
+// fact, not a command: hook docs warn that command-style context can be treated
+// as an injection attempt.
 //
-// Toggle: touch ~/.claude/.senpai-off to pause senpai for advanced-user
-// sessions, rm ~/.claude/.senpai-off to resume. Default is on — senpai-ask
-// itself is never disabled, only this per-session nudge.
+// Host: Claude Code runs this with no argument (hooks/hooks.json); Codex runs it
+// with `codex` (hooks/codex-hooks.json, via .codex-plugin/plugin.json).
 //
-// Pure text injection only. No file blocking, no approval logic, no deps
-// beyond Node's own fs/os/path.
-// If a host (e.g. some Codex setups) ignores this hook, it's not fatal: the
-// `senpai` skill's own trigger keywords are the safety net.
+// Toggle: create `.senpai-off` in the host's config folder (~/.claude or
+// ~/.codex) to pause the nudge; delete it to resume. senpai-ask itself stays
+// installed either way.
+//
+// Fail-open: any error prints nothing and exits 0, so a broken hook never
+// blocks a session. No deps beyond Node's fs/os/path.
 
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
 
-const claudeDir = process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.claude');
-const OFF_FLAG = path.join(claudeDir, '.senpai-off');
-const isOff = fs.existsSync(OFF_FLAG);
-
-const NUDGE_ON = [
-  'senpai mode is on.',
-  'Load the `senpai` skill before responding to build/add/debug/verify requests.',
-  'User instructions and CLAUDE.md take priority.',
-].join(' ');
-
-const NUDGE_OFF = [
-  'senpai mode is off (advanced-user session, paused via ~/.claude/.senpai-off).',
-  `Resume with: rm ${OFF_FLAG}`,
-].join(' ');
-
-const NUDGE = isOff ? NUDGE_OFF : NUDGE_ON;
-
-// Read the hook payload from stdin (best-effort) only to echo the event name
-// back, so the output labels itself with the event that actually fired.
-let raw = '';
 try {
-  raw = fs.readFileSync(0, 'utf8');
-} catch (e) {
-  // No stdin available — fine, we fall back to SessionStart below.
-}
+  const isCodex = process.argv[2] === 'codex';
+  const configDir = isCodex
+    ? process.env.CODEX_HOME || path.join(os.homedir(), '.codex')
+    : process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), '.claude');
+  const instructionsFile = isCodex ? 'AGENTS.md' : 'CLAUDE.md';
+  const offFlag = path.join(configDir, '.senpai-off');
 
-let eventName = 'SessionStart';
-try {
-  const payload = JSON.parse(raw);
-  if (payload && typeof payload.hook_event_name === 'string') {
-    eventName = payload.hook_event_name;
-  }
-} catch (e) {
-  // Non-JSON or empty stdin — keep the default event name.
-}
+  const context = fs.existsSync(offFlag)
+    ? `senpai mode is paused in this session because ${offFlag} exists. Deleting that file turns it back on.`
+    : 'senpai mode is on in this session: requests to build, add, debug, or check something go through the `senpai` skill first. '
+      + `The person's own instructions and ${instructionsFile} take priority.`;
 
-process.stdout.write(JSON.stringify({
-  hookSpecificOutput: {
-    hookEventName: eventName,
-    additionalContext: NUDGE,
-  },
-}));
+  process.stdout.write(JSON.stringify({
+    hookSpecificOutput: { hookEventName: 'SessionStart', additionalContext: context },
+  }));
+} catch (e) {
+  // Fail open — print nothing.
+}
