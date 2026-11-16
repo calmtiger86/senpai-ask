@@ -97,6 +97,13 @@ directly, and anything in the project's `CLAUDE.md` / `AGENTS.md`. Those beat
 these skills, and skills beat your default habits. Only skip a skill's steps
 when the person has clearly told you to.
 
+**Three separate yeses.** The person says yes to the direction
+(`senpai-brainstorming`), then to the plan (`senpai-plan`), then picks what
+happens to the work (`senpai-finish`). A yes to one never covers the next — a
+general go-ahead like "진행해 주세요" said earlier is not a yes to the plan or a
+choice to apply. Stop and ask at each, and end your turn to wait (Codex's
+default mode pushes you to keep going; don't).
+
 ## Breadcrumb footer — end every response with it
 
 Every response from any senpai-* skill ends with a one-line status breadcrumb,

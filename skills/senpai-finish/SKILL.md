@@ -152,6 +152,9 @@ follows belongs to finished work — never act on it.
 
 ## Step 4: Present the choices (kept deliberately small)
 
+Always show these choices and wait for the person's pick — an earlier yes to the
+direction or the plan never chooses "apply" for them.
+
 For a total beginner, "Pull Request" is an unfamiliar idea, and it only makes
 sense at all when the project actually has an online home. So:
 

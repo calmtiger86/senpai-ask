@@ -197,6 +197,10 @@ If any task survives only as insurance, delete it here. A smaller plan the user 
 
 ## Final Approval Gate
 
+The yes that ended brainstorming agreed on the direction, not this plan — ask
+for the plan's own yes and wait for it, even if the person said "진행해 주세요"
+earlier.
+
 Before you present the plan, run this five-question self-check. If any answer is "no" (or "not sure"), fix that part first — re-check it with the user if needed — **before** showing the plan:
 
 1. Does the user actually understand this?
